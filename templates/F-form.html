@@ -1,0 +1,33 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %} 
+<title>Cadastrar Contribuidor</title> 
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form action="#" method="post"> {% csrf_token %}
+        <div class="col">
+            <label for="">Novo Contribuidor:</label>
+            {{ Fform.contribuidor }}
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="">Tipo de Contribuidor:</label>
+                {{ Fform.tipocontribuidor }}
+            </div>
+            <div class="col">
+                <label for="">Tempo de Contribuição:</label>
+                {{ Fform.tempo }}
+            </div>
+        </div>
+        <div class="col-12">
+            <label for="">Observacões:</label>
+            {{ Fform.observacoes }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

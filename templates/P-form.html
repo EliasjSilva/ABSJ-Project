@@ -1,0 +1,38 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %} 
+<title>Cadastrar Produto</title> 
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <form class="row g-3" method="post" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="col-md-6">
+              <label for="inputEmail4" class="form-label">Categoria:</label>
+              {{ Pform.categoria }}
+            </div>
+            <div class="col-md-6">
+              <label for="inputPassword4" class="form-label">Contribuidor:</label>
+              {{ Pform.contribuidor }}
+            </div>
+            <div class="col-12">
+              <label for="inputAddress" class="form-label">Novo Produto:</label>
+              {{ Pform.produto }}
+            </div>
+            <div class="col-md-6">
+              <label for="inputCity" class="form-label">Quantidade:</label>
+              {{ Pform.qtd }}
+            </div>
+            <div class="col-md-6">
+              <label for="inputAddress2" class="form-label">Data de Vencimento:</label>
+              {{ Pform.validade }}
+            </div>
+            <div class="col-12">
+              <input type="submit" class="btn btn-success" value="Cadastrar">
+            </div>
+    </form>
+  </div>
+
+{% endblock %}

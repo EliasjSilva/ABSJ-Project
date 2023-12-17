@@ -1,0 +1,37 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}
+<title>Estoque</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <table class="table">
+      <thead>
+          <tr>
+              <th scope="col">Categoria</th>
+              <th scope="col">Produto</th>
+              <th scope="col">Estoque</th>
+              <th scope="col">Validade</th>
+              <th scope="col">Contribuidor</th>
+              <!-- <th scope="col">Entrada</th> -->
+          </tr>
+      </thead>
+      <tbody>
+          {% for p in list %}
+        <tr>
+          <th scope="row">{{ p.categoria }}</th>
+          <td>{{ p.produto }}</td>
+          <td>{{ p.qtd }}</td>
+          <td>{{ p.validade }}</td>
+          <td>{{ p.contribuidor }}</td>
+          <!-- <td>{{ p.entrada }}</td> -->
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock %}
