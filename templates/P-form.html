@@ -7,31 +7,34 @@
 
 {% block content %}
 
-  <div class="container">
-    <form class="row g-3" method="post" enctype="multipart/form-data"> {% csrf_token %}
-            <div class="col-md-6">
-              <label for="inputEmail4" class="form-label">Categoria:</label>
-              {{ Pform.categoria }}
-            </div>
-            <div class="col-md-6">
-              <label for="inputPassword4" class="form-label">Contribuidor:</label>
-              {{ Pform.contribuidor }}
-            </div>
-            <div class="col-12">
-              <label for="inputAddress" class="form-label">Novo Produto:</label>
-              {{ Pform.produto }}
-            </div>
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">Quantidade:</label>
-              {{ Pform.qtd }}
-            </div>
-            <div class="col-md-6">
-              <label for="inputAddress2" class="form-label">Data de Vencimento:</label>
-              {{ Pform.validade }}
-            </div>
-            <div class="col-12">
-              <input type="submit" class="btn btn-success" value="Cadastrar">
-            </div>
+  <div class="container mt-5">
+    <h2 class="mb-5">Cadastrar Produto</h2>
+    <form class="row g-3" method="post" enctype="multipart/form-data"> 
+      {% csrf_token %}
+      
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Categoria:</label>
+            {{ Pform.categoria }}
+        </div>
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Contribuidor:</label>
+            {{ Pform.contribuidor }}
+        </div>
+        <div class="col-12">
+            <label for="inputAddress" class="form-label">Novo Produto:</label>
+            {{ Pform.produto }}
+        </div>
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Quantidade:</label>
+            {{ Pform.qtd }}
+        </div>
+        <div class="col-md-6">
+            <label for="inputAddress2" class="form-label">Data de Vencimento:</label>
+            {{ Pform.validade }}
+        </div>
+        <div class="col-12">
+            <input type="submit" class="btn btn-success float-end" value="Cadastrar">
+        </div>
     </form>
   </div>
 

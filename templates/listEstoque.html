@@ -7,31 +7,33 @@
 
 {% block content %}
 
-<div class="container">
-  <table class="table">
-      <thead>
-          <tr>
-              <th scope="col">Categoria</th>
-              <th scope="col">Produto</th>
-              <th scope="col">Estoque</th>
-              <th scope="col">Validade</th>
-              <th scope="col">Contribuidor</th>
-              <!-- <th scope="col">Entrada</th> -->
-          </tr>
+<div class="container mt-5">
+  <h2 class="mb-5">Lista de Estoque</h2>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Categoria</th>
+          <th scope="col">Produto</th>
+          <th scope="col">Estoque</th>
+          <th scope="col">Validade</th>
+          <th scope="col">Contribuidor</th>
+        </tr>
       </thead>
       <tbody>
-          {% for p in list %}
-        <tr>
-          <th scope="row">{{ p.categoria }}</th>
-          <td>{{ p.produto }}</td>
-          <td>{{ p.qtd }}</td>
-          <td>{{ p.validade }}</td>
-          <td>{{ p.contribuidor }}</td>
-          <!-- <td>{{ p.entrada }}</td> -->
-        </tr>
+        {% for p in list %}
+          <tr>
+            <td>{{ p.categoria }}</td>
+            <td>{{ p.produto }}</td>
+            <td>{{ p.qtd }}</td>
+            <td>{{ p.validade }}</td>
+            <td>{{ p.contribuidor }}</td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
+  </div>
 </div>
 
 {% endblock %}

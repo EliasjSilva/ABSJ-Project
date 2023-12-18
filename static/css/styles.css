@@ -1,0 +1,19 @@
+/* Cor da borda para todos os Formulários */
+input.form-control,
+textarea.form-control {
+    border-color: #000000; 
+}
+/* Cor da borda quando o campo está focado */
+input.form-control:focus,
+textarea.form-control:focus {
+    border-color: #000000;
+}
+input.form-control,
+select.form-control {
+    border-color: #000000;
+}
+/* Cor da borda quando o campo está focado */
+input.form-control:focus,
+select.form-control:focus {
+    border-color: #000000;
+}

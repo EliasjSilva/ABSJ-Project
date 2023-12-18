@@ -7,15 +7,18 @@
 
 {% block content %}
 
-<div class="container">
-    <form action="#" method="post"> {% csrf_token %}
-        <div class="col">
-            <label for="">Nova Categoria:</label>
+<div class="container mt-5">
+    <h2 class="mb-5">Cadastrar Categoria</h2>
+
+    <form action="#" method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="{{ Cform.category.id_for_label }}" class="form-label">Nova Categoria:</label>
             {{ Cform.category }}
         </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-success">Sign in</button>
-        </div>
+
+        <button type="submit" class="btn btn-success float-end">Cadastrar</button>
     </form>
 </div>
 
