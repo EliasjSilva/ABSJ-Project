@@ -1,0 +1,18 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}
+<title>Produto {{ readP.produto }}</title>
+{% endblock %}
+
+{% block content %}
+
+{{ readP.produto }}
+{{ readP.categoria }}
+{{ readP.contribuidor }}
+{{ readP.qtd }}
+{{ readP.validade }}
+{{ readP.entrada }}
+{{ readP.user }}
+
+{% endblock %}

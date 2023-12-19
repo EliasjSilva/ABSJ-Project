@@ -7,6 +7,7 @@
 
 {% block content %}
 
+{% if user.is_username == 'admin' %}
 <div class="container mt-5">
     <h2 class="mb-5">Cadastrar Contribuidor</h2>
 
@@ -36,5 +37,8 @@
         <button type="submit" class="btn btn-success float-end">Cadastrar</button>
     </form>
 </div>
+{% else %}
+{{ user }} NÃO TEM PERMISSÃO PARA CADASTRAR UMA NOVO CONTRIBUIDOR :&#41; <br>
+{% endif %}
 
 {% endblock %}

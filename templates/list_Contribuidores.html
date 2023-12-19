@@ -20,11 +20,11 @@
         </tr>
       </thead>
       <tbody>
-        {% for f in list %}
+        {% for c in contribuidor %}
           <tr>
-            <td>{{ f.contribuidor }}</td>
-            <td>{{ f.tipocontribuidor }}</td>
-            <td>{{ f.tempo }}</td>
+            <td>{{ c.contribuidor }}</td>
+            <td>{{ c.tipocontribuidor }}</td>
+            <td>{{ c.tempo }}</td>
           </tr>
         {% endfor %}
       </tbody>
