@@ -7,26 +7,33 @@
 
 {% block content %}
 
-<div class="container">
-    <form action="#" method="post"> {% csrf_token %}
-        <div class="col">
-            <label for="">Novo Contribuidor:</label>
+<div class="container mt-5">
+    <h2 class="mb-5">Cadastrar Contribuidor</h2>
+
+    <form action="#" method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="{{ Fform.contribuidor.id_for_label }}" class="form-label">Novo Contribuidor:</label>
             {{ Fform.contribuidor }}
         </div>
-        <div class="row">
-            <div class="col">
-                <label for="">Tipo de Contribuidor:</label>
-                {{ Fform.tipocontribuidor }}
-            </div>
-            <div class="col">
-                <label for="">Tempo de Contribuição:</label>
-                {{ Fform.tempo }}
-            </div>
+
+        <div class="mb-3">
+            <label for="{{ Fform.tipocontribuidor.id_for_label }}" class="form-label">Tipo de Contribuidor:</label>
+            {{ Fform.tipocontribuidor }}
         </div>
-        <div class="col-12">
-            <label for="">Observacões:</label>
+
+        <div class="mb-3">
+            <label for="{{ Fform.tempo.id_for_label }}" class="form-label">Tempo de Contribuição:</label>
+            {{ Fform.tempo }}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ Fform.observacoes.id_for_label }}" class="form-label">Observações:</label>
             {{ Fform.observacoes }}
         </div>
+
+        <button type="submit" class="btn btn-success float-end">Cadastrar</button>
     </form>
 </div>
 
