@@ -7,7 +7,7 @@
 
 {% block content %}
 
-{% if user.is_username == 'admin' %}
+{% if user.username == 'admin' %}
 <div class="container mt-5">
     <h2 class="mb-5">Cadastrar Contribuidor</h2>
 
@@ -15,23 +15,23 @@
         {% csrf_token %}
 
         <div class="mb-3">
-            <label for="{{ Fform.contribuidor.id_for_label }}" class="form-label">Novo Contribuidor:</label>
-            {{ Fform.contribuidor }}
+            <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Novo Contribuidor:</label>
+            {{ formCon.contribuidor }}
         </div>
 
         <div class="mb-3">
-            <label for="{{ Fform.tipocontribuidor.id_for_label }}" class="form-label">Tipo de Contribuidor:</label>
-            {{ Fform.tipocontribuidor }}
+            <label for="{{ formCon.tipocontribuidor.id_for_label }}" class="form-label required">Tipo de Contribuidor:</label>
+            {{ formCon.tipocontribuidor }}
         </div>
 
         <div class="mb-3">
-            <label for="{{ Fform.tempo.id_for_label }}" class="form-label">Tempo de Contribuição:</label>
-            {{ Fform.tempo }}
+            <label for="{{ formCon.tempo.id_for_label }}" class="form-label required">Tempo de Contribuição:</label>
+            {{ formCon.tempo }}
         </div>
 
         <div class="mb-3">
-            <label for="{{ Fform.observacoes.id_for_label }}" class="form-label">Observações:</label>
-            {{ Fform.observacoes }}
+            <label for="{{ formCon.observacoes.id_for_label }}" class="form-label">Observações:</label>
+            {{ formCon.observacoes }}
         </div>
 
         <button type="submit" class="btn btn-success float-end">Cadastrar</button>

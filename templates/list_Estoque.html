@@ -30,13 +30,14 @@
         </tr>
       </thead>
       <tbody>
-        {% for p in estoque %}
+        {% for p in produtos %}
+        
           <tr>
-            <td>{{ p.categoria }}</td>
-            <td><a href="{% url 'produto_read' id=p.id %}">{{ p.produto }}</a></td>
+            <td><a href="{% url 'Category_read' id=p.categoria.id %}">{{ p.categoria }}</a></td>
+            <td><a href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a></td>
             <td>{{ p.qtd }}</td>
             <td>{{ p.validade }}</td>
-            <td>{{ p.contribuidor }}</td>
+            <td><a href="{% url 'Contribuidor_read' id=p.contribuidor.id %}">{{ p.contribuidor }}</a></td>
           </tr>
         {% endfor %}
       </tbody>

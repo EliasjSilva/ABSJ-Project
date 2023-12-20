@@ -17,3 +17,9 @@ input.form-control:focus,
 select.form-control:focus {
     border-color: #000000;
 }
+
+/* Requerimentos dos inputs nos formularios com '*' */
+form label.required::after {
+    content: '*';
+    color: red;
+}

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-{% if user.is_username == 'admin' %}
+{% if user.username == 'admin' %}
 <div class="container mt-5">
     <h2 class="mb-5">Cadastrar Categoria</h2>
 
@@ -14,8 +14,8 @@
         {% csrf_token %}
 
         <div class="mb-3">
-            <label for="{{ Cform.category.id_for_label }}" class="form-label">Nova Categoria:</label>
-            {{ Cform.category }}
+            <label for="{{ Cform.category.id_for_label }}" class="form-label required">Nova Categoria:</label>
+            {{ formCat.category }}
         </div>
 
         <button type="submit" class="btn btn-success float-end">Cadastrar</button>
