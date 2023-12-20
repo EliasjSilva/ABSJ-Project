@@ -24,6 +24,7 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'estoque' %}">Estoque</a>
               </li>
+              {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'fornecedor' %}">Contribuidores</a>
               </li>
@@ -33,7 +34,6 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'CategoryForm' %}">Categoria</a>
               </li>
-              {% if user.is_authenticated %}
               <li class="nav-item">
                 <form action="{% url 'logout' %}" method="POST">
                   {% csrf_token %}
