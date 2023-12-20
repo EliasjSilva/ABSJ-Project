@@ -3,11 +3,9 @@ from django.contrib import messages
 from . import models as m, forms as f
 from django.contrib.auth.decorators import login_required
 
-@login_required
 def home(request):
     return render(request, 'home.html')
 
-@login_required
 def estoque(request):
     produtos = m.Produto.objects.all()
     return render (request, 'list_Estoque.html', {'produtos':produtos})
