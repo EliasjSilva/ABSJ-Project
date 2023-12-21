@@ -9,6 +9,7 @@
 
 <div class="container mt-5">
   <h2 class="mb-5">Lista de Contribuidores</h2>
+  <a href="{% url 'FornercedorForm' %}">ADD CONTRIBUIDOR</a>
 
   <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
@@ -20,11 +21,11 @@
         </tr>
       </thead>
       <tbody>
-        {% for f in list %}
+        {% for c in contribuidor %}
           <tr>
-            <td>{{ f.contribuidor }}</td>
-            <td>{{ f.tipocontribuidor }}</td>
-            <td>{{ f.tempo }}</td>
+            <td>{{ c.contribuidor }}</td>
+            <td>{{ c.tipocontribuidor }}</td>
+            <td>{{ c.tempo }}</td>
           </tr>
         {% endfor %}
       </tbody>

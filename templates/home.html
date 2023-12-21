@@ -24,10 +24,24 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'estoque' %}">Estoque</a>
               </li>
+              {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'fornecedor' %}">Contribuidores</a>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'ProdutoForm' %}">Produtos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'CategoryForm' %}">Categoria</a>
+              </li>
+              <li class="nav-item">
+                <form action="{% url 'logout' %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Sair</button>
+                </form>
+              </li>
+              {% endif %}
+              <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Cadastrar
                 </a>
@@ -36,7 +50,7 @@
                   <li><a class="dropdown-item" href="{% url 'CategoryForm' %}">Categoria</a></li>
                   <li><a class="dropdown-item" href="{% url 'ProdutoForm' %}">Produto</a></li>
                 </ul>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
@@ -106,6 +120,15 @@
             <!--cards -->
         </div>
     </div>
+    
+
+      {% if user.is_authenticated %}
+      OLÁ {{ user }}, Bem vindo!
+      {% else %}
+      <span>Login Admin1: admin | eliasjosedasilva </span> <br>
+      <span>Login Admin2: admin2 | eliasjosedasilva </span> <br>
+      <span> <a href="{% url 'login' %}">Acessar</a></span>
+      {% endif %}
       {% endblock %}
 
     <!-- bootstrap scripts -->

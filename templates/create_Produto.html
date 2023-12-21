@@ -12,25 +12,26 @@
     <form class="row g-3" method="post" enctype="multipart/form-data"> 
       {% csrf_token %}
       
-        <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">Categoria:</label>
-            {{ Pform.categoria }}
+      <div class="col-md-6">
+          <label for="" class="form-label required">Categoria:</label>
+          {{ formPro.categoria }}
+          {{ formPro.user }}
         </div>
         <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Contribuidor:</label>
-            {{ Pform.contribuidor }}
+            <label for="" class="form-label required">Contribuidor:</label>
+            {{ formPro.contribuidor }}
         </div>
         <div class="col-12">
-            <label for="inputAddress" class="form-label">Novo Produto:</label>
-            {{ Pform.produto }}
+            <label for="" class="form-label required">Novo Produto:</label>
+            {{ formPro.produto }}
         </div>
         <div class="col-md-6">
-            <label for="inputCity" class="form-label">Quantidade:</label>
-            {{ Pform.qtd }}
+            <label for="" class="form-label required">Quantidade:</label>
+            {{ formPro.qtd }}
         </div>
         <div class="col-md-6">
-            <label for="inputAddress2" class="form-label">Data de Vencimento:</label>
-            {{ Pform.validade }}
+            <label for="" class="form-label required">Data de Vencimento:</label>
+            {{ formPro.validade }}
         </div>
         <div class="col-12">
             <input type="submit" class="btn btn-success float-end" value="Cadastrar">

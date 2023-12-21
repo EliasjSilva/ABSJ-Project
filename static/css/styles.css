@@ -17,8 +17,7 @@ input.form-control:focus,
 select.form-control:focus {
     border-color: #000000;
 }
-/*header com ondas (home)  */
-
+/*Header com ondas (home)  */
 
 .header {
 position: relative;
@@ -108,4 +107,9 @@ font-size:24px;
 }
 .imagem{
     margin-bottom: 160px;
+}
+/* Requerimentos dos inputs nos formularios com '*' */
+form label.required::after {
+    content: '*';
+    color: red;
 }
