@@ -11,28 +11,27 @@
     <h2 class="mb-5">Produtos Relacionados a {{ readCat.category }}</h2>
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Produto</th>
-                <th scope="col">Entradas</th>
-                <th scope="col">Saídas</th>
-                <th scope="col">Contribuidor</th>
-                <th scope="col">Adionador</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in readCat.produto_set.all %}
-            
-            <tr>
-                <td><a href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a></td>
-                <td>{{ p.qtd }} f*</td>
-                <td>{{ p.qtd }} f*</td>
-                <td><a href="{% url 'Contribuidor_read' id=p.contribuidor.id %}">{{ p.contribuidor }}</a></td>
-                <td>{{ p.user }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <table class="table table-striped table-bordered table-hover border-dark">
+            <thead id="customTableHead" class="thead-dark">
+                <tr>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Entradas</th>
+                    <th scope="col">Saídas</th>
+                    <th scope="col">Contribuidor</th>
+                    <th scope="col">Adionador</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in readCat.produto_set.all %}
+                <tr class="table-light border-dark custom-links">
+                    <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
+                    <td>{{ p.qtd }} f*</td>
+                    <td>{{ p.qtd }} f*</td>
+                    <td><a href="{% url 'Contribuidor_read' id=p.contribuidor.id %}" class="specific-link">{{ p.contribuidor }}</a></td>
+                    <td>{{ p.user }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 </div>

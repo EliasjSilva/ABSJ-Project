@@ -17,7 +17,13 @@ input.form-control:focus,
 select.form-control:focus {
     border-color: #000000;
 }
-/*Header com ondas (home)  */
+
+/* Requerimentos dos inputs nos formularios com '*' */
+form label.required::after {
+    content: '*';
+    color: red;
+}
+/*Header com ondas (home.html)  */
 
 .header {
 position: relative;
@@ -108,8 +114,39 @@ font-size:24px;
 .imagem{
     margin-bottom: 160px;
 }
-/* Requerimentos dos inputs nos formularios com '*' */
-form label.required::after {
-    content: '*';
-    color: red;
+
+
+/* Estilo para sublinhado apenas ao passar o mouse nos links da tabela ( list_Controle/Estoque.html )*/
+.custom-links .specific-link {
+    text-decoration: none; 
+}
+.custom-links .specific-link:hover {
+    text-decoration: underline; 
+}
+/* Cor para os links da tabela talvez verde pra destacar?*/
+.custom-links .specific-link{
+    color: #000000;
+}
+#customTableHead th {
+    background-color: #198754; 
+    color: #fff;
+}
+
+
+/* Animações dos Cards (home.html) */
+.card {
+transition: transform 0.2s ease-in-out;
+cursor: pointer;
+}
+
+.card:hover {
+transform: scale(1.05); /* Aumenta em 5% ao passar o mouse */
+}
+
+.card i {
+transition: transform 0.2s ease-in-out;
+}
+
+.card:hover i {
+transform: scale(1.2); /* Aumenta em 20% ao passar o mouse */
 }

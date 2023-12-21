@@ -12,8 +12,7 @@
 {{ readCon.tempo }}
 {{ readCon.observacoes }}
 
-<h2>
-</h2>
+<h2></h2>
 
 <div class="container mt-5">
     <h2 class="mb-5">Produtos 
@@ -26,24 +25,23 @@
         de {{ readCon.contribuidor }}</h2>
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Categoria</th>
-                <th scope="col">Produto</th>
-                <th scope="col">Quantidade Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in readCon.produto_set.all %}
-            
-            <tr>
-                <td><a href="{% url 'Category_read' id=p.categoria.id %}">{{ p.categoria }}</a></td>
-                <td><a href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a></td>
-                <td>{{ p.qtd }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <table class="table table-striped table-bordered table-hover border-dark">
+            <thead id="customTableHead" class="thead-dark">
+                <tr>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Quantidade Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in readCon.produto_set.all %}
+                <tr class="table-light border-dark custom-links">
+                    <td><a href="{% url 'Category_read' id=p.categoria.id %}" class="specific-link">{{ p.categoria }}</a></td>
+                    <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
+                    <td>{{ p.qtd }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 </div>
