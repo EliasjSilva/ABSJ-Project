@@ -34,7 +34,7 @@ display:inline-block;
 vertical-align: middle;
 }
 .inner-header {
-height:30vh; /*Tamanho do header*/
+height:15vh; /*Tamanho do header*/
 width:100%;
 margin: 0;
 padding: 0;
