@@ -6,16 +6,28 @@
 {% endblock %}
 
 {% block content %}
-
 {{ readCon.contribuidor }}
 {{ readCon.tipocontribuidor|safe }}
 {{ readCon.tempo }}
 {{ readCon.observacoes }}
 
+{% if user.username == 'admin' %}
+<a href="{% url 'Contribuidor_update' id=readCon.id %}" class="btn btn-success">Editar Contribuidor</a>
+<a href="{% url 'Contribuidor_delete' id=readCon.id %}" class="btn btn-danger">Excluir Contribuidor</a>
+{% else %}
+{% endif %}
 <h2>
 </h2>
 
 <div class="container mt-5">
+    
+  {% if messages %}
+  <div class="alert alert-success" role="alert">
+    {% for m in messages %}
+      {{ m }}
+    {% endfor %}
+  </div>
+  {% endif %}
     <h2 class="mb-5">Produtos 
         {% if readCon.tipocontribuidor == 'Doador' %}
         Doados
@@ -31,18 +43,36 @@
             <tr>
                 <th scope="col">Categoria</th>
                 <th scope="col">Produto</th>
-                <th scope="col">Quantidade Total</th>
+                <th scope="col">Em Estoque</th>
+
+                <!-- Lembrar de fazer a quantidade total doado dos produtos por contribuidor -->
+                <!-- <th scope="col">Quantidade Total
+                    {% if readCon.tipocontribuidor == 'Doador' %}
+                    Doada
+                    {% elif readCon.tipocontribuidor == 'Fornecedor' %}
+                    Fornecida
+                    {% else %}
+                    {% endif %}
+                </th> -->
             </tr>
         </thead>
         <tbody>
-            {% for p in readCon.produto_set.all %}
-            
+            {% if not readCon.produto_set.all %}
             <tr>
-                <td><a href="{% url 'Category_read' id=p.categoria.id %}">{{ p.categoria }}</a></td>
-                <td><a href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a></td>
-                <td>{{ p.qtd }}</td>
+                <td colspan="5" class="text-center p-5">Sem registros no momento :C</td>
             </tr>
+            
+            {% else %}
+            {% for p in readCon.produto_set.all %}
+
+            <tr>
+                <td><a href="{% url 'Categoria_read' id=p.categoria.id %}">{{ p.categoria }}</a></td>
+                <td><a href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a></td>
+                <td>{{ p.estoque }}</td>
+            </tr>
+            
             {% endfor %}
+            {% endif %}
         </tbody>
         </table>
     </div>

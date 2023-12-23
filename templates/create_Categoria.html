@@ -1,0 +1,60 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %} 
+<title>Cadastrar Categoria</title> 
+{% endblock %}
+
+{% block content %}
+
+{% if user.username == 'admin' %}
+<div class="container mt-4">
+    {% if request.resolver_match.url_name == 'Categoria_update' %}
+    <h2 class="mb-5">Editar Categoria</h2>
+    {% else %}
+    <h2 class="mb-5">Cadastrar Nova Categoria</h2>
+    {% endif %}
+
+    <form action="#" method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            
+            {% if request.resolver_match.url_name == 'Categoria_update' %}
+            <label for="{{ formCat.categoria.id_for_label }}" class="form-label required">Categoria:</label>
+            {% else %}
+            <label for="{{ formCat.categoria.id_for_label }}" class="form-label required">Nova Categoria:</label>
+            {% endif %}
+            {{ formCat.categoria }}
+            <span class="errors">
+                {{ formCat.categoria.errors }}
+            </span>
+        </div>
+
+        <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
+
+        {% if request.resolver_match.url_name == 'Categoria_update' %}
+        <button type="submit" class="btn btn-success float-end">Salvar</button>
+        {% else %}
+        <button type="submit" class="btn btn-success float-end">Cadastrar</button>
+        {% endif %}
+    </form>
+</div>
+<div class="container mt-5">
+    <h3>Categorias Existentes:</h3>
+    {% for cat in categorias %}
+    <a class="btn btn-info" href="{% url 'Categoria_read' id=cat.id %}">{{ cat.categoria }}</a>
+    {% endfor %}
+</div>
+
+{% else %}
+
+<div class="container mt-5">
+    <h3>Categorias Existentes:</h3>
+    {% for cat in categorias %}
+    <a class="btn btn-info" href="{% url 'Categoria_read' id=cat.id %}">{{ cat.categoria }}</a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %} 
+<title>Cadastrar Produto</title> 
+{% endblock %}
+
+{% block content %}
+
+  <div class="container mt-5">
+    <h2 class="mb-5">Produto: {{ produto.produto }}</h2>
+    <h2 class="mb-5">Estoque atual: {{ produto.estoque }}</h2>
+    <form class="row g-3" method="post" enctype="multipart/form-data"> 
+      {% csrf_token %}
+      {{ movimento.user }}
+      {{ movimento.produto }}
+
+    
+        <div class="col-md-6">
+            <label for="" class="form-label required">Tipo:</label>
+            {{ movimento.tipo }}
+            <span class="errors">{{ movimento.tipo.errors }}</span>
+        </div>
+        <div class="col-md-6">
+            <label for="" class="form-label required">Quantidade:</label>
+            {{ movimento.quantidade }}
+            <span class="errors">{{ movimento.quantidade.errors }}</span>
+        </div>
+        <div class="col-12">
+          <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
+          <input type="submit" class="btn btn-success float-end" value="Salvar">
+        </div>
+    </form>
+  </div>
+
+{% endblock %}

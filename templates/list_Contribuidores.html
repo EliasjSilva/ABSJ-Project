@@ -9,7 +9,11 @@
 
 <div class="container mt-5">
   <h2 class="mb-5">Lista de Contribuidores</h2>
-  <a href="{% url 'FornercedorForm' %}">ADD CONTRIBUIDOR</a>
+  
+  {% if user.username == 'admin' %}
+  <a class="btn btn-success"  href="{% url 'ContribuidorForm' %}">Adicionar Novo Contribuidor</a>
+  {% else %}
+  {% endif %}
 
   <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
@@ -21,9 +25,9 @@
         </tr>
       </thead>
       <tbody>
-        {% for c in contribuidor %}
+        {% for c in contribuidores %}
           <tr>
-            <td>{{ c.contribuidor }}</td>
+            <td><a href="{% url 'Contribuidor_read' id=c.id %}">{{ c.contribuidor }}</a></td>
             <td>{{ c.tipocontribuidor }}</td>
             <td>{{ c.tempo }}</td>
           </tr>

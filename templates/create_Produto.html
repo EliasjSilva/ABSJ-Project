@@ -5,36 +5,51 @@
 <title>Cadastrar Produto</title> 
 {% endblock %}
 
+
 {% block content %}
 
   <div class="container mt-5">
-    <h2 class="mb-5">Cadastrar Produto</h2>
+    {% if request.resolver_match.url_name == 'Produto_update' %}
+    <h2 class="mb-5">Editar Produto</h2>
+    {% else %}
+    <h2 class="mb-5">Cadastrar Novo Produto</h2>
+    {% endif %}
     <form class="row g-3" method="post" enctype="multipart/form-data"> 
       {% csrf_token %}
+      {{ formPro.user }}
       
-      <div class="col-md-6">
-          <label for="" class="form-label required">Categoria:</label>
+        <div class="col-12">
+            <label for="" class="form-label required">Novo Produto:</label>
+            {{ formPro.produto }}
+            <span class="errors">{{ formPro.produto.errors }}</span>
+        </div>
+        <div class="col-md-6">
+          <label for="" class="form-label outline-success required">Categoria:</label>
           {{ formPro.categoria }}
-          {{ formPro.user }}
+          <span class="errors">{{ formPro.categoria.errors }}</span>
         </div>
         <div class="col-md-6">
             <label for="" class="form-label required">Contribuidor:</label>
             {{ formPro.contribuidor }}
-        </div>
-        <div class="col-12">
-            <label for="" class="form-label required">Novo Produto:</label>
-            {{ formPro.produto }}
+            <span class="errors">{{ formPro.contribuidor.errors }}</span>
         </div>
         <div class="col-md-6">
-            <label for="" class="form-label required">Quantidade:</label>
-            {{ formPro.qtd }}
+            <label for="" class="form-label">Quantidade Inicial:</label>
+            {{ formPro.estoque }}
         </div>
         <div class="col-md-6">
             <label for="" class="form-label required">Data de Vencimento:</label>
             {{ formPro.validade }}
+            <span class="errors">{{ formPro.validade.errors }}</span>
         </div>
         <div class="col-12">
-            <input type="submit" class="btn btn-success float-end" value="Cadastrar">
+          <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
+          
+          {% if request.resolver_match.url_name == 'Produto_update' %}
+          <input type="submit" class="btn btn-success float-end" value="Salvar">
+          {% else %}
+          <input type="submit" class="btn btn-success float-end" value="Cadastrar">
+          {% endif %}
         </div>
     </form>
   </div>

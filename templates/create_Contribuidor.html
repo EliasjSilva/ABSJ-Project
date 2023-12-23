@@ -9,32 +9,49 @@
 
 {% if user.username == 'admin' %}
 <div class="container mt-5">
-    <h2 class="mb-5">Cadastrar Contribuidor</h2>
+    {% if request.resolver_match.url_name == 'Contribuidor_update' %}
+    <h2 class="mb-5">Editar Contribuidor</h2>
+    {% else %}
+    <h2 class="mb-5">Cadastrar Novo Contribuidor</h2>
+    {% endif %}
 
     <form action="#" method="post" class="needs-validation" novalidate>
         {% csrf_token %}
 
         <div class="mb-3">
+            {% if request.resolver_match.url_name == 'Contribuidor_update' %}
+            <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Contribuidor:</label>
+            {% else %}
             <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Novo Contribuidor:</label>
+            {% endif %}
             {{ formCon.contribuidor }}
+            <span class="errors">{{ formCon.contribuidor.errors }}</span>
         </div>
 
         <div class="mb-3">
             <label for="{{ formCon.tipocontribuidor.id_for_label }}" class="form-label required">Tipo de Contribuidor:</label>
             {{ formCon.tipocontribuidor }}
+            <span class="errors">{{ formCon.tipocontribuidor.errors }}</span>
         </div>
 
         <div class="mb-3">
             <label for="{{ formCon.tempo.id_for_label }}" class="form-label required">Tempo de Contribuição:</label>
             {{ formCon.tempo }}
+            <span class="errors">{{ formCon.tempo.errors }}</span>
         </div>
 
         <div class="mb-3">
             <label for="{{ formCon.observacoes.id_for_label }}" class="form-label">Observações:</label>
-            {{ formCon.observacoes }}
+            <span class="errors">{{ formCon.observacoes }}</span>
         </div>
 
+        <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
+
+        {% if request.resolver_match.url_name == 'Contribuidor_update' %}
+        <button type="submit" class="btn btn-success float-end">Salvar</button>
+        {% else %}
         <button type="submit" class="btn btn-success float-end">Cadastrar</button>
+        {% endif %}
     </form>
 </div>
 {% else %}

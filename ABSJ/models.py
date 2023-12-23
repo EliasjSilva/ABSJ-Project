@@ -1,25 +1,31 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from datetime import date
 
 CONTRIBUIDOR = [
     ('Doador', 'Doador'),
     ('Fornecedor', 'Fornecedor'),
 ]
+MOVIMENTO = [
+    ('Entrada', 'Entrada'),
+    ('Saída', 'Saída'),
+]
 
 class Categoria(models.Model):
-    category = models.CharField(max_length=100, unique=True)
+    categoria = models.CharField(max_length=100, unique=True)
 
     class Meta:
-        ordering = ['category']
+        ordering = ['categoria']
 
     def __str__(self):
-        return self.category
+        return self.categoria
 
 
 class Contribuidor(models.Model):
     contribuidor = models.CharField(max_length=250, unique=True)
     tipocontribuidor = models.CharField(choices=CONTRIBUIDOR, max_length=10)
     tempo = models.DateField()
+    quantidade_dias = models.PositiveIntegerField(default=0)
     observacoes = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -27,19 +33,38 @@ class Contribuidor(models.Model):
 
     def __str__(self):
         return self.contribuidor
+        
+# # # Testando :C
+    def calcular_quantidade_dias(self):
+        # Ajuste para calcular a diferença em dias
+        atual = timezone.now().date()
+        diferenca_dias = (atual - self.tempo).days
+
+        # Atualizar o campo quantidade_dias
+        self.quantidade_dias = diferenca_dias
+        self.save()
+
+        return diferenca_dias
 
 
 class Produto(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True)
     contribuidor = models.ForeignKey(Contribuidor, on_delete=models.CASCADE, null=True)
     produto = models.CharField(max_length=200, unique=True)
-    qtd = models.PositiveIntegerField(default=0)
+    estoque = models.PositiveIntegerField(default=0)
     validade = models.DateField()
-    entrada = models.DateField(auto_now_add=True)
 
     class Meta:
         ordering = ['produto']
 
     def __str__(self):
         return self.produto
+
+class Movimento(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField()
+    tipo = models.CharField(max_length=7, choices=MOVIMENTO)
+    modificado = models.DateTimeField(auto_now=True)

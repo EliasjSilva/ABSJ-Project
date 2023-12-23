@@ -5,10 +5,24 @@
 <title>Categoria de Produto: {{ readCat.category }}</title>
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
 <div class="container mt-5">
-    <h2 class="mb-5">Produtos Relacionados a {{ readCat.category }}</h2>
+    
+  {% if messages %}
+  <div class="alert alert-success" role="alert">
+    {% for m in messages %}
+      {{ m }}
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+    <h2 class="mb-2">Produtos Relacionados a {{ readCat.categoria }}</h2>
+    {% if user.username == 'admin' %}
+    <a href="{% url 'Categoria_update' id=readCat.id %}" class="btn btn-success mb-4">Editar Nome da Categoria</a>
+    <a href="{% url 'Categoria_delete' id=readCat.id %}" class="btn btn-danger mb-4">Excluir Categoria</a>
+    {% else %}
+    {% endif %}
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">

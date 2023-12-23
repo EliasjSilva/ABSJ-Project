@@ -7,12 +7,24 @@
 
 {% block content %}
 
+{% if messages %}
+<div class="alert alert-success" role="alert">
+  {% for m in messages %}
+    {{ m }}
+  {% endfor %}
+</div>
+{% endif %}
+
 {{ readPro.produto }}
 {{ readPro.categoria }}
 {{ readPro.contribuidor }}
-{{ readPro.qtd }}
+{{ readPro.estoque }}
 {{ readPro.validade }}
 {{ readPro.entrada }}
 {{ readPro.user }}
 
+<a class="btn btn-success" href="{% url 'Produto_update' id=readPro.id %}">Editar Produto</a>
+<a class="btn btn-danger" href="{% url 'Produto_delete' id=readPro.id %}">Excluir Produto</a>
+<a class="btn btn-warning " href="{% url 'Movimento_produto' id=readPro.id %}">Movimentar Produto</a>
+<!-- <a class="btn btn-warning " href="{% url 'Movimento_produto' id=readPro.id %}">Saída Produto</a> -->
 {% endblock %}
