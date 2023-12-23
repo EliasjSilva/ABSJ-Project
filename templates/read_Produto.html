@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Infomações do Produto: {{ readPro.produto }}</title>
+<title>Informações do Produto: {{ readPro.produto }}</title>
 {% endblock %}
 
 {% block content %}
@@ -15,16 +15,25 @@
 </div>
 {% endif %}
 
-{{ readPro.produto }}
-{{ readPro.categoria }}
-{{ readPro.contribuidor }}
-{{ readPro.estoque }}
-{{ readPro.validade }}
-{{ readPro.entrada }}
-{{ readPro.user }}
+<div class="container mt-5">
+  <h2 class="mb-4">Detalhes do Produto</h2>
 
-<a class="btn btn-success" href="{% url 'Produto_update' id=readPro.id %}">Editar Produto</a>
-<a class="btn btn-danger" href="{% url 'Produto_delete' id=readPro.id %}">Excluir Produto</a>
-<a class="btn btn-warning " href="{% url 'Movimento_produto' id=readPro.id %}">Movimentar Produto</a>
-<!-- <a class="btn btn-warning " href="{% url 'Movimento_produto' id=readPro.id %}">Saída Produto</a> -->
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title mb-4">{{ readPro.produto }}</h4>
+      <p class="card-text"><strong>Categoria:</strong> {{ readPro.categoria }}</p>
+      <p class="card-text"><strong>Contribuidor:</strong> {{ readPro.contribuidor }}</p>
+      <p class="card-text"><strong>Estoque:</strong> {{ readPro.estoque }}</p>
+      <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
+      <p class="card-text"><strong>Entrada:</strong> {{ readPro.entrada }}</p>
+      <p class="card-text"><strong>Usuário:</strong> {{ readPro.user }}</p>
+
+      <a href="{% url 'Produto_update' id=readPro.id %}" class="btn btn-success">Editar Produto</a>
+      <a href="{% url 'Produto_delete' id=readPro.id %}" class="btn btn-danger">Excluir Produto</a>
+      <a href="{% url 'Movimento_produto' id=readPro.id %}" class="btn btn-warning">Movimentar Produto</a>
+      <!-- <a href="{% url 'Movimento_produto' id=readPro.id %}" class="btn btn-warning">Saída Produto</a> -->
+    </div>
+  </div>
+</div>
+
 {% endblock %}
