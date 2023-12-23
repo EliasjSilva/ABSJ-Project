@@ -147,7 +147,7 @@ def contribuidor_Read(request, id):
 @login_required
 def category_Read(request, id):
     read_Cateogry = m.Categoria.objects.get(id=id)
-    return render(request, 'read_Category.html', {'readCat':read_Cateogry})
+    return render(request, 'read_Categoria.html', {'readCat':read_Cateogry})
 
 
 
