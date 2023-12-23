@@ -46,7 +46,6 @@
           <th scope="col">Categoria</th>
           <th scope="col">Produto</th>
           <th scope="col">Estoque</th>
-          <th scope="col">Validade</th>
           <th scope="col">Contribuidor</th>
         </tr>
       </thead>
@@ -58,7 +57,6 @@
             <td><a href="{% url 'Categoria_read' id=p.categoria.id %}" class="specific-link">{{ p.categoria }}</a></td>
             <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
             <td>{{ p.estoque }}</td>
-            <td>{{ p.validade }}</td>
             <td><a href="{% url 'Contribuidor_read' id=p.contribuidor.id %}" class="specific-link">{{ p.contribuidor }}</a></td>
           </tr>
 

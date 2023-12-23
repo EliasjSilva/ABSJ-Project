@@ -12,9 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary header">
         <div class="container-fluid">
-          <a class="navbar-brand text-success" href="{% url 'home' %}">Página Inicial</a>
+          <a class="navbar-brand" href="{% url 'home' %}">Página Inicial</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -66,7 +66,7 @@
         <div class="header position-relative">
             <!-- Conteúdo antes das ondas -->
             <div class="inner-header flex">
-                <h1>Lorem ipsum dolor sit.</h1>
+                <h1>Associação Benefiente São José</h1>
             </div>
             <!-- Container das ondas -->
             <div>
@@ -102,7 +102,7 @@
       <div class="row">
           <!-- Card Contribuidores -->
           <div class="col-md-6 mb-4">
-              <div class="card border-success mx-auto text-center" style="width: 14rem; height: 14rem;" onclick="window.location.href='{% url 'contribuidores' %}'">
+              <div class="card border-success mx-auto text-center" style="width: 14rem; height: 14rem;" onclick="window.location.href='/Contribuidores/'">
                   <div class="card-body d-flex flex-column justify-content-center align-items-center">
                       <i class="fas fa-users fa-4x text-success mb-3"></i>
                       <p class="card-text">Contribuidores</p>
@@ -112,7 +112,7 @@
     
           <!-- Card Estoque -->
           <div class="col-md-6 mb-4">
-              <div class="card border-success mx-auto mb-5 text-center" style="width: 14rem; height: 14rem;" onclick="window.location.href='{% url 'estoque' %}'">
+              <div class="card border-success mx-auto mb-5 text-center" style="width: 14rem; height: 14rem;" onclick="window.location.href='/Estoque/'">
                   <div class="card-body d-flex flex-column justify-content-center align-items-center">
                       <i class="fas fa-boxes fa-4x text-success mb-3"></i>
                       <p class="card-text">Estoque</p>

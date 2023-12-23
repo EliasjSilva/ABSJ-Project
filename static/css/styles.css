@@ -167,3 +167,4 @@ transition: transform 0.2s ease-in-out;
 
 .card:hover i {
 transform: scale(1.2); /* Aumenta em 20% ao passar o mouse */
+}
