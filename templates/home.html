@@ -14,19 +14,19 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary header">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'home' %}">Página Inicial</a>
+          <a class="navbar-brand text-light" href="{% url 'home' %}">Página Inicial</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'estoque' %}">Estoque</a>
+                <a class="nav-link active text-light" aria-current="page" href="{% url 'estoque' %}">Estoque</a>
               </li>
               {% if user.is_authenticated %}
               
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle  text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Produtos
                 </a>
                 <ul class="dropdown-menu">
@@ -39,21 +39,21 @@
               </li>
               
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'contribuidores' %}">Contribuidores</a>
+                <a class="nav-link text-light" href="{% url 'contribuidores' %}">Contribuidores</a>
               </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'CategoriaForm' %}">Categoria</a>
+              <li class="nav-item text-light">
+                <a class="nav-link text-light" href="{% url 'CategoriaForm' %}">Categoria</a>
               </li>
               <li class="nav-item">
                 <form action="{% url 'logout' %}" method="POST">
                   {% csrf_token %}
-                  <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Sair</button>
+                  <button type="submit" class="nav-link text-light">Sair</button>
                 </form>
               </li>
               {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Acessar</a>
+                    <a class="nav-link text-light" href="{% url 'login' %}">Acessar</a>
                 </li>
               {% endif %}
             </ul>
@@ -67,7 +67,11 @@
             <!-- Conteúdo antes das ondas -->
             <div class="inner-header flex">
                 <h1>Associação Benefiente São José</h1>
-            </div>
+              </div>
+              {% if user.is_authenticated %}
+              <h4>Olá {{ user }}, Bem vindo</h4>
+              {% else %}
+              {% endif %}
             <!-- Container das ondas -->
             <div>
                 <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -92,7 +96,7 @@
             <div class="col-md-12 col-lg-2 offset-lg-1">
                 <!-- Imagem com posição absoluta -->
                 <div class="position-absolute top-50 start-50 translate-middle">
-                    <img src="{% static 'images/ABSJ-r.jpg' %}" alt="Imagem Redonda" class="rounded-circle img-fluid" style="width: 200px;">
+                    <img src="{% static 'images/ABSJ-r.jpg' %}" alt="Imagem Redonda" width="200" class="rounded-circle img-fluid">
                 </div>
             </div>
         </div>
@@ -125,7 +129,6 @@
 
 
       {% if user.is_authenticated %}
-      OLÁ {{ user }}, Bem vindo!
       {% else %}
       <span>Login Admin1: admin | eliasjosedasilva </span> <br>
       <span>Login Admin2: admin2 | eliasjosedasilva </span> <br>

@@ -11,23 +11,25 @@
   <h2 class="mb-5">Lista de Produtos</h2>
 
   {% if messages %}
-  {% for m in messages %}
-  <div class="alert alert-success" role="alert">
-      {{ m }}
-    </div>
+    {% for m in messages %}
+      <div class="alert alert-success" role="alert">
+        {{ m }}
+      </div>
     {% endfor %}
   {% endif %}
 
-<form action="{% url 'produtos' %}" method="GET">
+  <form action="{% url 'produtos' %}" method="GET">
     <input class="form-control mb-4" type="text" name="busca" placeholder="Digite o nome do Produto">
 
-    <input class="btn btn-success" type="submit" value="Buscar">
-    <a class="btn btn-success" href="{% url 'produtos' %}">Limpar Busca</a>
-</form>
+    <div class="d-flex justify-content-end mb-4">
+      <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'produtos' %}">Limpar Busca</a>
+      <input class="btn btn-success" type="submit" value="Buscar">
+    </div>
+  </form>
 
   <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover">
-      <thead class="thead-dark">
+    <table class="table table-striped table-bordered table-hover border-dark">
+      <thead id="customTableHead" class="thead-dark table-custom">
         <tr>
           <th scope="col">Produto</th>
           <th scope="col">Estoque</th>
@@ -37,26 +39,22 @@
       </thead>
       <tbody>
         {% if produtos %}
-        {% for p in produtos %}
-        
-          <tr>
-            <td><a href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a></td>
-            <td>{{ p.estoque }}</td>
-            <td>{{ p.validade }}</td>
-            <td><a class="btn btn-warning" href="{% url 'Movimento_produto' id=p.id %}">Movimentar</a></td>
-          </tr>
-
+          {% for p in produtos %}
+            <tr class="table-light border-dark custom-links">
+              <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
+              <td>{{ p.estoque }}</td>
+              <td>{{ p.validade }}</td>
+              <td><a class="btn btn-warning" href="{% url 'Movimento_produto' id=p.id %}">Movimentar</a></td>
+            </tr>
           {% endfor %}
-          {% else %}
-
+        {% else %}
           <tr>
             <td class="text-center p-5" colspan="5">Sem resultados encontrados :C</td>
           </tr>
-
-          {% endif %}
+        {% endif %}
       </tbody>
     </table>
   </div>
-  </div>
+</div>
 
 {% endblock %}

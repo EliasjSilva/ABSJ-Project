@@ -1,24 +1,24 @@
 /* Cor da borda para todos os Formulários */
 input.form-control,
-input[type='select'],
+select.form-select {
+    border-color: #000000;
+}
+
+/* Adiciona borda quando focado */
+input.form-control:focus,
+select.form-select:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25); /* Efeito de sombra */
+}
+/* Adiciona borda preta ao campo de observações */
 textarea.form-control {
     border-color: #000000;
 }
-/* Cor da borda quando o campo está focado */
-input.form-control:focus,
+
+/* Adiciona borda quando o campo está focado */
 textarea.form-control:focus {
     border-color: #000000;
-}
-input.form-control,
-input[type='select'],
-select.form-control {
-    border-color: #000000;
-}
-/* Cor da borda quando o campo está focado */
-input.form-control:focus,
-input[type='select']:focus,
-select.form-control:focus {
-    border-color: #000000;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
 }
 
 /* Requerimentos dos inputs nos formularios com '*' */
@@ -40,6 +40,10 @@ form textarea {
 }
 .error-var {
     color: red;
+}
+
+nav a{
+    font-weight: bold;
 }
 /*Header com ondas (home.html)  */
 
@@ -134,7 +138,7 @@ font-size:24px;
 }
 
 
-/* Estilo para sublinhado apenas ao passar o mouse nos links da tabela ( list_Controle/Estoque.html )*/
+/* Estilo para sublinhado apenas ao passar o mouse nos links da tabela ( list_Controle/Estoque.html etc )*/
 .custom-links .specific-link {
     text-decoration: none; 
 }
@@ -152,19 +156,19 @@ font-size:24px;
 
 
 /* Animações dos Cards (home.html) */
-.card {
+.card-custom {
 transition: transform 0.2s ease-in-out;
 cursor: pointer;
 }
 
-.card:hover {
+.card-custom:hover {
 transform: scale(1.05); /* Aumenta em 5% ao passar o mouse */
 }
 
-.card i {
+.card-custom i {
 transition: transform 0.2s ease-in-out;
 }
 
-.card:hover i {
+.card-custom:hover i {
 transform: scale(1.2); /* Aumenta em 20% ao passar o mouse */
 }

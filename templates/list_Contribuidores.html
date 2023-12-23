@@ -26,8 +26,8 @@
       </thead>
       <tbody>
         {% for c in contribuidores %}
-          <tr class="table-secondary border-dark">
-            <td><a href="{% url 'Contribuidor_read' id=c.id %}">{{ c.contribuidor }}</a></td>
+          <tr class="table-white border-dark custom-links">
+            <td><a href="{% url 'Contribuidor_read' id=c.id %}" class="specific-link">{{ c.contribuidor }}</a></td>
             <td>{{ c.tipocontribuidor }}</td>
             <td>{{ c.tempo }}</td>
           </tr>
