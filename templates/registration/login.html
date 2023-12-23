@@ -7,17 +7,26 @@
 
 {% block content %}
 
-<form action="" method="POST"> {% csrf_token %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="" method="POST" class="bg-light p-4 rounded shadow-sm">
+                {% csrf_token %}
 
-    <label for="username">Nome de Usuário:</label>
-    <input type="text" name="username" id="username" autocapitalize="none" maxlength="150" placeholder="Username" required autofocus>
-    <!-- O padrão do login do django é que o nome recebe name = 'username' se colocado inputs-->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nome de Usuário:</label>
+                    <input type="text" name="username" id="username" class="form-control" autocapitalize="none" maxlength="150" placeholder="Username" required autofocus>
+                </div>
 
-    <label for="password">Digite sua Senha:</label>
-    <input type="password" name="password" id="password" placeholder="Passoword" required>
-    <!-- e a senha recebe name = 'password' se colocado inputs -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Digite sua Senha:</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                </div>
 
-    <input type="submit" value="Entrar">
-</form>
+                <button type="submit" class="btn btn-success">Entrar</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
