@@ -21,11 +21,11 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title mb-4">{{ readPro.produto }}</h4>
+      <p class="card-text"><strong>Adicionado por:</strong> {{ readPro.user }}</p>
       <p class="card-text"><strong>Categoria:</strong> {{ readPro.categoria }}</p>
       <p class="card-text"><strong>Contribuidor:</strong> {{ readPro.contribuidor }}</p>
       <p class="card-text"><strong>Estoque Atual:</strong> {{ readPro.estoque }}</p>
       <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
-      <p class="card-text"><strong>Adicionado por:</strong> {{ readPro.user }}</p>
 
       <a href="{% url 'Produto_update' id=readPro.id %}" class="btn btn-success">Editar Produto</a>
       <a href="{% url 'Produto_delete' id=readPro.id %}" class="btn btn-danger">Excluir Produto</a>
