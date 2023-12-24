@@ -20,6 +20,9 @@ urlpatterns = [
     path('Categoria/<int:id>/', v.category_Read, name='Categoria_read'),
     path('Contribuidor/<int:id>/', v.contribuidor_Read, name='Contribuidor_read'),
 
+    # MOVIMENTOS LIST
+    path('Movimentos/', v.movimento_list, name='Movimento_list'),
+
     # # # UPDATE
     path('Editar Produto/<int:id>/', v.produto_Update, name='Produto_update'),
     path('Editar Categoria/<int:id>/', v.category_Update, name='Categoria_update'),

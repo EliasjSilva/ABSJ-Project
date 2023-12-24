@@ -96,9 +96,7 @@ def contribuidor_Create(request):
         return render(request, 'create_Contribuidor.html', {'formCon':contribForm})
 
 
-
-
-    # # # MOVIMENTAÇÃO DE PRODUTOS
+    # MOVIMENTAÇÃO DE PRODUTOS
 def movimento(request, id):
     produto = m.Produto.objects.get(id=id)
 
@@ -131,6 +129,8 @@ def movimento(request, id):
     return render(request, 'movimeto_produtos.html', {'movimento': produto_movimento, 'produto':produto})
 
 
+
+
 # # # READING
 
 @login_required
@@ -148,6 +148,12 @@ def contribuidor_Read(request, id):
 def category_Read(request, id):
     read_Cateogry = m.Categoria.objects.get(id=id)
     return render(request, 'read_Categoria.html', {'readCat':read_Cateogry})
+
+
+@login_required
+def movimento_list(request):
+    movimentos = m.Movimento.objects.all()
+    return render(request, 'list_Movimento.html', {'movimentos':movimentos})
 
 
 

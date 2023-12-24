@@ -68,3 +68,6 @@ class Movimento(models.Model):
     quantidade = models.PositiveIntegerField()
     tipo = models.CharField(max_length=7, choices=MOVIMENTO)
     modificado = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-modificado']
