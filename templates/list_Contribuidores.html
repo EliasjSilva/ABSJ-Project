@@ -9,6 +9,18 @@
 
 <div class="container mt-5 ">
   <h2 class="mb-5">Lista de Contribuidores</h2>
+
+
+    
+  {% if messages %}
+  {% for m in messages %}
+  <div class="alert alert-success" role="alert">
+      {{ m }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  
   
   {% if user.username == 'admin' %}
   <a class="btn btn-success mb-4"  href="{% url 'ContribuidorForm' %}">Adicionar Novo Contribuidor</a>

@@ -9,6 +9,18 @@
 
 {% if user.username == 'admin' %}
 <div class="container mt-4">
+
+
+    
+  {% if messages %}
+  {% for m in messages %}
+  <div class="alert alert-success" role="alert">
+      {{ m }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  
     {% if request.resolver_match.url_name == 'Categoria_update' %}
     <h2 class="mb-5">Editar Categoria</h2>
     {% else %}

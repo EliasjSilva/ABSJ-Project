@@ -5,14 +5,14 @@ from django.utils.html import format_html
 class ProdutoForm(forms.ModelForm):
     class Meta:
         model = m.Produto
-        fields = ['categoria', 'contribuidor', 'produto', 'validade', 'user', 'estoque']
+        fields = ['categoria', 'contribuidor', 'produto', 'validade', 'user', 'estoque', 'codigo']
         widgets = {
             'categoria': forms.Select(attrs={'class': 'form-select'}),
             'contribuidor': forms.Select(attrs={'class': 'form-select'}),
             'produto': forms.TextInput(attrs={'class': 'form-control'}),
+            'codigo': forms.NumberInput(attrs={'class': 'form-control'}),
             'estoque': forms.NumberInput(attrs={'class': 'form-control'}),
             'validade': forms.DateInput(
-                format=('%d/%m/%Y'),
                 attrs={
                     'class': 'form-control',
                     'type': 'date',
@@ -39,6 +39,26 @@ class ProdutoForm(forms.ModelForm):
 
         return produto
 
+
+    def clean_codigo(self):
+        codigo = self.cleaned_data['codigo']
+
+        if len(str(codigo)) > 13 or len(str(codigo)) < 13:
+            error_message = format_html('Código de Barras requerido um total de 13 digitos.')
+            raise forms.ValidationError(error_message)
+
+        # Verifica a instancia do objeto na hora do cadastro ou edição para uma validação
+        for instance in m.Produto.objects.all():
+            # Se o obejto instanciado estiver sendo editado e não houver alteração retonna o valor normal
+            if self.instance and self.instance.codigo == codigo:
+                return codigo
+
+            # Se for criado um novo codigo e a instancia já estiver no sistema retona o erro.
+            if instance.codigo == codigo:
+                error_message = format_html('Já possui uma Código no sistema com essa numeração <span class="error-var">{}</span>.', instance.codigo)
+                raise forms.ValidationError(error_message)
+
+        return codigo
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -82,12 +102,11 @@ class CategoriaForm(forms.ModelForm):
 class ContribuidorForm(forms.ModelForm):
     class Meta:
         model = m.Contribuidor
-        fields = "__all__"
+        fields = ['contribuidor', 'tipocontribuidor', 'tempo', 'observacoes']
         widgets = {
             'contribuidor': forms.TextInput(attrs={'class': 'form-control'}),
             'tipocontribuidor': forms.Select(attrs={'class': 'form-select'}),
             'tempo': forms.DateInput(
-                format=('%d/%m/%Y'),
                 attrs={
                     'class': 'form-control',
                     'type': 'date',

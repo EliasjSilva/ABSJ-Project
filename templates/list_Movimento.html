@@ -8,10 +8,26 @@
 {% block content %}
 
 <div class="container mt-5">
+
+
+    
+  {% if messages %}
+  {% for m in messages %}
+  <div class="alert alert-success" role="alert">
+      {{ m }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  
   <h2 class="mb-5">Lista de Movimentações</h2>
 
   <form action="{% url 'Movimento_list' %}" method="GET">
-    <input class="form-control mb-4" type="text" name="busca" placeholder="Digite o nome do Produto">
+    <select name="tipo" class="form-select mb-4">
+      <option value="">Todos</option>
+      <option value="Entrada">Entradas</option>
+      <option value="Saída">Saídas</option>
+    </select>
 
     <div class="d-flex justify-content-end mb-4">
       <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'Movimento_list' %}">Limpar Busca</a>
@@ -24,19 +40,19 @@
       <thead id="customTableHead" class="thead-dark table-custom">
         <tr>
           <th scope="col">Produto</th>
-          <th scope="col">Entradas</th>
-          <th scope="col">Saidas</th>
-          <th scope="col">Modificado</th>
+            <th scope="col" >Tipo</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">Modificado</th>
         </tr>
       </thead>
       <tbody>
         {% if movimentos %}
-          {% for m in movimentos %}
+          {% for movimento in movimentos %}
             <tr class="table-light border-dark custom-links">
-              <td>{{ m.produto }}</td>
-              <td>{{ m.tipo }}</td>
-              <td>{{ m.quantidade }}</td>
-              <td>{{ m.modificado }}</td>
+              <td>{{ movimento.produto }}</td>
+              <td>{{ movimento.tipo }}</td>
+              <td>{{ movimento.quantidade }}</td>
+              <td>{{ movimento.modificado }}, por: {{ movimento.user }}</td>
             </tr>
           {% endfor %}
         {% else %}

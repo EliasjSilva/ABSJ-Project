@@ -8,6 +8,18 @@
 {% block content %}
 
   <div class="container mt-5">
+
+
+    
+    {% if messages %}
+    {% for m in messages %}
+    <div class="alert alert-success" role="alert">
+        {{ m }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  
+    
     <h2 class="mb-5">Produto: {{ produto.produto }}</h2>
     <h2 class="mb-5">Estoque atual: {{ produto.estoque }}</h2>
     <form class="row g-3" method="post" enctype="multipart/form-data"> 

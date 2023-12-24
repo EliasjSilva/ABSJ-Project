@@ -7,22 +7,71 @@
 
 {% block content %}
 
-{% if messages %}
-<div class="alert alert-success" role="alert">
-  {% for m in messages %}
-    {{ m }}
-  {% endfor %}
-</div>
-{% endif %}
-
 <div class="container mt-5">
   <h2 class="mb-4">Detalhes do Contribuidor</h2>
+
+
+  {% if messages %}
+  <div class="alert alert-success" role="alert">
+    Fechar
+    {% for m in messages %}
+      {{ m }}
+    {% endfor %}
+  </div>
+  {% endif %}
+
 
   <div class="card">
     <div class="card-body">
       <h4 class="card-title mb-4">{{ readCon.contribuidor }}</h4>
-      <p class="card-text"><strong>Tipo de Contribuidor:</strong> {{ readCon.tipocontribuidor|safe }}</p>
-      <p class="card-text"><strong>Data de Início:</strong> {{ readCon.tempo }}</p>
+      <p class="card-text"><strong>Tipo de Contribuidor:</strong> {{ readCon.tipocontribuidor }}</p>
+      <p class="card-text"><strong>Desde:</strong> {{ readCon.tempo }}</p>
+      <p class="card-text"><strong>Tempo de Contribuição:</strong>
+        {% if dias_contribuicao.0 %}
+
+          {% if dias_contribuicao.0 == 1 %}
+            {{ dias_contribuicao.0 }} Ano
+          {% else %}
+            {{ dias_contribuicao.0 }} Anos
+          {% endif %}
+
+        {% endif %}
+  
+        {% if dias_contribuicao.1 %}
+
+          {% if dias_contribuicao.1 == 1 %}
+            {{ dias_contribuicao.1 }} Mês
+          {% else %}
+            {{ dias_contribuicao.1 }} Meses
+          {% endif %}
+
+        {% endif %}
+        
+        {% if dias_contribuicao.2 %}
+
+          {% if dias_contribuicao.0 or dias_contribuicao.1 %}
+
+            {% if dias_contribuicao.2 == 1 %}
+              e {{ dias_contribuicao.2 }} Dia.
+            {% elif dias_contribuicao.2 > 1  %}
+              e {{ dias_contribuicao.2 }} Dias.
+            {% endif %}
+
+          {% else %}
+
+            {% if dias_contribuicao.2 == 1 %}
+              {{ dias_contribuicao.2 }} Dia.
+            {% else %}
+              {{ dias_contribuicao.2 }} Dias.
+            {% endif %}
+            
+          {% endif %}
+        
+        {% else %}
+          0 Dias.
+
+        {% endif %}
+      </p>
       <p class="card-text"><strong>Observações:</strong> {{ readCon.observacoes }}</p>
 
       {% if user.username == 'admin' %}
@@ -34,14 +83,7 @@
 </div>
 
 <div class="container mt-5">
-    
-  {% if messages %}
-  <div class="alert alert-success" role="alert">
-    {% for m in messages %}
-      {{ m }}
-    {% endfor %}
-  </div>
-  {% endif %}
+  
     <h2 class="mb-5">Produtos 
         {% if readCon.tipocontribuidor == 'Doador' %}
         Doados

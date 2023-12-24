@@ -9,6 +9,18 @@
 {% block content %}
 
   <div class="container mt-5">
+
+
+    
+    {% if messages %}
+    {% for m in messages %}
+    <div class="alert alert-success" role="alert">
+        {{ m }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  
+    
     {% if request.resolver_match.url_name == 'Produto_update' %}
     <h2 class="mb-5">Editar Produto</h2>
     {% else %}
@@ -18,10 +30,15 @@
       {% csrf_token %}
       {{ formPro.user }}
       
-        <div class="col-12">
+        <div class="col-md-6">
             <label for="" class="form-label required">Novo Produto:</label>
             {{ formPro.produto }}
             <span class="errors">{{ formPro.produto.errors }}</span>
+        </div>
+        <div class="col-md-6">
+            <label for="" class="form-label required">Código de Barras:</label>
+            {{ formPro.codigo }}
+            <span class="errors">{{ formPro.codigo.errors }}</span>
         </div>
         <div class="col-md-6">
           <label for="" class="form-label outline-success required">Categoria:</label>

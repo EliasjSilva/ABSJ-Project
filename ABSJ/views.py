@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from . import models as m, forms as f
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
+from datetime import datetime, date
 from unidecode import unidecode
-from django.db.models import Q
-
+from django.db.models import Q, Sum
+from django.db.models.functions import TruncDate
 def home(request):
     return render(request, 'home.html')
 
@@ -14,9 +14,17 @@ def produtos(request):
 
     busca = request.GET.get('busca')
     if busca:
-        produto_list = produto_list.filter(
-            Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
+
+        # Quando for pesquisar tentar por inteiro, se der erro tenta o outro :p
+        try:
+            busca_int = int(busca)
+            produto_list = produto_list.filter(
+                Q(codigo__icontains=busca_int)
             )
+        except ValueError:
+            produto_list = produto_list.filter(
+                Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
+                )
 
     return render (request, 'list_Produtos.html', {'produtos':produto_list})
 
@@ -33,9 +41,15 @@ def estoque(request):
     contribuidor_id = request.GET.get('contribuidor')
 
     if busca:
-        produtos = produtos.filter(
-            Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
+        try:
+            busca_int = int(busca)
+            produtos = produtos.filter(
+                Q(codigo__icontains=busca),
             )
+        except ValueError:
+            produtos = produtos.filter(
+                Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
+                )
 
     if categoria_id:
         produtos = produtos.filter(categoria__id=categoria_id)
@@ -64,12 +78,12 @@ def produto_Create(request):
         produtoForm.save()
 
         messages.info(request, f'Produto {produtoForm.produto} cadastrado com Sucesso!')
-        return redirect('estoque')
+        return redirect('ProdutoForm')
     else:
         return render(request, 'create_Produto.html', {'formPro':produtoForm})
 
 @login_required
-def category_Create(request):
+def categoria_Create(request):
     categoriaForm = f.CategoriaForm(request.POST or None, request.FILES or None, user=request.user)
     categorias = m.Categoria.objects.all()
 
@@ -78,22 +92,23 @@ def category_Create(request):
         categoriaForm.save()
 
         messages.info(request, f'Categoria {categoriaForm.categoria} adicionada com êxito!')
-        return redirect('estoque')
+        return redirect('CategoriaForm')
     else:
         return render(request, 'create_Categoria.html', {'formCat':categoriaForm, 'categorias':categorias})
 
 @login_required
 def contribuidor_Create(request):
     contribForm = f.ContribuidorForm(request.POST or None, request.FILES or None, user=request.user)
+    contribuidores = m.Contribuidor.objects.all()
 
     if contribForm.is_valid():
         contribForm = contribForm.save(commit=False)
         contribForm.save()
 
         messages.info(request, f'Contribuidor {contribForm.contribuidor} adicionado com êxito!')
-        return redirect('estoque')
+        return redirect('ContribuidorForm')
     else:
-        return render(request, 'create_Contribuidor.html', {'formCon':contribForm})
+        return render(request, 'create_Contribuidor.html', {'formCon':contribForm, 'contribuidores':contribuidores})
 
 
     # MOVIMENTAÇÃO DE PRODUTOS
@@ -109,20 +124,15 @@ def movimento(request, id):
             tipo = produto_movimento.cleaned_data['tipo']
 
             if tipo == 'Entrada':
-                produto.estoque += quantidade
                 messages.info(request, f'Entrando +{quantidade} ao Produto: {produto.produto}')
 
 
             elif tipo == 'Saída':
-                produto.estoque -= quantidade
                 messages.info(request, f'Saindo -{quantidade} ao Produto: {produto.produto}')
-
-                if produto.estoque < 0:
-                    produto.estoque = 0
 
             produto.save()
             m.Movimento.objects.create(produto=produto, quantidade=quantidade, tipo=tipo, user=request.user)
-            return redirect('estoque')
+            return redirect('produtos')
     else:
         produto_movimento = f.MovimentoForm( initial={'user':request.user, 'produto':produto})
     
@@ -140,19 +150,33 @@ def produto_Read(request, id):
 
 @login_required
 def contribuidor_Read(request, id):
-    read_Contribuidor = m.Contribuidor.objects.get(id=id)
+    read_Contribuidor = m.Contribuidor.objects.get(id=id) # Verifica se a última atualização foi feita hoje
+    if read_Contribuidor.tempo_ultima_atualizacao != date.today():
+        # Se não foi atualizado hoje, realiza as atualizações
+        read_Contribuidor.salvar_alteracoes()
+        read_Contribuidor.tempo_ultima_atualizacao = date.today()
+        read_Contribuidor.save()
 
-    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor})
+    # Calcula o tempo de contribuição
+    dias_contribuicao = read_Contribuidor.calcular_tempo_contribuicao()
+
+    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao})
 
 @login_required
-def category_Read(request, id):
-    read_Cateogry = m.Categoria.objects.get(id=id)
-    return render(request, 'read_Categoria.html', {'readCat':read_Cateogry})
+def categoria_Read(request, id):
+    read_Cateogria = m.Categoria.objects.get(id=id)
+    return render(request, 'read_Categoria.html', {'readCat':read_Cateogria})
 
 
 @login_required
 def movimento_list(request):
     movimentos = m.Movimento.objects.all()
+
+    tipo = request.GET.get('tipo')
+
+    if tipo:
+        movimentos = movimentos.filter(tipo=tipo)
+
     return render(request, 'list_Movimento.html', {'movimentos':movimentos})
 
 
@@ -169,28 +193,28 @@ def produto_Update(request, id):
             produtoEdit.save()
 
             messages.info(request, f'Produto {produtoEdit} Editado!')
-            return redirect('estoque')
+            return redirect('Produto_read', id=update_produto.id)
     else:
         produtoEdit = f.ProdutoForm(instance=update_produto)
 
     return render(request, 'create_Produto.html', {'formPro': produtoEdit})
     
-def category_Update(request, id):
-    update_category = m.Categoria.objects.get(id=id)
+def categoria_Update(request, id):
+    update_categoria = m.Categoria.objects.get(id=id)
     categorias = m.Categoria.objects.all()
 
     if request.method == 'POST':
-        categoryEdit = f.CategoriaForm(request.POST, request.FILES, instance=update_category)
-        if categoryEdit.is_valid():
-            categoryEdit = categoryEdit.save(commit=False)
-            categoryEdit.save()
+        categoriaEdit = f.CategoriaForm(request.POST, request.FILES, instance=update_categoria)
+        if categoriaEdit.is_valid():
+            categoriaEdit = categoriaEdit.save(commit=False)
+            categoriaEdit.save()
 
-            messages.info(request, f'Categoria {categoryEdit} Editado!')
-            return redirect('estoque')
+            messages.info(request, f'Categoria {categoriaEdit} Editado!')
+            return redirect('Categoria_read', id=update_categoria.id)
     else:
-        categoryEdit = f.CategoriaForm(instance=update_category)
+        categoriaEdit = f.CategoriaForm(instance=update_categoria)
 
-    return render(request, 'create_Categoria.html', {'formCat': categoryEdit, 'categorias':categorias})
+    return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias})
     
 def contribuidor_Update(request, id):
     update_contribuidor = m.Contribuidor.objects.get(id=id)
@@ -202,7 +226,7 @@ def contribuidor_Update(request, id):
             contribuidorEdit.save()
 
             messages.info(request, f'Contribuidor {contribuidorEdit} Editado!')
-            return redirect('estoque')
+            return redirect('Contribuidor_read', id=update_contribuidor.id)
     else:
         contribuidorEdit = f.ContribuidorForm(instance=update_contribuidor)
 
@@ -218,18 +242,18 @@ def produto_Delete(request, id):
     delete_produto.delete()
 
     messages.info(request, f'Produto {delete_produto.produto} Excluido!')
-    return redirect('estoque')
+    return redirect('produtos')
 
 def categoria_Delete(request, id):
     delete_categoria = m.Categoria.objects.get(id=id)
     delete_categoria.delete()
 
     messages.info(request, f'Categoria {delete_categoria.categoria} Excluido!')
-    return redirect('estoque')
+    return redirect('CategoriaForm')
 
 def contribuidor_Delete(request, id):
     delete_contribuidor = m.Contribuidor.objects.get(id=id)
     delete_contribuidor.delete()
 
     messages.info(request, f'Contribuidor {delete_contribuidor.contribuidor} Excluido!')
-    return redirect('estoque')
+    return redirect('contribuidores')

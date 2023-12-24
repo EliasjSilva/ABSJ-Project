@@ -19,8 +19,8 @@
   {% endif %}
 
   <form action="{% url 'produtos' %}" method="GET">
-    <input class="form-control mb-4" type="text" name="busca" placeholder="Digite o nome do Produto">
-
+    <input class="form-control mb-4" type="text" name="busca" placeholder="Digite o nome do Produto ou Código de Barras">
+    
     <div class="d-flex justify-content-end mb-4">
       <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'produtos' %}">Limpar Busca</a>
       <input class="btn btn-success" type="submit" value="Buscar">
@@ -32,6 +32,7 @@
       <thead id="customTableHead" class="thead-dark table-custom">
         <tr>
           <th scope="col">Produto</th>
+          <th scope="col">Código de Barras</th>
           <th scope="col">Estoque</th>
           <th scope="col">Validade</th>
           <th scope="col">Ações</th>
@@ -42,6 +43,7 @@
           {% for p in produtos %}
             <tr class="table-light border-dark custom-links">
               <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
+              <td>{{ p.codigo }}</td>
               <td>{{ p.estoque }}</td>
               <td>{{ p.validade }}</td>
               <td><a class="btn btn-warning" href="{% url 'Movimento_produto' id=p.id %}">Movimentar</a></td>

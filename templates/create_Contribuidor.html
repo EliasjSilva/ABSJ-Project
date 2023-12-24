@@ -9,6 +9,18 @@
 
 {% if user.username == 'admin' %}
 <div class="container mt-5">
+
+
+    
+    {% if messages %}
+    {% for m in messages %}
+    <div class="alert alert-success" role="alert">
+        {{ m }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  
+    
     {% if request.resolver_match.url_name == 'Contribuidor_update' %}
     <h2 class="mb-5">Editar Contribuidor</h2>
     {% else %}
@@ -54,8 +66,28 @@
         {% endif %}
     </form>
 </div>
+
+    {% if contribuidores %}
+    <div class="container mt-5">
+        <h3>Contribuidores Existentes:</h3>
+        {% for con in contribuidores %}
+        <a class="btn btn-info" href="{% url 'Contribuidor_read' id=con.id %}">{{ con.contribuidor }}</a>
+        {% endfor %}
+    </div>
+    {% else %}
+    {% endif %}
+
 {% else %}
-{{ user }} NÃO TEM PERMISSÃO PARA CADASTRAR UMA NOVO CONTRIBUIDOR :&#41; <br>
+
+    {% if contribuidores %}
+    <div class="container mt-5">
+        <h3>Contribuidores Existentes:</h3>
+        {% for con in contribuidores %}
+        <a class="btn btn-info" href="{% url 'Contribuidor_read' id=con.id %}">{{ con.contribuidor }}</a>
+        {% endfor %}
+    </div>
+    {% else %}
+    {% endif %}
 {% endif %}
 
 {% endblock %}

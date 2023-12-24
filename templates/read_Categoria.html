@@ -8,16 +8,19 @@
 
 {% block content %}
 <div class="container mt-5">
-    
-  {% if messages %}
-  <div class="alert alert-success" role="alert">
-    {% for m in messages %}
-      {{ m }}
-    {% endfor %}
-  </div>
-  {% endif %}
-  
     <h2 class="mb-2">Produtos Relacionados a {{ readCat.categoria }}</h2>
+
+
+    
+    {% if messages %}
+    {% for m in messages %}
+    <div class="alert alert-success" role="alert">
+        {{ m }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  
+    
     {% if user.username == 'admin' %}
     <a href="{% url 'Categoria_update' id=readCat.id %}" class="btn btn-success mb-4">Editar Nome da Categoria</a>
     <a href="{% url 'Categoria_delete' id=readCat.id %}" class="btn btn-danger mb-4">Excluir Categoria</a>
