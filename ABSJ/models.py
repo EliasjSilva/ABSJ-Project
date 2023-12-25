@@ -89,8 +89,8 @@ class Produto(models.Model):
 
     def salvar_alteracoes(self):
         hoje = date.today()
-        diferenca = relativedelta(hoje, self.validade)
-        self.quantidade_dias = diferenca.days
+        diferenca = relativedelta( self.validade, hoje)
+        self.quantidade_dias = max(0, diferenca.days)
         self.save()
 
 
