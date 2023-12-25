@@ -159,9 +159,9 @@ def produto_Read(request, id):
         read_produto.save()
 
     # Calcula o tempo de contribuição
-    dias_contribuicao = read_produto.calcular_tempo_validade()
+    validade_dias = read_produto.calcular_tempo_validade()
 
-    return render(request, 'read_Produto.html', {'readPro':read_produto, 'dias_contribuicao':dias_contribuicao})
+    return render(request, 'read_Produto.html', {'readPro':read_produto, 'validade_dias':validade_dias})
 
 @login_required
 def contribuidor_Read(request, id):

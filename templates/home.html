@@ -33,8 +33,7 @@
                   <li><a class="dropdown-item" href="{% url 'ProdutoForm' %}">Cadastrar</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="{% url 'produtos' %}">Lista de Produtos</a></li>
-                  <li><a class="dropdown-item" href="{% url 'Movimento_list' %}">Entradas</a></li>
-                  <li><a class="dropdown-item" href="#">Saídas</a></li>
+                  <li><a class="dropdown-item" href="{% url 'Movimento_list' %}">Lista de Movimentações</a></li>
                 </ul>
               </li>
               
@@ -69,8 +68,10 @@
                 <h1>Associação Benefiente São José</h1>
               </div>
               {% if user.is_authenticated %}
-              <h4>Olá {{ user }}, Bem vindo</h4>
+                <h4>Olá {{ user }}, Bem vindo</h4>
               {% else %}
+                <span>Login Admin1: admin | eliasjosedasilva </span> <br>
+                <span>Login Admin2: admin2 | eliasjosedasilva </span> <br>
               {% endif %}
             <!-- Container das ondas -->
             <div>
@@ -126,14 +127,6 @@
       </div>
     </div>
 
-
-
-      {% if user.is_authenticated %}
-      {% else %}
-      <span>Login Admin1: admin | eliasjosedasilva </span> <br>
-      <span>Login Admin2: admin2 | eliasjosedasilva </span> <br>
-      <span> <a href="{% url 'login' %}">Acessar</a></span>
-      {% endif %}
       {% endblock %}
 
     <!-- bootstrap scripts -->

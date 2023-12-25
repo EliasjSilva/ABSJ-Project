@@ -33,38 +33,38 @@
       <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
       <p class="card-text"><strong>Tempo para o Vencimento:</strong> 
   
-        {% if dias_contribuicao.0 %}
+        {% if validade_dias.0 %}
 
-          {% if dias_contribuicao.0 == 1 %}
-            {{ dias_contribuicao.0 }} Mês
+          {% if validade_dias.0 == 1 %}
+            {{ validade_dias.0 }} Mês
           {% else %}
-            {{ dias_contribuicao.0 }} Meses
+            {{ validade_dias.0 }} Meses
           {% endif %}
 
         {% endif %}
         
-        {% if dias_contribuicao.1 %}
+        {% if validade_dias.1 %}
 
-          {% if dias_contribuicao.0 %}
+          {% if validade_dias.0 %}
 
-            {% if dias_contribuicao.1 == 1 %}
-              e {{ dias_contribuicao.1 }} Dia.
-            {% elif dias_contribuicao.1 > 1  %}
-              e {{ dias_contribuicao.1 }} Dias.
+            {% if validade_dias.1 == 1 %}
+              e {{ validade_dias.1 }} Dia.
+            {% elif validade_dias.1 > 1  %}
+              e {{ validade_dias.1 }} Dias.
             {% endif %}
 
           {% else %}
 
-            {% if dias_contribuicao.1 == 1 %}
-              {{ dias_contribuicao.1 }} Dia.
+            {% if validade_dias.1 == 1 %}
+              {{ validade_dias.1 }} Dia.
             {% else %}
-              {{ dias_contribuicao.1 }} Dias.
+              {{ validade_dias.1 }} Dias.
             {% endif %}
             
           {% endif %}
         
         {% else %}
-          Vencido.
+          Passou da data de Validade.
         {% endif %}
       </p>
 
@@ -77,11 +77,12 @@
 </div>
 
 <div class="container mt-5">
+  <h2 class="mb-4">Movimentações do Produto: {{ readPro.produto }} </h2>
   <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover border-dark">
         <thead id="customTableHead" class="thead-dark">
             <tr>
-              <th scope="col">Adionador</th>
+              <th scope="col">Usuário</th>
               <th scope="col">Entradas</th>
               <th scope="col">Saídas</th>
               <th scope="col">Modificado</th>
