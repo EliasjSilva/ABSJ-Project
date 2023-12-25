@@ -64,16 +64,35 @@ class Produto(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True)
     contribuidor = models.ForeignKey(Contribuidor, on_delete=models.CASCADE, null=True)
-    produto = models.CharField(max_length=200, unique=True)
+    produto = models.CharField(max_length=200)
     codigo = models.PositiveIntegerField(unique=True)
     estoque = models.PositiveIntegerField(default=0)
     validade = models.DateField()
+
+    tempo_ultima_atualizacao = models.DateField(default=date.today)
+    quantidade_dias = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['produto']
 
     def __str__(self):
         return self.produto
+
+
+    def calcular_tempo_validade(self):
+        hoje = date.today()
+        diferenca = relativedelta(self.validade, hoje)
+        meses = diferenca.months
+        dias = diferenca.days
+        return meses, dias
+
+
+    def salvar_alteracoes(self):
+        hoje = date.today()
+        diferenca = relativedelta(hoje, self.validade)
+        self.quantidade_dias = diferenca.days
+        self.save()
+
 
 
 

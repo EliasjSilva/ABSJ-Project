@@ -4,8 +4,12 @@ from . import models as m, forms as f
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from unidecode import unidecode
-from django.db.models import Q, Sum
-from django.db.models.functions import TruncDate
+from django.db.models import Q
+
+
+
+
+
 def home(request):
     return render(request, 'home.html')
 
@@ -146,11 +150,24 @@ def movimento(request, id):
 @login_required
 def produto_Read(request, id):
     read_produto = m.Produto.objects.get(id=id)
-    return render(request, 'read_Produto.html', {'readPro':read_produto})
+    
+    # Verifica se a última atualização foi feita hoje
+    if read_produto.tempo_ultima_atualizacao != date.today():
+        # Se não foi atualizado hoje, realiza as atualizações
+        read_produto.salvar_alteracoes()
+        read_produto.tempo_ultima_atualizacao = date.today()
+        read_produto.save()
+
+    # Calcula o tempo de contribuição
+    dias_contribuicao = read_produto.calcular_tempo_validade()
+
+    return render(request, 'read_Produto.html', {'readPro':read_produto, 'dias_contribuicao':dias_contribuicao})
 
 @login_required
 def contribuidor_Read(request, id):
-    read_Contribuidor = m.Contribuidor.objects.get(id=id) # Verifica se a última atualização foi feita hoje
+    read_Contribuidor = m.Contribuidor.objects.get(id=id) 
+
+    # Verifica se a última atualização foi feita hoje
     if read_Contribuidor.tempo_ultima_atualizacao != date.today():
         # Se não foi atualizado hoje, realiza as atualizações
         read_Contribuidor.salvar_alteracoes()

@@ -31,6 +31,42 @@
       <p class="card-text"><strong>Estoque Atual:</strong> {{ readPro.estoque }}</p>
       <p class="card-text"><strong>Código de Barras:</strong> {{ readPro.codigo }}</p>
       <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
+      <p class="card-text"><strong>Tempo para o Vencimento:</strong> 
+  
+        {% if dias_contribuicao.0 %}
+
+          {% if dias_contribuicao.0 == 1 %}
+            {{ dias_contribuicao.0 }} Mês
+          {% else %}
+            {{ dias_contribuicao.0 }} Meses
+          {% endif %}
+
+        {% endif %}
+        
+        {% if dias_contribuicao.1 %}
+
+          {% if dias_contribuicao.0 %}
+
+            {% if dias_contribuicao.1 == 1 %}
+              e {{ dias_contribuicao.1 }} Dia.
+            {% elif dias_contribuicao.1 > 1  %}
+              e {{ dias_contribuicao.1 }} Dias.
+            {% endif %}
+
+          {% else %}
+
+            {% if dias_contribuicao.1 == 1 %}
+              {{ dias_contribuicao.1 }} Dia.
+            {% else %}
+              {{ dias_contribuicao.1 }} Dias.
+            {% endif %}
+            
+          {% endif %}
+        
+        {% else %}
+
+        {% endif %}
+      </p>
 
       <a href="{% url 'Produto_update' id=readPro.id %}" class="btn btn-success">Editar Produto</a>
       <a href="{% url 'Produto_delete' id=readPro.id %}" class="btn btn-danger">Excluir Produto</a>

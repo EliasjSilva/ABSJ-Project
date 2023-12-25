@@ -1,6 +1,7 @@
 from django import forms as forms
 from . import models as m # Vai importar os modelos do models como 'm'
 from django.utils.html import format_html
+from datetime import date
 
 class ProdutoForm(forms.ModelForm):
     class Meta:
@@ -16,28 +17,34 @@ class ProdutoForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'type': 'date',
+
                 }
             ),
         }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        produto = cleaned_data.get('produto')
+        contribuidor = cleaned_data.get('contribuidor')
+        codigo = cleaned_data.get('codigo')
 
-    def clean_produto(self):
-        produto = self.cleaned_data['produto']
-
-        # Muda o campo escrito para capitalize na hora de Salvar para não gerar complitos como 'oi', 'OI' e 'Oi'
+        # Muda o campo escrito para capitalize na hora de Salvar para não gerar conflitos como 'oi', 'OI' e 'Oi'
         produto = produto.capitalize()
 
         # Verifica a instancia do objeto na hora do cadastro ou edição para uma validação
         for instance in m.Produto.objects.all():
-            # Se o obejto instanciado estiver sendo editado e não houver alteração retonna o valor normal
-            if self.instance and self.instance.produto == produto:
-                return produto
+            # Se o objeto instanciado estiver sendo editado e não houver alteração, retorna o valor normal
+            if self.instance and self.instance.produto == produto and self.instance.contribuidor == contribuidor:
+                return cleaned_data
 
-            # Se for criado um novo produto e a instancia já estiver no sistema retona o erro.
-            if instance.produto == produto:
-                error_message = format_html('Já possui uma Produto no sistema com o nome <span class="error-var">{}</span>.', instance.produto)
-                raise forms.ValidationError(error_message)
+        # Verifica se já existe um produto com o mesmo nome para o mesmo contribuidor
+        if produto and contribuidor:
+            exists = m.Produto.objects.filter(produto=produto, contribuidor=contribuidor).exists()
+            if exists:
+                error_message = format_html('Este produto já está cadastrado para o contribuidor <span class="error-var">{}</span>.', contribuidor)
+                self.add_error('produto', error_message)
 
-        return produto
+        return cleaned_data
 
 
     def clean_codigo(self):
@@ -47,15 +54,12 @@ class ProdutoForm(forms.ModelForm):
             error_message = format_html('Código de Barras requerido um total de 13 digitos.')
             raise forms.ValidationError(error_message)
 
-        # Verifica a instancia do objeto na hora do cadastro ou edição para uma validação
         for instance in m.Produto.objects.all():
-            # Se o obejto instanciado estiver sendo editado e não houver alteração retonna o valor normal
             if self.instance and self.instance.codigo == codigo:
                 return codigo
 
-            # Se for criado um novo codigo e a instancia já estiver no sistema retona o erro.
             if instance.codigo == codigo:
-                error_message = format_html('Já possui uma Código no sistema com essa numeração <span class="error-var">{}</span>.', instance.codigo)
+                error_message = format_html('Já possui um Código de Barras no sistema com essa numeração <span class="error-var">{}</span>.', instance.codigo)
                 raise forms.ValidationError(error_message)
 
         return codigo
@@ -66,6 +70,7 @@ class ProdutoForm(forms.ModelForm):
         self.fields['user'].initial = user
         self.fields['user'].widget = forms.HiddenInput()
 
+        self.fields['validade'].widget.attrs['min'] = date.today()
 
 
 
@@ -110,7 +115,6 @@ class ContribuidorForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'type': 'date',
-                    
                 }
             ),
             'observacoes': forms.Textarea(attrs={'class': 'form-control'}),
@@ -130,10 +134,11 @@ class ContribuidorForm(forms.ModelForm):
                     raise forms.ValidationError(error_message)
             return contribuidor
 
-
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(ContribuidorForm, self).__init__(*args, **kwargs)
+
+        self.fields['tempo'].widget.attrs['max'] = date.today()
 
 
 
