@@ -6,88 +6,88 @@
 {% endblock %}
 
 {% block content %}
+  <div class="container mt-5">
 
-{% if user.username == 'admin' %}
-<div class="container mt-5">
-
-
-    
     {% if messages %}
-    {% for m in messages %}
-    <div class="alert alert-success" role="alert">
-        {{ m }}
-      </div>
+      {% for m in messages %}
+        <div class="alert alert-success" role="alert">
+          {{ m }}
+        </div>
       {% endfor %}
     {% endif %}
   
-    
-    {% if request.resolver_match.url_name == 'Contribuidor_update' %}
-    <h2 class="mb-5">Editar Contribuidor</h2>
-    {% else %}
-    <h2 class="mb-5">Cadastrar Novo Contribuidor</h2>
-    {% endif %}
+    {% if user.username == 'admin' %}
+      <div class="row">
+        <div class="col-md-6">
+          {% if request.resolver_match.url_name == 'Contribuidor_update' %}
+            <h2 class="mb-5">Editar Contribuidor</h2>
+          {% else %}
+            <h2 class="mb-5">Cadastrar Novo Contribuidor</h2>
+          {% endif %}
 
-    <form action="#" method="post" class="needs-validation" novalidate>
-        {% csrf_token %}
+          <form action="#" method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
 
-        <div class="mb-3">
+            <div class="mb-3">
+              {% if request.resolver_match.url_name == 'Contribuidor_update' %}
+                <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Contribuidor:</label>
+              {% else %}
+                <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Novo Contribuidor:</label>
+              {% endif %}
+              {{ formCon.contribuidor }}
+              <span class="errors">{{ formCon.contribuidor.errors }}</span>
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ formCon.tipocontribuidor.id_for_label }}" class="form-label required">Tipo de Contribuidor:</label>
+              {{ formCon.tipocontribuidor }}
+              <span class="errors">{{ formCon.tipocontribuidor.errors }}</span>
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ formCon.tempo.id_for_label }}" class="form-label required">Tempo de Contribuição:</label>
+              {{ formCon.tempo }}
+              <span class="errors">{{ formCon.tempo.errors }}</span>
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ formCon.observacoes.id_for_label }}" class="form-label">Observações:</label>
+              <span class="errors">{{ formCon.observacoes }}</span>
+            </div>
+
+            <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
+
             {% if request.resolver_match.url_name == 'Contribuidor_update' %}
-            <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Contribuidor:</label>
+              <button type="submit" class="btn btn-success float-end">Salvar</button>
             {% else %}
-            <label for="{{ formCon.contribuidor.id_for_label }}" class="form-label required">Novo Contribuidor:</label>
+              <button type="submit" class="btn btn-success float-end">Cadastrar</button>
             {% endif %}
-            {{ formCon.contribuidor }}
-            <span class="errors">{{ formCon.contribuidor.errors }}</span>
+          </form>
         </div>
 
-        <div class="mb-3">
-            <label for="{{ formCon.tipocontribuidor.id_for_label }}" class="form-label required">Tipo de Contribuidor:</label>
-            {{ formCon.tipocontribuidor }}
-            <span class="errors">{{ formCon.tipocontribuidor.errors }}</span>
+        <div class="col-md-6">
+          {% if contribuidores %}
+            <div class="container mt-5">
+              <h3>Contribuidores Existentes:</h3>
+              {% for con in contribuidores %}
+                <a class="btn btn-info mb-2" href="{% url 'Contribuidor_read' id=con.id %}">{{ con.contribuidor }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
+      </div>
 
-        <div class="mb-3">
-            <label for="{{ formCon.tempo.id_for_label }}" class="form-label required">Tempo de Contribuição:</label>
-            {{ formCon.tempo }}
-            <span class="errors">{{ formCon.tempo.errors }}</span>
-        </div>
-
-        <div class="mb-3">
-            <label for="{{ formCon.observacoes.id_for_label }}" class="form-label">Observações:</label>
-            <span class="errors">{{ formCon.observacoes }}</span>
-        </div>
-
-        <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
-
-        {% if request.resolver_match.url_name == 'Contribuidor_update' %}
-        <button type="submit" class="btn btn-success float-end">Salvar</button>
-        {% else %}
-        <button type="submit" class="btn btn-success float-end">Cadastrar</button>
-        {% endif %}
-    </form>
-</div>
-
-    {% if contribuidores %}
-    <div class="container mt-5">
-        <h3>Contribuidores Existentes:</h3>
-        {% for con in contribuidores %}
-        <a class="btn btn-info" href="{% url 'Contribuidor_read' id=con.id %}">{{ con.contribuidor }}</a>
-        {% endfor %}
-    </div>
     {% else %}
+
+      {% if contribuidores %}
+        <div class="container mt-5">
+          <h3>Contribuidores Existentes:</h3>
+          {% for con in contribuidores %}
+            <a class="btn btn-info mb-2" href="{% url 'Contribuidor_read' id=con.id %}">{{ con.contribuidor }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
     {% endif %}
-
-{% else %}
-
-    {% if contribuidores %}
-    <div class="container mt-5">
-        <h3>Contribuidores Existentes:</h3>
-        {% for con in contribuidores %}
-        <a class="btn btn-info" href="{% url 'Contribuidor_read' id=con.id %}">{{ con.contribuidor }}</a>
-        {% endfor %}
-    </div>
-    {% else %}
-    {% endif %}
-{% endif %}
-
+  </div>
 {% endblock %}

@@ -5,70 +5,81 @@
 <title>Cadastrar Produto</title> 
 {% endblock %}
 
-
 {% block content %}
+<div class="container mt-5">
 
-  <div class="container mt-5">
-
-
-    
-    {% if messages %}
+  {% if messages %}
     {% for m in messages %}
-    <div class="alert alert-success" role="alert">
-        {{ m }}
+      <div class="alert alert-success" role="alert">
+          {{ m }}
       </div>
-      {% endfor %}
-    {% endif %}
-  
-    
-    {% if request.resolver_match.url_name == 'Produto_update' %}
-    <h2 class="mb-5">Editar Produto</h2>
-    {% else %}
-    <h2 class="mb-5">Cadastrar Novo Produto</h2>
-    {% endif %}
-    <form class="row g-3" method="post" enctype="multipart/form-data"> 
-      {% csrf_token %}
-      {{ formPro.user }}
-      
-        <div class="col-md-6">
-            <label for="" class="form-label required">Novo Produto:</label>
-            {{ formPro.produto }}
-            <span class="errors">{{ formPro.produto.errors }}</span>
-        </div>
-        <div class="col-md-6">
-            <label for="" class="form-label required">Código de Barras:</label>
-            {{ formPro.codigo }}
-            <span class="errors">{{ formPro.codigo.errors }}</span>
-        </div>
-        <div class="col-md-6">
-          <label for="" class="form-label outline-success required">Categoria:</label>
-          {{ formPro.categoria }}
-          <span class="errors">{{ formPro.categoria.errors }}</span>
-        </div>
-        <div class="col-md-6">
-            <label for="" class="form-label required">Contribuidor:</label>
-            {{ formPro.contribuidor }}
-            <span class="errors">{{ formPro.contribuidor.errors }}</span>
-        </div>
-        <div class="col-md-6">
-            <label for="" class="form-label">Quantidade Inicial:</label>
-            {{ formPro.estoque }}
-        </div>
-        <div class="col-md-6">
-            <label for="" class="form-label required">Data de Vencimento:</label>
-            {{ formPro.validade }}
-            <span class="errors">{{ formPro.validade.errors }}</span>
-        </div>
-        <div class="col-12">
-          <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
-          
-          {% if request.resolver_match.url_name == 'Produto_update' %}
-          <input type="submit" class="btn btn-success float-end" value="Salvar">
-          {% else %}
-          <input type="submit" class="btn btn-success float-end" value="Cadastrar">
-          {% endif %}
-        </div>
-    </form>
-  </div>
+    {% endfor %}
+  {% endif %}
 
+  <div class="row">
+    <div class="col-md-6">
+      {% if request.resolver_match.url_name == 'Produto_update' %}
+        <h2 class="mb-5">Editar Produto</h2>
+      {% else %}
+        <h2 class="mb-5">Cadastrar Novo Produto</h2>
+      {% endif %}
+      <form class="row g-3" method="post" enctype="multipart/form-data"> 
+        {% csrf_token %}
+        {{ formPro.user }}
+        
+          <div class="col-md-6">
+              <label for="" class="form-label required">Novo Produto:</label>
+              {{ formPro.produto }}
+              <span class="errors">{{ formPro.produto.errors }}</span>
+          </div>
+          <div class="col-md-6">
+              <label for="" class="form-label required">Código de Barras:</label>
+              {{ formPro.codigo }}
+              <span class="errors">{{ formPro.codigo.errors }}</span>
+          </div>
+          <div class="col-md-6">
+            <label for="" class="form-label outline-success required">Categoria:</label>
+            {{ formPro.categoria }}
+            <span class="errors">{{ formPro.categoria.errors }}</span>
+          </div>
+          <div class="col-md-6">
+              <label for="" class="form-label required">Contribuidor:</label>
+              {{ formPro.contribuidor }}
+              <span class="errors">{{ formPro.contribuidor.errors }}</span>
+          </div>
+          <div class="col-md-6">
+              <label for="" class="form-label">Quantidade Inicial:</label>
+              {{ formPro.estoque }}
+          </div>
+          <div class="col-md-6">
+              <label for="" class="form-label required">Data de Vencimento:</label>
+              {{ formPro.validade }}
+              <span class="errors">{{ formPro.validade.errors }}</span>
+          </div>
+          <div class="col-12">
+            <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
+            
+            {% if request.resolver_match.url_name == 'Produto_update' %}
+              <input type="submit" class="btn btn-success float-end" value="Salvar">
+            {% else %}
+              <input type="submit" class="btn btn-success float-end" value="Cadastrar">
+            {% endif %}
+          </div>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <div class="container mt-5">
+        <h3>Produtos Existentes:</h3>
+        {% if produtos %}
+        {% for p in produtos %}
+          <a class="btn btn-info mb-2" href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a>
+        {% endfor %}
+        {% else %}
+          <p>Nenhum produto encontrado.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
