@@ -11,7 +11,9 @@ from django.db.models import Q
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'now':datetime.now()})
+
+
 
 def produtos(request):
     produto_list = m.Produto.objects.all()
@@ -30,11 +32,10 @@ def produtos(request):
                 Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
                 )
 
-    return render (request, 'list_Produtos.html', {'produtos':produto_list})
+    return render (request, 'list_Produtos.html', {'produtos':produto_list, 'now':datetime.now()})
 
 
 def estoque(request):
-
     produtos = m.Produto.objects.all()
     categorias = m.Categoria.objects.all()
     contribuidores = m.Contribuidor.objects.all()
@@ -60,13 +61,13 @@ def estoque(request):
     if contribuidor_id:
         produtos = produtos.filter(contribuidor__id=contribuidor_id)
 
-    return render (request, 'list_Estoque.html', {'produtos':produtos, 'categorias':categorias, 'contribuidores':contribuidores})
+    return render (request, 'list_Estoque.html', {'produtos':produtos, 'categorias':categorias, 'contribuidores':contribuidores, 'now':datetime.now()})
 
 
 @login_required
 def contribuidor(request):
     contribuidores = m.Contribuidor.objects.all()
-    return render (request, 'list_Contribuidores.html', {'contribuidores':contribuidores})
+    return render (request, 'list_Contribuidores.html', {'contribuidores':contribuidores, 'now':datetime.now()})
 
 
 
@@ -84,7 +85,7 @@ def produto_Create(request):
         messages.info(request, f'Produto {produtoForm.produto} cadastrado com Sucesso!')
         return redirect('ProdutoForm')
     else:
-        return render(request, 'create_Produto.html', {'formPro':produtoForm})
+        return render(request, 'create_Produto.html', {'formPro':produtoForm, 'now':datetime.now()})
 
 @login_required
 def categoria_Create(request):
@@ -98,7 +99,7 @@ def categoria_Create(request):
         messages.info(request, f'Categoria {categoriaForm.categoria} adicionada com êxito!')
         return redirect('CategoriaForm')
     else:
-        return render(request, 'create_Categoria.html', {'formCat':categoriaForm, 'categorias':categorias})
+        return render(request, 'create_Categoria.html', {'formCat':categoriaForm, 'categorias':categorias, 'now':datetime.now()})
 
 @login_required
 def contribuidor_Create(request):
@@ -112,7 +113,7 @@ def contribuidor_Create(request):
         messages.info(request, f'Contribuidor {contribForm.contribuidor} adicionado com êxito!')
         return redirect('ContribuidorForm')
     else:
-        return render(request, 'create_Contribuidor.html', {'formCon':contribForm, 'contribuidores':contribuidores})
+        return render(request, 'create_Contribuidor.html', {'formCon':contribForm, 'contribuidores':contribuidores, 'now':datetime.now()})
 
 
     # MOVIMENTAÇÃO DE PRODUTOS
@@ -140,7 +141,7 @@ def movimento(request, id):
     else:
         produto_movimento = f.MovimentoForm( initial={'user':request.user, 'produto':produto})
     
-    return render(request, 'movimeto_produtos.html', {'movimento': produto_movimento, 'produto':produto})
+    return render(request, 'movimeto_produtos.html', {'movimento': produto_movimento, 'produto':produto, 'now':datetime.now()})
 
 
 
@@ -161,7 +162,7 @@ def produto_Read(request, id):
     # Calcula o tempo de contribuição
     validade_dias = read_produto.calcular_tempo_validade()
 
-    return render(request, 'read_Produto.html', {'readPro':read_produto, 'validade_dias':validade_dias})
+    return render(request, 'read_Produto.html', {'readPro':read_produto, 'validade_dias':validade_dias, 'now':datetime.now()})
 
 @login_required
 def contribuidor_Read(request, id):
@@ -177,12 +178,12 @@ def contribuidor_Read(request, id):
     # Calcula o tempo de contribuição
     dias_contribuicao = read_Contribuidor.calcular_tempo_contribuicao()
 
-    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao})
+    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao, 'now':datetime.now()})
 
 @login_required
 def categoria_Read(request, id):
     read_Cateogria = m.Categoria.objects.get(id=id)
-    return render(request, 'read_Categoria.html', {'readCat':read_Cateogria})
+    return render(request, 'read_Categoria.html', {'readCat':read_Cateogria, 'now':datetime.now()})
 
 
 @login_required
@@ -194,7 +195,7 @@ def movimento_list(request):
     if tipo:
         movimentos = movimentos.filter(tipo=tipo)
 
-    return render(request, 'list_Movimento.html', {'movimentos':movimentos})
+    return render(request, 'list_Movimento.html', {'movimentos':movimentos, 'now':datetime.now()})
 
 
 
@@ -214,7 +215,7 @@ def produto_Update(request, id):
     else:
         produtoEdit = f.ProdutoForm(instance=update_produto)
 
-    return render(request, 'create_Produto.html', {'formPro': produtoEdit})
+    return render(request, 'create_Produto.html', {'formPro': produtoEdit, 'now':datetime.now()})
     
 def categoria_Update(request, id):
     update_categoria = m.Categoria.objects.get(id=id)
@@ -231,7 +232,7 @@ def categoria_Update(request, id):
     else:
         categoriaEdit = f.CategoriaForm(instance=update_categoria)
 
-    return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias})
+    return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias, 'now':datetime.now()})
     
 def contribuidor_Update(request, id):
     update_contribuidor = m.Contribuidor.objects.get(id=id)
@@ -247,7 +248,7 @@ def contribuidor_Update(request, id):
     else:
         contribuidorEdit = f.ContribuidorForm(instance=update_contribuidor)
 
-    return render(request, 'create_Contribuidor.html', {'formCon': contribuidorEdit})
+    return render(request, 'create_Contribuidor.html', {'formCon': contribuidorEdit, 'now':datetime.now()})
 
 
 

@@ -70,7 +70,7 @@ class Produto(models.Model):
     validade = models.DateField()
 
     tempo_ultima_atualizacao = models.DateField(default=date.today)
-    quantidade_dias = models.PositiveIntegerField(default=0)
+    quantidade_dias = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['produto']

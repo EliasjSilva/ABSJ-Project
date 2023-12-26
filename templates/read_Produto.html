@@ -32,42 +32,19 @@
       <p class="card-text"><strong>Código de Barras:</strong> {{ readPro.codigo }}</p>
       <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
       <p class="card-text"><strong>Tempo para o Vencimento:</strong> 
-  
-        {% if validade_dias.0 > 0 %}
+      {% if validade_dias.1 > 0 %}
 
-          {% if validade_dias.0 == 1 %}
-            {{ validade_dias.0 }} Mês
-          {% else %}
-            {{ validade_dias.0 }} Meses
-          {% endif %}
-
+        {% if validade_dias.0 %}
+          {{ validade_dias.0 }} {% if validade_dias.0 == 1 %} Mês {% else %} Meses {% endif %}
         {% endif %}
-        
-        {% if validade_dias.1 > 0 %}
 
-          {% if validade_dias.0 %}
-
-            {% if validade_dias.1 == 1 %}
-              e {{ validade_dias.1 }} Dia.
-            {% elif validade_dias.1 > 1  %}
-              e {{ validade_dias.1 }} Dias.
-            {% endif %}
-
-          {% else %}
-
-            {% if validade_dias.1 == 1 %}
-              {{ validade_dias.1 }} Dia.
-            {% else %}
-              {{ validade_dias.1 }} Dias.
-            {% endif %}
-            
-          {% endif %}
-        
-        {% elif validade_dias.1 < 0 %}
+      {% endif %}
+      
+      {% if validade_dias.1 > 0 %}
 
         {% if validade_dias.0 %}
 
-          {% if validade_dias.1 == -1 %}
+          {% if validade_dias.1 == 1 %}
             e {{ validade_dias.1 }} Dia.
           {% elif validade_dias.1 > 1  %}
             e {{ validade_dias.1 }} Dias.
@@ -75,18 +52,36 @@
 
         {% else %}
 
-          {% if validade_dias.1 == -1 %}
-            Venceu a {{ validade_dias.1 }} Dia.
-          {% else %}
-            Venceu a {{ validade_dias.1 }} Dias.
+          {% if validade_dias.1 %}
+            {{ validade_dias.1 }} {% if validade_dias.1 == 1 %} Dia {% else %} Dias {% endif %}.
           {% endif %}
           
         {% endif %}
+      
+      {% elif validade_dias.1 < 0 %}
 
-        {% else %}
-          Vence hoje.
+      {% if validade_dias.0 %}
+
+        {% if validade_dias.1 == -1 %}
+          e {{ validade_dias.1 }} Dia.
+        {% elif validade_dias.1 > 1  %}
+          e {{ validade_dias.1 }} Dias.
         {% endif %}
-      </p>
+
+      {% else %}
+
+        {% if validade_dias.1 == -1 %}
+          Venceu a {{ validade_dias.1 }} Dia.
+        {% else %}
+          Venceu a {{ validade_dias.1 }} Dias.
+        {% endif %}
+        
+      {% endif %}
+
+      {% else %}
+        Vence hoje!
+      {% endif %}
+    </p>
 
       <a href="{% url 'Produto_update' id=readPro.id %}" class="btn btn-success">Editar Produto</a>
       <a href="{% url 'Produto_delete' id=readPro.id %}" class="btn btn-danger">Excluir Produto</a>

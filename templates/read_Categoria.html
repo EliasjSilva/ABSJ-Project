@@ -32,8 +32,6 @@
             <thead id="customTableHead" class="thead-dark">
                 <tr>
                     <th scope="col">Produto</th>
-                    <th scope="col">Entradas</th>
-                    <th scope="col">Saídas</th>
                     <th scope="col">Contribuidor</th>
                     <th scope="col">Adionador</th>
                 </tr>
@@ -42,8 +40,6 @@
                 {% for p in readCat.produto_set.all %}
                 <tr class="table-light border-dark custom-links">
                     <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
-                    <td>{{ p.qtd }} f*</td>
-                    <td>{{ p.qtd }} f*</td>
                     <td><a href="{% url 'Contribuidor_read' id=p.contribuidor.id %}" class="specific-link">{{ p.contribuidor }}</a></td>
                     <td>{{ p.user }}</td>
                 </tr>
