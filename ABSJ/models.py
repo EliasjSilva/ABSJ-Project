@@ -82,6 +82,8 @@ class Produto(models.Model):
     def calcular_tempo_validade(self):
         hoje = date.today()
         diferenca = relativedelta(self.validade, hoje)
+
+        # Valor não negativo 'abs'
         meses = diferenca.months
         dias = diferenca.days
         return meses, dias
@@ -90,7 +92,7 @@ class Produto(models.Model):
     def salvar_alteracoes(self):
         hoje = date.today()
         diferenca = relativedelta( self.validade, hoje)
-        self.quantidade_dias = max(0, diferenca.days)
+        self.quantidade_dias = diferenca.days
         self.save()
 
 

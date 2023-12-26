@@ -33,7 +33,7 @@
       <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
       <p class="card-text"><strong>Tempo para o Vencimento:</strong> 
   
-        {% if validade_dias.0 %}
+        {% if validade_dias.0 > 0 %}
 
           {% if validade_dias.0 == 1 %}
             {{ validade_dias.0 }} Mês
@@ -43,7 +43,7 @@
 
         {% endif %}
         
-        {% if validade_dias.1 %}
+        {% if validade_dias.1 > 0 %}
 
           {% if validade_dias.0 %}
 
@@ -63,8 +63,28 @@
             
           {% endif %}
         
+        {% elif validade_dias.1 < 0 %}
+
+        {% if validade_dias.0 %}
+
+          {% if validade_dias.1 == -1 %}
+            e {{ validade_dias.1 }} Dia.
+          {% elif validade_dias.1 > 1  %}
+            e {{ validade_dias.1 }} Dias.
+          {% endif %}
+
         {% else %}
-          Passou da data de Validade.
+
+          {% if validade_dias.1 == -1 %}
+            Venceu a {{ validade_dias.1 }} Dia.
+          {% else %}
+            Venceu a {{ validade_dias.1 }} Dias.
+          {% endif %}
+          
+        {% endif %}
+
+        {% else %}
+          Vence hoje.
         {% endif %}
       </p>
 
