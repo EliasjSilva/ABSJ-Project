@@ -14,27 +14,6 @@ def home(request):
     return render(request, 'home.html')
 
 
-
-def produtos(request):
-    produto_list = m.Produto.objects.all()
-
-    busca = request.GET.get('busca')
-    if busca:
-
-        # Quando for pesquisar tentar por inteiro, se der erro tenta o outro :p
-        try:
-            busca_int = int(busca)
-            produto_list = produto_list.filter(
-                Q(codigo__icontains=busca_int)
-            )
-        except ValueError:
-            produto_list = produto_list.filter(
-                Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
-                )
-
-    return render (request, 'list_Produtos.html', {'produtos':produto_list})
-
-
 def estoque(request):
     produtos = m.Produto.objects.all()
     categorias = m.Categoria.objects.all()
@@ -64,10 +43,43 @@ def estoque(request):
     return render (request, 'list_Estoque.html', {'produtos':produtos, 'categorias':categorias, 'contribuidores':contribuidores})
 
 
+
 @login_required
 def contribuidor(request):
     contribuidores = m.Contribuidor.objects.all()
     return render (request, 'list_Contribuidores.html', {'contribuidores':contribuidores})
+
+@login_required
+def produtos(request):
+    produto_list = m.Produto.objects.all()
+
+    busca = request.GET.get('busca')
+    if busca:
+
+        # Quando for pesquisar tentar por inteiro, se der erro tenta o outro :p
+        try:
+            busca_int = int(busca)
+            produto_list = produto_list.filter(
+                Q(codigo__icontains=busca_int)
+            )
+        except ValueError:
+            produto_list = produto_list.filter(
+                Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
+                )
+
+    return render (request, 'list_Produtos.html', {'produtos':produto_list})
+
+
+@login_required
+def movimento_list(request):
+    movimentos = m.Movimento.objects.all()
+
+    tipo = request.GET.get('tipo')
+
+    if tipo:
+        movimentos = movimentos.filter(tipo=tipo)
+
+    return render(request, 'list_Movimento.html', {'movimentos':movimentos})
 
 
 
@@ -117,6 +129,7 @@ def contribuidor_Create(request):
 
 
     # MOVIMENTAÇÃO DE PRODUTOS
+@login_required
 def movimento(request, id):
     produto = m.Produto.objects.get(id=id)
 
@@ -186,21 +199,9 @@ def categoria_Read(request, id):
     return render(request, 'read_Categoria.html', {'readCat':read_Cateogria})
 
 
-@login_required
-def movimento_list(request):
-    movimentos = m.Movimento.objects.all()
-
-    tipo = request.GET.get('tipo')
-
-    if tipo:
-        movimentos = movimentos.filter(tipo=tipo)
-
-    return render(request, 'list_Movimento.html', {'movimentos':movimentos})
-
-
-
 
 # # # UPDATING
+@login_required
 def produto_Update(request, id):
     update_produto = m.Produto.objects.get(id=id)
 
@@ -217,6 +218,7 @@ def produto_Update(request, id):
 
     return render(request, 'create_Produto.html', {'formPro': produtoEdit})
     
+@login_required
 def categoria_Update(request, id):
     update_categoria = m.Categoria.objects.get(id=id)
     categorias = m.Categoria.objects.all()
@@ -234,6 +236,7 @@ def categoria_Update(request, id):
 
     return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias})
     
+@login_required
 def contribuidor_Update(request, id):
     update_contribuidor = m.Contribuidor.objects.get(id=id)
 
@@ -255,6 +258,7 @@ def contribuidor_Update(request, id):
 
 # # # DELETING
 
+@login_required
 def produto_Delete(request, id):
     delete_produto = m.Produto.objects.get(id=id)
     delete_produto.delete()
@@ -262,6 +266,8 @@ def produto_Delete(request, id):
     messages.info(request, f'Produto {delete_produto.produto} Excluido!')
     return redirect('produtos')
 
+
+@login_required
 def categoria_Delete(request, id):
     delete_categoria = m.Categoria.objects.get(id=id)
     delete_categoria.delete()
@@ -269,6 +275,8 @@ def categoria_Delete(request, id):
     messages.info(request, f'Categoria {delete_categoria.categoria} Excluido!')
     return redirect('CategoriaForm')
 
+
+@login_required
 def contribuidor_Delete(request, id):
     delete_contribuidor = m.Contribuidor.objects.get(id=id)
     delete_contribuidor.delete()

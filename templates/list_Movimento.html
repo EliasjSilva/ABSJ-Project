@@ -49,8 +49,18 @@
         {% if movimentos %}
           {% for movimento in movimentos %}
             <tr class="table-light border-dark custom-links">
-              <td>{{ movimento.produto }}</td>
-              <td>{{ movimento.tipo }}</td>
+              <td><a href="{% url 'Produto_read' id=movimento.produto.id %}">{{ movimento.produto }}</a></td>
+              <td>
+                
+                {% if movimento.tipo == 'Entrada' %}
+                  <i class="fa-solid fa-up-long" style="color: #0f0; padding: 0 5px;"></i>
+                  {{ movimento.tipo }}
+                {% elif movimento.tipo == 'Saída' %}
+                  <i class="fa-solid fa-down-long" style="color: #f00; padding: 0 5px;"></i>
+                  {{ movimento.tipo }}
+                {% endif %}
+              
+              </td>
               <td>{{ movimento.quantidade }}</td>
               <td>{{ movimento.modificado }}, por: {{ movimento.user }}</td>
             </tr>
