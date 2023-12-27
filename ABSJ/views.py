@@ -88,6 +88,7 @@ def movimento_list(request):
 
 @login_required
 def produto_Create(request):
+    produtos = m.Produto.objects.all()
     produtoForm = f.ProdutoForm(request.POST or None, request.FILES or None, user=request.user)
 
     if produtoForm.is_valid():
@@ -97,7 +98,7 @@ def produto_Create(request):
         messages.info(request, f'Produto {produtoForm.produto} cadastrado com Sucesso!')
         return redirect('ProdutoForm')
     else:
-        return render(request, 'create_Produto.html', {'formPro':produtoForm})
+        return render(request, 'create_Produto.html', {'formPro':produtoForm, 'produtos':produtos})
 
 @login_required
 def categoria_Create(request):
@@ -181,6 +182,9 @@ def produto_Read(request, id):
 def contribuidor_Read(request, id):
     read_Contribuidor = m.Contribuidor.objects.get(id=id) 
 
+    # contar os produtos usando a função da models 'contar_produtos'abs
+    quantidade_produtos = read_Contribuidor.contar_produtos()
+
     # Verifica se a última atualização foi feita hoje
     if read_Contribuidor.tempo_ultima_atualizacao != date.today():
         # Se não foi atualizado hoje, realiza as atualizações
@@ -191,7 +195,7 @@ def contribuidor_Read(request, id):
     # Calcula o tempo de contribuição
     dias_contribuicao = read_Contribuidor.calcular_tempo_contribuicao()
 
-    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao})
+    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao, 'quantidade_produtos':quantidade_produtos})
 
 @login_required
 def categoria_Read(request, id):
@@ -203,6 +207,7 @@ def categoria_Read(request, id):
 # # # UPDATING
 @login_required
 def produto_Update(request, id):
+    produtos = m.Produto.objects.all()
     update_produto = m.Produto.objects.get(id=id)
 
     if request.method == 'POST':
@@ -216,12 +221,12 @@ def produto_Update(request, id):
     else:
         produtoEdit = f.ProdutoForm(instance=update_produto)
 
-    return render(request, 'create_Produto.html', {'formPro': produtoEdit})
+    return render(request, 'create_Produto.html', {'formPro': produtoEdit, 'produtos':produtos})
     
 @login_required
 def categoria_Update(request, id):
-    update_categoria = m.Categoria.objects.get(id=id)
     categorias = m.Categoria.objects.all()
+    update_categoria = m.Categoria.objects.get(id=id)
 
     if request.method == 'POST':
         categoriaEdit = f.CategoriaForm(request.POST, request.FILES, instance=update_categoria)
@@ -238,6 +243,7 @@ def categoria_Update(request, id):
     
 @login_required
 def contribuidor_Update(request, id):
+    contribuidores = m.Contribuidor.objects.all()
     update_contribuidor = m.Contribuidor.objects.get(id=id)
 
     if request.method == 'POST':
@@ -251,7 +257,7 @@ def contribuidor_Update(request, id):
     else:
         contribuidorEdit = f.ContribuidorForm(instance=update_contribuidor)
 
-    return render(request, 'create_Contribuidor.html', {'formCon': contribuidorEdit})
+    return render(request, 'create_Contribuidor.html', {'formCon': contribuidorEdit, 'contribuidores':contribuidores})
 
 
 

@@ -13,7 +13,6 @@
 
   {% if messages %}
   <div class="alert alert-success" role="alert">
-    Fechar
     {% for m in messages %}
       {{ m }}
     {% endfor %}
@@ -25,6 +24,7 @@
     <div class="card-body">
       <h4 class="card-title mb-4">{{ readCon.contribuidor }}</h4>
       <p class="card-text"><strong>Tipo de Contribuidor:</strong> {{ readCon.tipocontribuidor }}</p>
+      <p class="card-text"><strong>Quantidade de Produtos:</strong> {{ quantidade_produtos }}</p>
       <p class="card-text"><strong>Desde:</strong> {{ readCon.tempo }}</p>
       <p class="card-text"><strong>Tempo de Contribuição:</strong>
         {% if dias_contribuicao.0 %}

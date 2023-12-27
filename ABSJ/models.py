@@ -41,6 +41,9 @@ class Contribuidor(models.Model):
     def __str__(self):
         return self.contribuidor
         
+    def contar_produtos(self):
+        return Produto.objects.filter(contribuidor=self).count()
+    
     def calcular_tempo_contribuicao(self):
         hoje = date.today()
         diferenca = relativedelta(hoje, self.tempo)
@@ -48,7 +51,6 @@ class Contribuidor(models.Model):
         meses = diferenca.months
         dias = diferenca.days
         return anos, meses, dias
-
 
     def salvar_alteracoes(self):
         hoje = date.today()
@@ -77,7 +79,6 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.produto
-
 
     def calcular_tempo_validade(self):
         hoje = date.today()

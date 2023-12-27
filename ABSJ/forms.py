@@ -13,7 +13,7 @@ class ProdutoForm(forms.ModelForm):
             'produto': forms.TextInput(attrs={'class': 'form-control'}),
             'codigo': forms.NumberInput(attrs={'class': 'form-control'}),
             'estoque': forms.NumberInput(attrs={'class': 'form-control'}),
-            'validade': forms.DateInput(
+            'validade': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'type': 'date',
@@ -21,6 +21,12 @@ class ProdutoForm(forms.ModelForm):
                 }
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Configuração da data mínima com base na instância
+        if self.instance and self.instance.validade:
+            self.fields['validade'].widget.attrs['min'] = str(self.instance.validade)
     
     def clean(self):
         cleaned_data = super().clean()
@@ -47,6 +53,7 @@ class ProdutoForm(forms.ModelForm):
         return cleaned_data
 
 
+
     def clean_codigo(self):
         codigo = self.cleaned_data['codigo']
 
@@ -70,7 +77,12 @@ class ProdutoForm(forms.ModelForm):
         self.fields['user'].initial = user
         self.fields['user'].widget = forms.HiddenInput()
 
-        self.fields['validade'].widget.attrs['min'] = date.today()
+        # Configuração da data mínima com base na instância
+        if self.instance and self.instance.validade:
+            self.fields['validade'].widget.attrs['min'] = str(self.instance.validade)
+        else:
+            self.fields['validade'].widget.attrs['min'] = str(date.today())
+
 
 
 
@@ -111,7 +123,7 @@ class ContribuidorForm(forms.ModelForm):
         widgets = {
             'contribuidor': forms.TextInput(attrs={'class': 'form-control'}),
             'tipocontribuidor': forms.Select(attrs={'class': 'form-select'}),
-            'tempo': forms.DateInput(
+            'tempo': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'type': 'date',
@@ -140,6 +152,11 @@ class ContribuidorForm(forms.ModelForm):
 
         self.fields['tempo'].widget.attrs['max'] = date.today()
 
+        # Personalize a renderização do campo tempo ao editar
+        # instance = kwargs.get('instance')
+        # if instance and instance.tempo:
+        #     self.fields['tempo'].widget.attrs['value'] = instance.tempo.strftime('%d-%m-%Y')
+
 
 
 class MovimentoForm(forms.ModelForm):
@@ -151,7 +168,22 @@ class MovimentoForm(forms.ModelForm):
             'tipo': forms.Select(attrs={'class': 'form-select'}),
             'quantidade': forms.TextInput(attrs={'class': 'form-control'}),
         }
-            
+
+
+    def clean(self):
+            cleaned_data = super().clean()
+            tipo = cleaned_data.get('tipo')
+            quantidade = cleaned_data.get('quantidade')
+            produto = cleaned_data.get('produto')
+
+            if tipo == 'Saída':
+                if produto and produto.estoque <= 0:
+                    error_message = format_html('O estoque para o produto <span class="error-var">{}</span> está zerado.', produto)
+                    self.add_error('tipo', error_message)
+
+            return cleaned_data
+
+
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

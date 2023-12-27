@@ -9,7 +9,7 @@ urlpatterns = [
 
     # # # CREATE
     path('Cadastrar Produto/', v.produto_Create, name='ProdutoForm'),
-    path('Cadastrar Categoria/', v.categoria_Create, name='CategoriaForm'),
+    path('Categoria/', v.categoria_Create, name='CategoriaForm'),
     path('Cadastrar Contribuidor/', v.contribuidor_Create, name='ContribuidorForm'),
 
     # MOVIMENTO DO PRODUTO
