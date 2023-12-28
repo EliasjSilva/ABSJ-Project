@@ -11,7 +11,15 @@ from django.db.models import Q
 
 
 def home(request):
-    return render(request, 'home.html')
+    produtos = m.Produto.objects.all()
+
+    notifica_message = []
+
+    for produto in produtos:
+        message = produto.notificacao()
+        if message:
+            notifica_message.append(message)
+    return render(request, 'home.html', {'notifica_message':notifica_message, 'produtos':produtos})
 
 
 def estoque(request):

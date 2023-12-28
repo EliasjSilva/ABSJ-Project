@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from django.utils.html import format_html
 
 CONTRIBUIDOR = [
     ('Doador', 'Doador'),
@@ -97,8 +98,24 @@ class Produto(models.Model):
         self.save()
 
 
+    def proximo_vencimento(self, dias_limite=7):
+        """
+        Verifica se o produto está próximo do vencimento.
+        Retorna True se estiver próximo, False caso contrário.
+        """
+        hoje = date.today()
+        diferenca = (self.validade - hoje).days
+        return 0 < diferenca <= dias_limite
 
-
+    def notificacao(self):
+        """
+        Obtém uma mensagem de notificação para o produto.
+        A mensagem depende da proximidade do vencimento.
+        """
+        if self.proximo_vencimento():
+            return format_html('<span class="error-var">{}</span> expira no dia {}!', self.produto, self.validade )
+        else:
+            return ""
 
 
 

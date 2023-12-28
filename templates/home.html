@@ -67,7 +67,20 @@
     
       {% block content %}
       <div class="container-fluid p-0">
+
         <div class="header position-relative">
+            <span>Há, atualmente<button class="notificacao" onclick="togglePopup()">{{ notifica_message|length }} Produtos</button>perto do Prazo de Vencimento!</span>
+
+            <div id="message">
+              <h4>Produtos com menos de 7 dias:</h4>
+              {% for message in notifica_message %}
+              <p>
+                  {{ message }}
+              </p>
+              {% endfor %}
+              <button type="button" onclick="togglePopup()">Entendi! Pode fechar.</button>
+          </div>
+
             <!-- Conteúdo antes das ondas -->
             <div class="inner-header flex">
                 <h1>Associação Benefiente São José</h1>

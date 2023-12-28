@@ -12,3 +12,8 @@
     atualizarData();
     setInterval(atualizarData, 1000); // Atualiza a cada segundo
   });
+
+  // POP UP INFO
+function togglePopup() {
+  $('#message').toggle(50);
+}
