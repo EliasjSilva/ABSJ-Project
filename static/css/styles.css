@@ -25,7 +25,8 @@
 .notificacao {
     text-decoration: none;
     font-weight: bold;
-    color: #fff;
+    color: #f00;
+    text-shadow: 1px 1px 1px #000;
     border: 0;
     background-color: inherit;
 }
