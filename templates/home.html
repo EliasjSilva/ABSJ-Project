@@ -69,6 +69,8 @@
       <div class="container-fluid p-0">
 
         <div class="header position-relative">
+
+          {% if user.is_authenticated %}
           {% if notifica_prazo and notifica_vencido %}
             <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
           {% elif notifica_vencido %}
@@ -96,6 +98,7 @@
             {% endfor %}
             <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>
           </div>
+          {% endif %}
 
             <!-- Conteúdo antes das ondas -->
             <div class="inner-header flex">

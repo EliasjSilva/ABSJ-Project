@@ -10,7 +10,7 @@
 <div class="container mt-5">
 
   <h2 class="mb-2">Lista de Estoque</h2>
-
+{% if user.is_authenticated %}
   {% if notifica_prazo and notifica_vencido %}
   <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
 {% elif notifica_vencido %}
@@ -38,6 +38,7 @@
   {% endfor %}
   <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>
 </div>
+{% endif %}
   
   {% if messages %}
   {% for m in messages %}
