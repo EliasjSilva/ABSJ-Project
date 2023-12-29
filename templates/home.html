@@ -80,7 +80,7 @@
           {% endif %}
           
           <div class="message_vencido">
-            <h4>Produtos com menos de 7 dias:</h4>
+            <h4>Produtos fora do Prazo:</h4>
             {% for produto, produto_id, message in notifica_vencido %}
               <p>
                   <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
