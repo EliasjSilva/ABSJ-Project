@@ -1,26 +1,42 @@
 
 /* Mensagem para notificações, !Lembrar de Editar */
-#message {
+.message_prazo,
+.message_vencido {
     border-radius: 10px;
     box-shadow: 2px 2px 5px #ddd;
     border: solid 1px #ddd;
     background-color: #fff;
     color: #000;
-    width: 30%;
+    width: 40%;
+    min-width: 400px;
     margin: 0 auto;
     display: none;
     position: fixed;
-    top: 10;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
+    max-height: 400px;
+    overflow-y: scroll;
 }
-#message h4 {
+.message_prazo h4,
+.message_vencido h4 {
     padding: 20px 0;
+    text-align: center;
 }
-#message p {
+.message_prazo p,
+.message_vencido p {
     text-align: start;
     padding-left: 40px;
+}
+.message_prazo a,
+.message_vencido a {
+    text-decoration: none;
+    color: initial;
+}
+.message_prazo a:hover,
+.message_vencido a:hover {
+    text-decoration: underline;
 }
 .notificacao {
     text-decoration: none;

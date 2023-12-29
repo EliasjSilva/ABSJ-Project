@@ -69,16 +69,32 @@
       <div class="container-fluid p-0">
 
         <div class="header position-relative">
-            <span>Há, atualmente<button class="notificacao" onclick="togglePopup()">{{ notifica_message|length }} Produtos</button>perto do Prazo de Vencimento!</span>
-
-            <div id="message">
-              <h4>Produtos com menos de 7 dias:</h4>
-              {% for message in notifica_message %}
+          {% if notifica_prazo and notifica_vencido %}
+            <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+          {% elif notifica_vencido %}
+            <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
+          {% elif notifica_prazo  %}
+            <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+          {% endif %}
+          
+          <div class="message_vencido">
+            <h4>Produtos com menos de 7 dias:</h4>
+            {% for produto, produto_id, message in notifica_vencido %}
               <p>
-                  {{ message }}
+                  <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
               </p>
-              {% endfor %}
-              <button type="button" onclick="togglePopup()">Entendi! Pode fechar.</button>
+            {% endfor %}
+            <button type="button" onclick="togglePopup('vencido')">Entendi! Pode fechar.</button>
+          </div>
+          
+          <div class="message_prazo">
+            <h4>Produtos perto do prazo:</h4>
+            {% for produto, produto_id, message in notifica_prazo %}
+              <p>
+                  <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+              </p>
+            {% endfor %}
+            <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>
           </div>
 
             <!-- Conteúdo antes das ondas -->

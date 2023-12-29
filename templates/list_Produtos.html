@@ -8,7 +8,35 @@
 {% block content %}
 
 <div class="container mt-5">
-  <h2 class="mb-5">Lista de Produtos</h2>
+  <h2 class="mb-2">Lista de Produtos</h2>
+  
+  {% if notifica_prazo and notifica_vencido %}
+  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+{% elif notifica_vencido %}
+  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
+{% elif notifica_prazo  %}
+  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+{% endif %}
+
+<div class="message_vencido">
+  <h4>Produtos com menos de 7 dias:</h4>
+  {% for produto, produto_id, message in notifica_vencido %}
+    <p>
+        <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+    </p>
+  {% endfor %}
+  <button type="button" onclick="togglePopup('vencido')">Entendi! Pode fechar.</button>
+</div>
+
+<div class="message_prazo">
+  <h4>Produtos perto do prazo:</h4>
+  {% for produto, produto_id, message in notifica_prazo %}
+    <p>
+        <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+    </p>
+  {% endfor %}
+  <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>
+</div>
 
   {% if messages %}
     {% for m in messages %}

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from unidecode import unidecode
 from django.db.models import Q
-
+from django.utils.html import format_html
 
 
 
@@ -13,13 +13,25 @@ from django.db.models import Q
 def home(request):
     produtos = m.Produto.objects.all()
 
-    notifica_message = []
+    notifica = []
+    notifica_prazo = []
+    notifica_vencido = []
+    hoje = date.today()
 
     for produto in produtos:
-        message = produto.notificacao()
-        if message:
-            notifica_message.append(message)
-    return render(request, 'home.html', {'notifica_message':notifica_message, 'produtos':produtos})
+        diferenca = (produto.validade - hoje).days
+
+        if diferenca <= 0:
+            # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
+            message = format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            notifica_vencido.append((produto, produto.id, message))
+            notifica.append(produto)
+        elif 0 < diferenca <= 7:
+            message = format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            notifica_prazo.append((produto, produto.id, message))
+            notifica.append(produto)
+
+    return render(request, 'home.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido, 'produtos':produtos})
 
 
 def estoque(request):
@@ -48,7 +60,28 @@ def estoque(request):
     if contribuidor_id:
         produtos = produtos.filter(contribuidor__id=contribuidor_id)
 
-    return render (request, 'list_Estoque.html', {'produtos':produtos, 'categorias':categorias, 'contribuidores':contribuidores})
+
+    # Notificações
+    notifica = []
+    notifica_prazo = []
+    notifica_vencido = []
+    hoje = date.today()
+
+    for produto in produtos:
+        diferenca = (produto.validade - hoje).days
+
+        if diferenca <= 0:
+            # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
+            message = format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            notifica_vencido.append((produto, produto.id, message))
+            notifica.append(produto)
+            notifica 
+        elif 0 < diferenca <= 7:
+            message = format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            notifica_prazo.append((produto, produto.id, message))
+            notifica.append(produto)
+
+    return render (request, 'list_Estoque.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido, 'produtos':produtos, 'categorias':categorias, 'contribuidores':contribuidores})
 
 
 
@@ -59,7 +92,12 @@ def contribuidor(request):
 
 @login_required
 def produtos(request):
-    produto_list = m.Produto.objects.all()
+    produtos = m.Produto.objects.all()
+    
+    notifica = []
+    notifica_prazo = []
+    notifica_vencido = []
+    hoje = date.today()
 
     busca = request.GET.get('busca')
     if busca:
@@ -67,15 +105,28 @@ def produtos(request):
         # Quando for pesquisar tentar por inteiro, se der erro tenta o outro :p
         try:
             busca_int = int(busca)
-            produto_list = produto_list.filter(
+            produtos = produtos.filter(
                 Q(codigo__icontains=busca_int)
             )
         except ValueError:
-            produto_list = produto_list.filter(
+            produtos = produtos.filter(
                 Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
                 )
+                
+    # Notificações
+    for produto in produtos:
+        diferenca = (produto.validade - hoje).days
 
-    return render (request, 'list_Produtos.html', {'produtos':produto_list})
+        if diferenca <= 0:
+            # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
+            message = format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            notifica_vencido.append((produto, produto.id, message))
+            notifica.append(produto)
+        elif 0 < diferenca <= 7:
+            message = format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            notifica_prazo.append((produto, produto.id, message))
+            notifica.append(produto)
+    return render (request, 'list_Produtos.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido, 'produtos':produtos})
 
 
 @login_required

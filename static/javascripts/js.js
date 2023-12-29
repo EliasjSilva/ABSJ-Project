@@ -13,7 +13,16 @@
     setInterval(atualizarData, 1000); // Atualiza a cada segundo
   });
 
-  // POP UP INFO
-function togglePopup() {
-  $('#message').toggle(50);
+// POP UP INFO
+function togglePopup(tipo) {
+  if (tipo == 'vencido') {
+    $('.message_vencido').toggle(50);
+    $('.message_prazo').hide();
+  } else if (tipo == 'prazo') {
+    $('.message_prazo').toggle(50);
+    $('.message_vencido').hide();
+  } else {
+    // Se o tipo não for 'vencido' ou 'prazo', você pode ocultar ambos
+    $('.message_vencido, .message_prazo').hide();
+  }
 }
