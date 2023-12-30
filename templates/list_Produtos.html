@@ -81,10 +81,10 @@
         {% if produtos %}
           {% for p in produtos %}
             <tr class="table-light border-dark custom-links">
-              <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
+              <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link {% if p in notifica %} prazo {% endif %}">{{ p.produto }}</a></td>
               <td>{{ p.codigo }}</td>
               <td>{{ p.estoque }}</td>
-              <td>{{ p.validade }}</td>
+              <td class=" {% if p in notifica %} prazo {% endif %}">{{ p.validade }}</td>
               <td><a class="btn btn-warning" href="{% url 'Movimento_produto' id=p.id %}">Movimentar</a></td>
             </tr>
           {% endfor %}

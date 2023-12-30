@@ -49,6 +49,9 @@
 .notificacao:hover {
     text-decoration: underline;
 }
+.prazo {
+    color: #f00 !important;
+}
 
 /* Paginação */
 .pagination {
@@ -61,6 +64,10 @@
 .step-links .current {
     margin: 0 5px;
 }
+
+
+
+
 
 
 /* Cor da borda para todos os Formulários */
@@ -212,7 +219,7 @@ font-size:24px;
 }
 /* Cor para os links da tabela talvez verde pra destacar?*/
 .custom-links .specific-link{
-    color: #000000;
+    color: initial
 }
 #customTableHead th {
     background-color: #198754; 

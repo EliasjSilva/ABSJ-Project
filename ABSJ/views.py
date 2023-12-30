@@ -76,7 +76,6 @@ def estoque(request):
             message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_vencido.append((produto, produto.id, message))
             notifica.append(produto)
-            notifica 
         elif 0 < diferenca <= 7:
             message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_prazo.append((produto, produto.id, message))
@@ -251,6 +250,19 @@ def produto_Create(request):
     produtos = m.Produto.objects.all()
     produtoForm = f.ProdutoForm(request.POST or None, request.FILES or None, user=request.user)
 
+    # Notificações
+    venceu = []
+    prazo = []
+    hoje = date.today()
+
+    for produto in produtos:
+        diferenca = (produto.validade - hoje).days
+
+        if diferenca <= 0:
+            venceu.append(produto)
+        elif 0 < diferenca <= 7:
+            prazo.append(produto)
+
     if produtoForm.is_valid():
         produtoForm = produtoForm.save(commit=False)
         produtoForm.save()
@@ -258,7 +270,7 @@ def produto_Create(request):
         messages.info(request, f'Produto {produtoForm.produto} cadastrado com Sucesso!')
         return redirect('ProdutoForm')
     else:
-        return render(request, 'create_Produto.html', {'formPro':produtoForm, 'produtos':produtos})
+        return render(request, 'create_Produto.html', {'venceu':venceu, 'prazo':prazo, 'formPro':produtoForm, 'produtos':produtos})
 
 @login_required
 def categoria_Create(request):
@@ -326,6 +338,9 @@ def movimento(request, id):
 def produto_Read(request, id):
     read_produto = m.Produto.objects.get(id=id)
     
+    #filtra o  produto da página para listar os movimentos realacionados.
+    movimentos = m.Movimento.objects.filter(produto=read_produto)
+    
     # Verifica se a última atualização foi feita hoje
     if read_produto.tempo_ultima_atualizacao != date.today():
         # Se não foi atualizado hoje, realiza as atualizações
@@ -336,14 +351,39 @@ def produto_Read(request, id):
     # Calcula o tempo de contribuição
     validade_dias = read_produto.calcular_tempo_validade()
 
-    return render(request, 'read_Produto.html', {'readPro':read_produto, 'validade_dias':validade_dias})
+    # Notificações
+    notifica = []
+    hoje = date.today()
+
+    diferenca = (read_produto.validade - hoje).days
+
+    if diferenca <= 0:
+        notifica.append(read_produto)
+    elif 0 < diferenca <= 7:
+        notifica.append(read_produto)
+
+    # list - Paginator
+    paginator = Paginator(movimentos, 20)
+    page = request.GET.get('page')
+    try:
+        movimentos = paginator.page(page)
+    except PageNotAnInteger:
+        movimentos = paginator.page(1)
+    except EmptyPage:
+        movimentos = paginator.page(paginator.num_pages)
+    return render(request, 'read_Produto.html', {'notifica':notifica, 'movimentos':movimentos, 'readPro':read_produto, 'validade_dias':validade_dias})
 
 @login_required
 def contribuidor_Read(request, id):
     read_Contribuidor = m.Contribuidor.objects.get(id=id) 
+    produtos = m.Produto.objects.all()
+    notifica = []
+    hoje = date.today()
 
-    # contar os produtos usando a função da models 'contar_produtos'abs
+    # contar os produtos usando a função da models 'contar_produtos'
     quantidade_produtos = read_Contribuidor.contar_produtos()
+
+    produtos_list = m.Produto.objects.filter(contribuidor=read_Contribuidor)
 
     # Verifica se a última atualização foi feita hoje
     if read_Contribuidor.tempo_ultima_atualizacao != date.today():
@@ -355,12 +395,57 @@ def contribuidor_Read(request, id):
     # Calcula o tempo de contribuição
     dias_contribuicao = read_Contribuidor.calcular_tempo_contribuicao()
 
-    return render(request, 'read_Contribuidor.html', {'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao, 'quantidade_produtos':quantidade_produtos})
+    # Notificações
+    for produto in produtos:
+        diferenca = (produto.validade - hoje).days
+
+        if diferenca <= 0:
+            notifica.append(produto)
+        elif 0 < diferenca <= 7:
+            notifica.append(produto)
+
+
+    # list - Paginator
+    paginator = Paginator(produtos_list, 20)
+    page = request.GET.get('page')
+    try:
+        produtos_list = paginator.page(page)
+    except PageNotAnInteger:
+        produtos_list = paginator.page(1)
+    except EmptyPage:
+        produtos_list = paginator.page(paginator.num_pages)
+
+    return render(request, 'read_Contribuidor.html', {'notifica':notifica, 'produtos_list':produtos_list, 'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao, 'quantidade_produtos':quantidade_produtos})
 
 @login_required
 def categoria_Read(request, id):
     read_Cateogria = m.Categoria.objects.get(id=id)
-    return render(request, 'read_Categoria.html', {'readCat':read_Cateogria})
+    produtos_list = m.Produto.objects.filter(categoria=read_Cateogria)
+    produtos = m.Produto.objects.all()
+
+    # Notificações
+    notifica = []
+    hoje = date.today()
+
+    for produto in produtos:
+        diferenca = (produto.validade - hoje).days
+
+        if diferenca <= 0:
+            notifica.append(produto)
+        elif 0 < diferenca <= 7:
+            notifica.append(produto)
+
+    # list - Paginator
+    paginator = Paginator(produtos_list, 40)
+    page = request.GET.get('page')
+    try:
+        produtos_list = paginator.page(page)
+    except PageNotAnInteger:
+        produtos_list = paginator.page(1)
+    except EmptyPage:
+        produtos_list = paginator.page(paginator.num_pages)
+
+    return render(request, 'read_Categoria.html', {'notifica':notifica, 'produtos_list':produtos_list, 'readCat':read_Cateogria})
 
 
 

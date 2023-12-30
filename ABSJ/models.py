@@ -90,7 +90,6 @@ class Produto(models.Model):
         dias = diferenca.days
         return meses, dias
 
-
     def salvar_alteracoes(self):
         hoje = date.today()
         diferenca = relativedelta( self.validade, hoje)

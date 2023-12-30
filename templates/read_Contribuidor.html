@@ -113,17 +113,17 @@
             </tr>
         </thead>
         <tbody>
-            {% if not readCon.produto_set.all %}
+            {% if not produtos_list %}
             <tr>
                 <td colspan="5" class="text-center p-5">Sem registros no momento :C</td>
             </tr>
             
             {% else %}
-            {% for p in readCon.produto_set.all %}
+            {% for p in produtos_list %}
 
             <tr class="table-light border-dark custom-links">
                 <td><a href="{% url 'Categoria_read' id=p.categoria.id %}" class="specific-link">{{ p.categoria }}</a></td>
-                <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link">{{ p.produto }}</a></td>
+                <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link {% if p in notifica %} prazo {% endif %}">{{ p.produto }}</a></td>
                 <td>{{ p.estoque }}</td>
             </tr>
             
@@ -131,6 +131,28 @@
             {% endif %}
         </tbody>
         </table>
+
+
+        <div class="pagination">
+          <span class="step-links">
+              {% if produtos_list.has_previous %}
+                  <a href="?page=1{% if produtos_list.filter_params %}&{{ produtos_list.filter_params }}{% endif %}" class="btn btn-success">Primeira</a>
+                  <a href="?page={{ produtos_list.previous_page_number }}{% if produtos_list.filter_params %}&{{ produtos_list.filter_params }}{% endif %}" class="btn btn-success">Anterior</a>
+              {% endif %}
+      
+              <span class="current">
+                  Página {{ produtos_list.number }} de {{ produtos_list.paginator.num_pages }}.
+              </span>
+      
+              {% if produtos_list.has_next %}
+                  <a href="?page={{ produtos_list.next_page_number }}{% if produtos_list.filter_params %}&{{ produtos_list.filter_params }}{% endif %}" class="btn btn-success">Próxima</a>
+                  <a href="?page={{ produtos_list.paginator.num_pages }}{% if produtos_list.filter_params %}&{{ produtos_list.filter_params }}{% endif %}" class="btn btn-success">Última</a>
+              {% endif %}
+          </span>
+        </div>
+    
+    
+    
     </div>
 </div>
 

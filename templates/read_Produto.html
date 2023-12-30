@@ -21,66 +21,56 @@
   {% endif %}
 
   
-
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title mb-4">{{ readPro.produto }}</h4>
+      <h3 class="card-title mb-4 {% if notifica %} prazo {% endif %}">{{ readPro.produto }}</h3>
       <p class="card-text"><strong>Adicionado por:</strong> {{ readPro.user }}</p>
       <p class="card-text"><strong>Categoria:</strong> {{ readPro.categoria }}</p>
       <p class="card-text"><strong>Contribuidor:</strong> {{ readPro.contribuidor }}</p>
       <p class="card-text"><strong>Estoque Atual:</strong> {{ readPro.estoque }}</p>
       <p class="card-text"><strong>Código de Barras:</strong> {{ readPro.codigo }}</p>
-      <p class="card-text"><strong>Validade:</strong> {{ readPro.validade }}</p>
+      <p class="card-text"><strong>Validade:</strong> <span class=" {% if readPro in notifica %} prazo {% endif %}">{{ readPro.validade }}</span></p>
       <p class="card-text"><strong>Tempo para o Vencimento:</strong> 
-      {% if validade_dias.1 > 0 %}
-
-        {% if validade_dias.0 %}
-          {{ validade_dias.0 }} {% if validade_dias.0 == 1 %} Mês {% else %} Meses {% endif %}
-        {% endif %}
-
-      {% endif %}
-      
-      {% if validade_dias.1 > 0 %}
-
-        {% if validade_dias.0 %}
-
-          {% if validade_dias.1 == 1 %}
-            e {{ validade_dias.1 }} Dia.
-          {% elif validade_dias.1 > 1  %}
-            e {{ validade_dias.1 }} Dias.
+      <span class=" {% if readPro in notifica %} prazo {% endif %}">
+        {% if validade_dias.1 > 0 %}
+          {% if validade_dias.0 %}
+            {{ validade_dias.0 }} {% if validade_dias.0 == 1 %} Mês {% else %} Meses {% endif %}
           {% endif %}
-
-        {% else %}
-
-          {% if validade_dias.1 %}
-            {{ validade_dias.1 }} {% if validade_dias.1 == 1 %} Dia{% elif validade_dias.1 > 1 %} Dias{% endif %}.
-          {% endif %}
-          
-        {% endif %}
-      
-      {% elif validade_dias.1 < 0 %}
-
-      {% if validade_dias.0 %}
-
-        {% if validade_dias.1 == -1 %}
-          e {{ validade_dias.1 }} Dia.
-        {% elif validade_dias.1 < 0  %}
-          e {{ validade_dias.1 }} Dias.
-        {% endif %}
-
-      {% else %}
-
-        {% if validade_dias.1 == -1 %}
-          Venceu a {{ validade_dias.1 }} Dia.
-        {% elif validade_dias.1 < 0 %}
-          Venceu a {{ validade_dias.1 }} Dias.
         {% endif %}
         
-      {% endif %}
-
-      {% else %}
-        Vence hoje!
-      {% endif %}
+        {% if validade_dias.1 > 0 %}
+          {% if validade_dias.0 %}
+            {% if validade_dias.1 == 1 %}
+              e {{ validade_dias.1 }} Dia.
+            {% elif validade_dias.1 > 1  %}
+              e {{ validade_dias.1 }} Dias.
+            {% endif %}
+          {% else %}
+            {% if validade_dias.1 %}
+              {{ validade_dias.1 }} {% if validade_dias.1 == 1 %} Dia{% elif validade_dias.1 > 1 %} Dias{% endif %}.
+            {% endif %}
+        
+          {% endif %}
+        
+        {% elif validade_dias.1 < 0 %}
+        {% if validade_dias.0 %}
+          {% if validade_dias.1 == -1 %}
+            e {{ validade_dias.1 }} Dia.
+          {% elif validade_dias.1 < 0  %}
+            e {{ validade_dias.1 }} Dias.
+          {% endif %}
+        {% else %}
+          {% if validade_dias.1 == -1 %}
+            Venceu a {{ validade_dias.1 }} Dia.
+          {% elif validade_dias.1 < 0 %}
+            Venceu a {{ validade_dias.1 }} Dias.
+          {% endif %}
+        
+        {% endif %}
+        {% else %}
+          Vence hoje!
+        {% endif %}
+      </span>
     </p>
 
       <a href="{% url 'Produto_update' id=readPro.id %}" class="btn btn-success">Editar Produto</a>
@@ -104,14 +94,15 @@
             </tr>
         </thead>
         <tbody>
-          {% if not readPro.movimento_set.all %}
+          <!-- if not readPro.movimento_set.all - Fazendo diretamento na view usando o filtro -->
+          {% if not movimentos %}
           <tr>
               <td colspan="5" class="text-center p-5">Sem Movimentações no momento :C</td>
           </tr>
           
           {% else %}
 
-            {% for m in readPro.movimento_set.all %}
+            {% for m in movimentos %}
             <tr class="table-light border-dark custom-links">
                 <td>{{ m.user }}</td>
                 <td>
@@ -134,6 +125,28 @@
           {% endif %}
         </tbody>
     </table>
+
+
+    <div class="pagination">
+      <span class="step-links">
+          {% if movimentos.has_previous %}
+              <a href="?page=1{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Primeira</a>
+              <a href="?page={{ movimentos.previous_page_number }}{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Anterior</a>
+          {% endif %}
+  
+          <span class="current">
+              Página {{ movimentos.number }} de {{ movimentos.paginator.num_pages }}.
+          </span>
+  
+          {% if movimentos.has_next %}
+              <a href="?page={{ movimentos.next_page_number }}{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Próxima</a>
+              <a href="?page={{ movimentos.paginator.num_pages }}{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Última</a>
+          {% endif %}
+      </span>
+    </div>
+
+
+
   </div>
 </div>
 
