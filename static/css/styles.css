@@ -50,6 +50,18 @@
     text-decoration: underline;
 }
 
+/* Paginação */
+.pagination {
+    margin-bottom: 20px;
+}
+.step-links {
+    position: relative;
+    margin: 0 auto;
+}
+.step-links .current {
+    margin: 0 5px;
+}
+
 
 /* Cor da borda para todos os Formulários */
 input.form-control,

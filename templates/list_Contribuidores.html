@@ -46,6 +46,29 @@
         {% endfor %}
       </tbody>
     </table>
+
+
+
+    <div class="pagination">
+      <span class="step-links">
+          {% if contribuidores.has_previous %}
+              <a href="?page=1{% if contribuidores.filter_params %}&{{ contribuidores.filter_params }}{% endif %}" class="btn btn-success">Primeira</a>
+              <a href="?page={{ contribuidores.previous_page_number }}{% if contribuidores.filter_params %}&{{ contribuidores.filter_params }}{% endif %}" class="btn btn-success">Anterior</a>
+          {% endif %}
+  
+          <span class="current">
+              Página {{ contribuidores.number }} de {{ contribuidores.paginator.num_pages }}.
+          </span>
+  
+          {% if contribuidores.has_next %}
+              <a href="?page={{ contribuidores.next_page_number }}{% if contribuidores.filter_params %}&{{ contribuidores.filter_params }}{% endif %}" class="btn btn-success">Próxima</a>
+              <a href="?page={{ contribuidores.paginator.num_pages }}{% if contribuidores.filter_params %}&{{ contribuidores.filter_params }}{% endif %}" class="btn btn-success">Última</a>
+          {% endif %}
+      </span>
+    </div>
+
+
+
   </div>
 </div>
 

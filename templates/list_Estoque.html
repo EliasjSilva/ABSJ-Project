@@ -12,11 +12,11 @@
   <h2 class="mb-2">Lista de Estoque</h2>
 {% if user.is_authenticated %}
   {% if notifica_prazo and notifica_vencido %}
-  <p>atualmente, há<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+  <p>Atualmente, há<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
 {% elif notifica_vencido %}
   <p>Atualemnte, há<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
 {% elif notifica_prazo  %}
-  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+  <p>Atualmente, há<button class="notificacao mb-3" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
 {% endif %}
 
 <div class="message_vencido">
@@ -112,6 +112,28 @@
           {% endif %}
       </tbody>
     </table>
+
+
+    <div class="pagination">
+      <span class="step-links">
+          {% if produtos.has_previous %}
+              <a href="?page=1{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Primeira</a>
+              <a href="?page={{ produtos.previous_page_number }}{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Anterior</a>
+          {% endif %}
+  
+          <span class="current">
+              Página {{ produtos.number }} de {{ produtos.paginator.num_pages }}.
+          </span>
+  
+          {% if produtos.has_next %}
+              <a href="?page={{ produtos.next_page_number }}{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Próxima</a>
+              <a href="?page={{ produtos.paginator.num_pages }}{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Última</a>
+          {% endif %}
+      </span>
+    </div>
+
+
+
   </div>
   </div>
 

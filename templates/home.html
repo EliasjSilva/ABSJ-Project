@@ -72,11 +72,11 @@
 
           {% if user.is_authenticated %}
           {% if notifica_prazo and notifica_vencido %}
-            <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+            <p>Atualmente, há<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e <button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
           {% elif notifica_vencido %}
-            <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
+            <p>Atualmente, há<button class="notificacao mb-1" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
           {% elif notifica_prazo  %}
-            <p>Há, atualmente<button class="notificacao mb-1" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+            <p>Atualmente, há<button class="notificacao mb-1" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
           {% endif %}
           
           <div class="message_vencido">

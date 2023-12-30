@@ -11,11 +11,11 @@
   <h2 class="mb-2">Lista de Produtos</h2>
   
   {% if notifica_prazo and notifica_vencido %}
-  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e<button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+  <p>Atualmente, há<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos e<button class="notificacao" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
 {% elif notifica_vencido %}
-  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
+  <p>Atualmente, há<button class="notificacao mb-3" onclick="togglePopup('vencido')">{{ notifica_vencido|length }} Produtos</button>Vencidos!</p>
 {% elif notifica_prazo  %}
-  <p>Há, atualmente<button class="notificacao mb-3" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
+  <p>Atualmente, há<button class="notificacao mb-3" onclick="togglePopup('prazo')">{{ notifica_prazo|length }} Produtos</button>perto do Prazo de Vencimento!</p>
 {% endif %}
 
 <div class="message_vencido">
@@ -49,10 +49,21 @@
   <form action="{% url 'produtos' %}" method="GET">
     <input class="form-control mb-4" type="text" name="busca" placeholder="Digite o nome do Produto ou Código de Barras">
     
+    <div class="col-md-12">
+      <legend>Filtrar por data de validade</legend>
+        <label for="sdate">Data Inicial:</label>
+        <input id="sdate" type="date" name="start_date">
+
+        <label for="edate">Data Final:</label>
+        <input id="edate" type="date" name="end_date">
+    </div>
+
+
     <div class="d-flex justify-content-end mb-4">
       <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'produtos' %}">Limpar Busca</a>
       <input class="btn btn-success" type="submit" value="Buscar">
     </div>
+
   </form>
 
   <div class="table-responsive">
@@ -84,6 +95,29 @@
         {% endif %}
       </tbody>
     </table>
+
+
+
+    <div class="pagination">
+      <span class="step-links">
+          {% if produtos.has_previous %}
+              <a href="?page=1{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Primeira</a>
+              <a href="?page={{ produtos.previous_page_number }}{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Anterior</a>
+          {% endif %}
+  
+          <span class="current">
+              Página {{ produtos.number }} de {{ produtos.paginator.num_pages }}.
+          </span>
+  
+          {% if produtos.has_next %}
+              <a href="?page={{ produtos.next_page_number }}{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Próxima</a>
+              <a href="?page={{ produtos.paginator.num_pages }}{% if produtos.filter_params %}&{{ produtos.filter_params }}{% endif %}" class="btn btn-success">Última</a>
+          {% endif %}
+      </span>
+    </div>
+
+
+
   </div>
 </div>
 

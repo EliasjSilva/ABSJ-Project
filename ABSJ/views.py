@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from . import models as m, forms as f
 from django.contrib.auth.decorators import login_required
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from unidecode import unidecode
 from django.db.models import Q
-from django.utils.html import format_html
+from django.utils import html, dateparse, timezone
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 
 
@@ -23,15 +25,15 @@ def home(request):
 
         if diferenca <= 0:
             # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
-            message = format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_vencido.append((produto, produto.id, message))
             notifica.append(produto)
         elif 0 < diferenca <= 7:
-            message = format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_prazo.append((produto, produto.id, message))
             notifica.append(produto)
 
-    return render(request, 'home.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido, 'produtos':produtos})
+    return render(request, 'home.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido})
 
 
 def estoque(request):
@@ -39,7 +41,7 @@ def estoque(request):
     categorias = m.Categoria.objects.all()
     contribuidores = m.Contribuidor.objects.all()
 
-    # Buscador
+    # Buscadores
     busca = request.GET.get('busca')
     categoria_id = request.GET.get('categoria')
     contribuidor_id = request.GET.get('contribuidor')
@@ -60,7 +62,6 @@ def estoque(request):
     if contribuidor_id:
         produtos = produtos.filter(contribuidor__id=contribuidor_id)
 
-
     # Notificações
     notifica = []
     notifica_prazo = []
@@ -72,14 +73,31 @@ def estoque(request):
 
         if diferenca <= 0:
             # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
-            message = format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_vencido.append((produto, produto.id, message))
             notifica.append(produto)
             notifica 
         elif 0 < diferenca <= 7:
-            message = format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_prazo.append((produto, produto.id, message))
             notifica.append(produto)
+
+    # list - Paginator
+    paginator = Paginator(produtos, 30)
+    page = request.GET.get('page')
+    try:
+        produtos = paginator.page(page)
+    except PageNotAnInteger:
+        produtos = paginator.page(1)
+    except EmptyPage:
+        produtos = paginator.page(paginator.num_pages)
+
+    # Passar os parâmetros de filtro para a páginação
+    params = request.GET.copy()
+    if 'page' in params:
+        del params['page']
+
+    produtos.filter_params = params.urlencode()
 
     return render (request, 'list_Estoque.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido, 'produtos':produtos, 'categorias':categorias, 'contribuidores':contribuidores})
 
@@ -88,18 +106,33 @@ def estoque(request):
 @login_required
 def contribuidor(request):
     contribuidores = m.Contribuidor.objects.all()
+    
+    # list - Paginator
+    paginator = Paginator(contribuidores, 10)
+    page = request.GET.get('page')
+    try:
+        contribuidores = paginator.page(page)
+    except PageNotAnInteger:
+        contribuidores = paginator.page(1)
+    except EmptyPage:
+        contribuidores = paginator.page(paginator.num_pages)
+
     return render (request, 'list_Contribuidores.html', {'contribuidores':contribuidores})
 
 @login_required
 def produtos(request):
     produtos = m.Produto.objects.all()
+
+    # Buscadores
+    busca = request.GET.get('busca')
+    sDate = request.GET.get('start_date')
+    eDate = request.GET.get('end_date')
     
     notifica = []
     notifica_prazo = []
     notifica_vencido = []
     hoje = date.today()
 
-    busca = request.GET.get('busca')
     if busca:
 
         # Quando for pesquisar tentar por inteiro, se der erro tenta o outro :p
@@ -112,6 +145,26 @@ def produtos(request):
             produtos = produtos.filter(
                 Q(produto__icontains=busca) | Q(produto__icontains=unidecode(busca))
                 )
+    if sDate and eDate:
+        eDate = dateparse.parse_date(eDate) + timedelta(1)
+
+        produtos = produtos.filter(validade__range=[sDate, eDate])
+        paginator = Paginator(produtos, 30)
+        page = request.GET.get('page')
+        try:
+            produtos = paginator.page(page)
+        except PageNotAnInteger:
+            produtos = paginator.page(1)
+        except EmptyPage:
+            produtos = paginator.page(paginator.num_pages)
+
+        # Passar os parâmetros de filtro para a páginação
+        params = request.GET.copy()
+        if 'page' in params:
+            del params['page']
+
+        produtos.filter_params = params.urlencode()
+
                 
     # Notificações
     for produto in produtos:
@@ -119,13 +172,25 @@ def produtos(request):
 
         if diferenca <= 0:
             # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
-            message = format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_vencido.append((produto, produto.id, message))
             notifica.append(produto)
         elif 0 < diferenca <= 7:
-            message = format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
+            message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
             notifica_prazo.append((produto, produto.id, message))
             notifica.append(produto)
+
+    
+    # list - Paginator
+    paginator = Paginator(produtos, 30)
+    page = request.GET.get('page')
+    try:
+        produtos = paginator.page(page)
+    except PageNotAnInteger:
+        produtos = paginator.page(1)
+    except EmptyPage:
+        produtos = paginator.page(paginator.num_pages)
+
     return render (request, 'list_Produtos.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido, 'produtos':produtos})
 
 
@@ -133,10 +198,46 @@ def produtos(request):
 def movimento_list(request):
     movimentos = m.Movimento.objects.all()
 
+    # Buscadores
     tipo = request.GET.get('tipo')
+    sDate = request.GET.get('start_date')
+    eDate = request.GET.get('end_date')
 
     if tipo:
         movimentos = movimentos.filter(tipo=tipo)
+    
+    if sDate and eDate:
+
+        # Convertendo as strings em objetos datetime.date usando parse_date
+        sDate = dateparse.parse_date(sDate)
+        eDate = dateparse.parse_date(eDate) + timedelta(1)
+
+        movimentos = movimentos.filter(modificado__range=[sDate, eDate])
+        paginator = Paginator(movimentos, 30)
+        page = request.GET.get('page')
+        try:
+            movimentos = paginator.page(page)
+        except PageNotAnInteger:
+            movimentos = paginator.page(1)
+        except EmptyPage:
+            movimentos = paginator.page(paginator.num_pages)
+
+        # Passar os parâmetros de filtro para a páginação
+        params = request.GET.copy()
+        if 'page' in params:
+            del params['page']
+
+        movimentos.filter_params = params.urlencode()
+
+    # list - Paginator
+    paginator = Paginator(movimentos, 30)
+    page = request.GET.get('page')
+    try:
+        movimentos = paginator.page(page)
+    except PageNotAnInteger:
+        movimentos = paginator.page(1)
+    except EmptyPage:
+        movimentos = paginator.page(paginator.num_pages)
 
     return render(request, 'list_Movimento.html', {'movimentos':movimentos})
 

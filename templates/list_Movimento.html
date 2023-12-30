@@ -29,6 +29,16 @@
       <option value="Saída">Saídas</option>
     </select>
 
+    <div class="col-md-12">
+      <legend>Filtrar por Data</legend>
+        <label for="sdate">Data Inicial:</label>
+        <input id="sdate" type="date" name="start_date">
+
+        <label for="edate">Data Final:</label>
+        <input id="edate" type="date" name="end_date">
+    </div>
+
+
     <div class="d-flex justify-content-end mb-4">
       <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'Movimento_list' %}">Limpar Busca</a>
       <input class="btn btn-success" type="submit" value="Buscar">
@@ -72,6 +82,29 @@
         {% endif %}
       </tbody>
     </table>
+    
+
+
+    <div class="pagination">
+      <span class="step-links">
+          {% if movimentos.has_previous %}
+              <a href="?page=1{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Primeira</a>
+              <a href="?page={{ movimentos.previous_page_number }}{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Anterior</a>
+          {% endif %}
+  
+          <span class="current">
+              Página {{ movimentos.number }} de {{ movimentos.paginator.num_pages }}.
+          </span>
+  
+          {% if movimentos.has_next %}
+              <a href="?page={{ movimentos.next_page_number }}{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Próxima</a>
+              <a href="?page={{ movimentos.paginator.num_pages }}{% if movimentos.filter_params %}&{{ movimentos.filter_params }}{% endif %}" class="btn btn-success">Última</a>
+          {% endif %}
+      </span>
+    </div>
+
+
+
   </div>
 </div>
 
