@@ -27,56 +27,40 @@
       <p class="card-text"><strong>Quantidade de Produtos:</strong> {{ quantidade_produtos }}</p>
       <p class="card-text"><strong>Desde:</strong> {{ readCon.tempo }}</p>
       <p class="card-text"><strong>Tempo de Contribuição:</strong>
-        {% if dias_contribuicao.0 %}
 
-          {% if dias_contribuicao.0 == 1 %}
-            {{ dias_contribuicao.0 }} Ano
-          {% else %}
-            {{ dias_contribuicao.0 }} Anos
+        {% if dias_contribuicao.0 or dias_contribuicao.1 or dias_contribuicao.2 %}
+
+          {% if dias_contribuicao.0 %}
+            {{ dias_contribuicao.0 }} {% if dias_contribuicao.0 == 1 %}Ano{% else %}Anos{% endif %}
           {% endif %}
 
-        {% endif %}
-  
-        {% if dias_contribuicao.1 %}
-
-          {% if dias_contribuicao.1 == 1 %}
-            {{ dias_contribuicao.1 }} Mês
-          {% else %}
-            {{ dias_contribuicao.1 }} Meses
+          {% if dias_contribuicao.1 %}
+            {{ dias_contribuicao.1 }} {% if dias_contribuicao.1 == 1 %}Mês{% else %}Meses{% endif %}
           {% endif %}
 
-        {% endif %}
-        
-        {% if dias_contribuicao.2 %}
+          {% if dias_contribuicao.2 %}
 
-          {% if dias_contribuicao.0 or dias_contribuicao.1 %}
-
-            {% if dias_contribuicao.2 == 1 %}
-              e {{ dias_contribuicao.2 }} Dia.
-            {% elif dias_contribuicao.2 > 1  %}
-              e {{ dias_contribuicao.2 }} Dias.
-            {% endif %}
-
-          {% else %}
-
-            {% if dias_contribuicao.2 == 1 %}
-              {{ dias_contribuicao.2 }} Dia.
+            {% if dias_contribuicao.0 or dias_contribuicao.1 %}
+              e {{ dias_contribuicao.2 }} {% if dias_contribuicao.2 == 1 %}Dia{% else %}Dias{% endif %}.
             {% else %}
-              {{ dias_contribuicao.2 }} Dias.
+              {{ dias_contribuicao.2 }} {% if dias_contribuicao.2 == 1 %}Dia{% else %}Dias{% endif %}.
             {% endif %}
             
           {% endif %}
-        
-        {% else %}
-          0 Dias.
 
+        {% else %}
+          A partir de hoje, Bem vindo!
         {% endif %}
+
+
+
+
       </p>
       <p class="card-text"><strong>Observações:</strong> {{ readCon.observacoes }}</p>
 
       {% if user.username == 'admin' %}
-      <a href="{% url 'Contribuidor_update' id=readCon.id %}" class="btn btn-success">Editar Contribuidor</a>
-      <a href="{% url 'Contribuidor_delete' id=readCon.id %}" class="btn btn-danger">Excluir Contribuidor</a>
+      <a href="{% url 'Contribuidor_update' slug=readCon.slug %}" class="btn btn-success">Editar Contribuidor</a>
+      <a href="{% url 'Contribuidor_delete' slug=readCon.slug %}" class="btn btn-danger">Excluir Contribuidor</a>
       {% endif %}
     </div>
   </div>
@@ -122,8 +106,8 @@
             {% for p in produtos_list %}
 
             <tr class="table-light border-dark custom-links">
-                <td><a href="{% url 'Categoria_read' id=p.categoria.id %}" class="specific-link">{{ p.categoria }}</a></td>
-                <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link {% if p in notifica %} prazo {% endif %}">{{ p.produto }}</a></td>
+                <td><a href="{% url 'Categoria_read' slug=p.categoria.slug %}" class="specific-link">{{ p.categoria }}</a></td>
+                <td><a href="{% url 'Produto_read' slug=p.slug %}" class="specific-link {% if p in notifica %} prazo {% endif %}">{{ p.produto }}</a></td>
                 <td>{{ p.estoque }}</td>
             </tr>
             

@@ -26,11 +26,11 @@ def home(request):
         if diferenca <= 0:
             # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
             message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
-            notifica_vencido.append((produto, produto.id, message))
+            notifica_vencido.append((produto, message))
             notifica.append(produto)
         elif 0 < diferenca <= 7:
             message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
-            notifica_prazo.append((produto, produto.id, message))
+            notifica_prazo.append((produto, message))
             notifica.append(produto)
 
     return render(request, 'home.html', {'notifica':notifica, 'notifica_prazo':notifica_prazo, 'notifica_vencido':notifica_vencido})
@@ -74,11 +74,11 @@ def estoque(request):
         if diferenca <= 0:
             # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
             message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
-            notifica_vencido.append((produto, produto.id, message))
+            notifica_vencido.append((produto, message))
             notifica.append(produto)
         elif 0 < diferenca <= 7:
             message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
-            notifica_prazo.append((produto, produto.id, message))
+            notifica_prazo.append((produto, message))
             notifica.append(produto)
 
     # list - Paginator
@@ -172,11 +172,11 @@ def produtos(request):
         if diferenca <= 0:
             # strftime(%d/%m/%Y) mostra o formato da data, antes mostrava como YYYY/mm/dd. import do datetime
             message = html.format_html('<span class="error-var">{}</span> venceu na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
-            notifica_vencido.append((produto, produto.id, message))
+            notifica_vencido.append((produto, message))
             notifica.append(produto)
         elif 0 < diferenca <= 7:
             message = html.format_html('<span class="error-var">{}</span> está prestes a vencer na data {}!', produto.produto, produto.validade.strftime('%d/%m/%Y'))
-            notifica_prazo.append((produto, produto.id, message))
+            notifica_prazo.append((produto, message))
             notifica.append(produto)
 
     
@@ -303,23 +303,23 @@ def contribuidor_Create(request):
 
     # MOVIMENTAÇÃO DE PRODUTOS
 @login_required
-def movimento(request, id):
-    produto = m.Produto.objects.get(id=id)
+def movimento(request, slug):
+    produto = m.Produto.objects.get(slug=slug)
 
     if request.method == 'POST':
 
         # Instanciando o user e o produto para já estar selecionado quando for entrar na página //  Por algum motivo não funcionou como na view produto_Create
-        produto_movimento = f.MovimentoForm(request.POST, request.FILES, initial={'user':request.user, 'produto':produto})
+        produto_movimento = f.MovimentoForm(request.POST or None, request.FILES or None, initial={'user':request.user, 'produto':produto})
         if produto_movimento.is_valid():
             quantidade = produto_movimento.cleaned_data['quantidade']
             tipo = produto_movimento.cleaned_data['tipo']
 
             if tipo == 'Entrada':
-                messages.info(request, f'Entrando +{quantidade} ao Produto: {produto.produto}')
+                messages.info(request, f'Entrando +{quantidade} ao Produto: {produto}')
 
 
             elif tipo == 'Saída':
-                messages.info(request, f'Saindo -{quantidade} ao Produto: {produto.produto}')
+                messages.info(request, f'Saindo -{quantidade} ao Produto: {produto}')
 
             produto.save()
             m.Movimento.objects.create(produto=produto, quantidade=quantidade, tipo=tipo, user=request.user)
@@ -335,8 +335,8 @@ def movimento(request, id):
 # # # READING
 
 @login_required
-def produto_Read(request, id):
-    read_produto = m.Produto.objects.get(id=id)
+def produto_Read(request, slug):
+    read_produto = m.Produto.objects.get(slug=slug)
     
     #filtra o  produto da página para listar os movimentos realacionados.
     movimentos = m.Movimento.objects.filter(produto=read_produto)
@@ -371,11 +371,11 @@ def produto_Read(request, id):
         movimentos = paginator.page(1)
     except EmptyPage:
         movimentos = paginator.page(paginator.num_pages)
-    return render(request, 'read_Produto.html', {'notifica':notifica, 'movimentos':movimentos, 'readPro':read_produto, 'validade_dias':validade_dias})
+    return render(request, 'read_Produto.html', {'validade_dias':validade_dias, 'notifica':notifica, 'movimentos':movimentos, 'readPro':read_produto})
 
 @login_required
-def contribuidor_Read(request, id):
-    read_Contribuidor = m.Contribuidor.objects.get(id=id) 
+def contribuidor_Read(request, slug):
+    read_Contribuidor = m.Contribuidor.objects.get(slug=slug) 
     produtos = m.Produto.objects.all()
     notifica = []
     hoje = date.today()
@@ -418,8 +418,8 @@ def contribuidor_Read(request, id):
     return render(request, 'read_Contribuidor.html', {'notifica':notifica, 'produtos_list':produtos_list, 'readCon':read_Contribuidor, 'dias_contribuicao': dias_contribuicao, 'quantidade_produtos':quantidade_produtos})
 
 @login_required
-def categoria_Read(request, id):
-    read_Cateogria = m.Categoria.objects.get(id=id)
+def categoria_Read(request, slug):
+    read_Cateogria = m.Categoria.objects.get(slug=slug)
     produtos_list = m.Produto.objects.filter(categoria=read_Cateogria)
     produtos = m.Produto.objects.all()
 
@@ -451,9 +451,9 @@ def categoria_Read(request, id):
 
 # # # UPDATING
 @login_required
-def produto_Update(request, id):
+def produto_Update(request, slug):
     produtos = m.Produto.objects.all()
-    update_produto = m.Produto.objects.get(id=id)
+    update_produto = m.Produto.objects.get(slug=slug)
 
     if request.method == 'POST':
         produtoEdit = f.ProdutoForm(request.POST, request.FILES, instance=update_produto)
@@ -461,17 +461,17 @@ def produto_Update(request, id):
             produtoEdit = produtoEdit.save(commit=False)
             produtoEdit.save()
 
-            messages.info(request, f'Produto {produtoEdit} Editado!')
-            return redirect('Produto_read', id=update_produto.id)
+            messages.info(request, f'Produto {produtoEdit.produto} foi Editado!')
+            return redirect('Produto_read', slug=update_produto.slug)
     else:
         produtoEdit = f.ProdutoForm(instance=update_produto)
 
     return render(request, 'create_Produto.html', {'formPro': produtoEdit, 'produtos':produtos})
     
 @login_required
-def categoria_Update(request, id):
+def categoria_Update(request, slug):
     categorias = m.Categoria.objects.all()
-    update_categoria = m.Categoria.objects.get(id=id)
+    update_categoria = m.Categoria.objects.get(slug=slug)
 
     if request.method == 'POST':
         categoriaEdit = f.CategoriaForm(request.POST, request.FILES, instance=update_categoria)
@@ -479,17 +479,17 @@ def categoria_Update(request, id):
             categoriaEdit = categoriaEdit.save(commit=False)
             categoriaEdit.save()
 
-            messages.info(request, f'Categoria {categoriaEdit} Editado!')
-            return redirect('Categoria_read', id=update_categoria.id)
+            messages.info(request, f'Categoria {categoriaEdit.categoria} foi Editado!')
+            return redirect('Categoria_read', slug=update_categoria.slug)
     else:
         categoriaEdit = f.CategoriaForm(instance=update_categoria)
 
     return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias})
     
 @login_required
-def contribuidor_Update(request, id):
+def contribuidor_Update(request, slug):
     contribuidores = m.Contribuidor.objects.all()
-    update_contribuidor = m.Contribuidor.objects.get(id=id)
+    update_contribuidor = m.Contribuidor.objects.get(slug=slug)
 
     if request.method == 'POST':
         contribuidorEdit = f.ContribuidorForm(request.POST, request.FILES, instance=update_contribuidor)
@@ -497,8 +497,8 @@ def contribuidor_Update(request, id):
             contribuidorEdit = contribuidorEdit.save(commit=False)
             contribuidorEdit.save()
 
-            messages.info(request, f'Contribuidor {contribuidorEdit} Editado!')
-            return redirect('Contribuidor_read', id=update_contribuidor.id)
+            messages.info(request, f'Contribuidor {contribuidorEdit.contribuidor} foi Editado!')
+            return redirect('Contribuidor_read', slug=update_contribuidor.slug)
     else:
         contribuidorEdit = f.ContribuidorForm(instance=update_contribuidor)
 
@@ -510,27 +510,27 @@ def contribuidor_Update(request, id):
 # # # DELETING
 
 @login_required
-def produto_Delete(request, id):
-    delete_produto = m.Produto.objects.get(id=id)
+def produto_Delete(request, slug):
+    delete_produto = m.Produto.objects.get(slug=slug)
     delete_produto.delete()
 
-    messages.info(request, f'Produto {delete_produto.produto} Excluido!')
+    messages.info(request, f'Produto {delete_produto.produto} foi Excluido!')
     return redirect('produtos')
 
 
 @login_required
-def categoria_Delete(request, id):
-    delete_categoria = m.Categoria.objects.get(id=id)
+def categoria_Delete(request, slug):
+    delete_categoria = m.Categoria.objects.get(slug=slug)
     delete_categoria.delete()
 
-    messages.info(request, f'Categoria {delete_categoria.categoria} Excluido!')
+    messages.info(request, f'Categoria {delete_categoria.categoria} foi Excluido!')
     return redirect('CategoriaForm')
 
 
 @login_required
-def contribuidor_Delete(request, id):
-    delete_contribuidor = m.Contribuidor.objects.get(id=id)
+def contribuidor_Delete(request, slug):
+    delete_contribuidor = m.Contribuidor.objects.get(slug=slug)
     delete_contribuidor.delete()
 
-    messages.info(request, f'Contribuidor {delete_contribuidor.contribuidor} Excluido!')
+    messages.info(request, f'Contribuidor {delete_contribuidor.contribuidor} foi Excluido!')
     return redirect('contribuidores')

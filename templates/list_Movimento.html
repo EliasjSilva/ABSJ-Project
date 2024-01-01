@@ -59,7 +59,7 @@
         {% if movimentos %}
           {% for movimento in movimentos %}
             <tr class="table-light border-dark custom-links">
-              <td><a href="{% url 'Produto_read' id=movimento.produto.id %}" class="specific-link ">{{ movimento.produto }}</a></td>
+              <td><a href="{% url 'Produto_read' slug=movimento.produto.slug %}" class="specific-link ">{{ movimento.produto }}</a></td>
               <td>
                 
                 {% if movimento.tipo == 'Entrada' %}

@@ -37,13 +37,19 @@
         </tr>
       </thead>
       <tbody>
+        {% if contribuidores %}
         {% for c in contribuidores %}
           <tr class="table-white border-dark custom-links">
-            <td><a href="{% url 'Contribuidor_read' id=c.id %}" class="specific-link">{{ c.contribuidor }}</a></td>
+            <td><a href="{% url 'Contribuidor_read' slug=c.slug %}" class="specific-link">{{ c.contribuidor }}</a></td>
             <td>{{ c.tipocontribuidor }}</td>
             <td>{{ c.tempo }}</td>
           </tr>
         {% endfor %}
+        {% else %}
+        <tr>
+          <td class="text-center p-5" colspan="5">Sem resultados encontrados :C</td>
+        </tr>
+        {% endif %}
       </tbody>
     </table>
 

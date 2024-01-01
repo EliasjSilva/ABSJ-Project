@@ -29,7 +29,7 @@
         <h2 class="mb-5">Cadastrar Nova Categoria</h2>
       {% endif %}
 
-      <form action="#" method="post" class="needs-validation" novalidate>
+      <form action="#" method="post" class="needs-validation"  novalidate>
           {% csrf_token %}
 
           <div class="mb-3">
@@ -58,9 +58,13 @@
     <div class="col-md-4">
       <div class="container mt-5">
         <h3>Categorias Existentes:</h3>
+        {% if categorias %}
         {% for cat in categorias %}
-          <a class="btn btn-info mb-2" href="{% url 'Categoria_read' id=cat.id %}">{{ cat.categoria }}</a>
+          <a class="btn btn-info mb-2" href="{% url 'Categoria_read' slug=cat.slug %}">{{ cat.categoria }}</a>
         {% endfor %}
+        {% else %}
+        <p>Nenhuma Categoria encontrada.</p>
+        {% endif %}
       </div>
     </div>
     {% endif %}
@@ -70,7 +74,7 @@
       <div class="container mt-5">
         <h3>Categorias Existentes:</h3>
         {% for cat in categorias %}
-          <a class="btn btn-info mb-2" href="{% url 'Categoria_read' id=cat.id %}">{{ cat.categoria }}</a>
+          <a class="btn btn-info mb-2" href="{% url 'Categoria_read' slug=cat.slug %}">{{ cat.categoria }}</a>
         {% endfor %}
       </div>
     </div>

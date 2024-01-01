@@ -13,25 +13,25 @@ urlpatterns = [
     path('Cadastrar Contribuidor/', v.contribuidor_Create, name='ContribuidorForm'),
 
     # MOVIMENTO DO PRODUTO
-    path('Movimentar Produto/<int:id>/', v.movimento, name='Movimento_produto'),
+    path('Movimentar Produto/<slug:slug>/', v.movimento, name='Movimento_produto'),
 
     # # # READ
-    path('Produto/<int:id>/', v.produto_Read, name='Produto_read'),
-    path('Categoria/<int:id>/', v.categoria_Read, name='Categoria_read'),
-    path('Contribuidor/<int:id>/', v.contribuidor_Read, name='Contribuidor_read'),
+    path('Produto/Info: <slug:slug>/', v.produto_Read, name='Produto_read'),
+    path('Categoria/Info: <slug:slug>/', v.categoria_Read, name='Categoria_read'),
+    path('Contribuidor/Info: <slug:slug>/', v.contribuidor_Read, name='Contribuidor_read'),
 
     # MOVIMENTOS LIST
     path('Movimentos/', v.movimento_list, name='Movimento_list'),
 
     # # # UPDATE
-    path('Editar Produto/<int:id>/', v.produto_Update, name='Produto_update'),
-    path('Editar Categoria/<int:id>/', v.categoria_Update, name='Categoria_update'),
-    path('Editar Contribuidor/<int:id>/', v.contribuidor_Update, name='Contribuidor_update'),
+    path('Produto/Editar: <slug:slug>/', v.produto_Update, name='Produto_update'),
+    path('Categoria/Editar: <slug:slug>/', v.categoria_Update, name='Categoria_update'),
+    path('Contribuidor/Editar: <slug:slug>/', v.contribuidor_Update, name='Contribuidor_update'),
 
     # # # DELETE
-    path('Deletar Produto/<int:id>/', v.produto_Delete, name='Produto_delete'),
-    path('Deletar Categoria/<int:id>/', v.categoria_Delete, name='Categoria_delete'),
-    path('Deletar Contribuidor/<int:id>/', v.contribuidor_Delete, name='Contribuidor_delete'),
+    path('Produto/Deletar: <slug:slug>/', v.produto_Delete, name='Produto_delete'),
+    path('Categoria/Deletar: <slug:slug>/', v.categoria_Delete, name='Categoria_delete'),
+    path('Contribuidor/Deletar: <slug:slug>/', v.contribuidor_Delete, name='Contribuidor_delete'),
     
 
     

@@ -81,9 +81,9 @@
           
           <div class="message_vencido">
             <h4>Produtos fora do Prazo:</h4>
-            {% for produto, produto_id, message in notifica_vencido %}
+            {% for produto, message in notifica_vencido %}
               <p>
-                  <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+                  <a href="{% url 'Produto_read' slug=produto.slug %}">{{ message }}</a>
               </p>
             {% endfor %}
             <button type="button" onclick="togglePopup('vencido')">Entendi! Pode fechar.</button>
@@ -91,9 +91,9 @@
           
           <div class="message_prazo">
             <h4>Produtos perto do prazo:</h4>
-            {% for produto, produto_id, message in notifica_prazo %}
+            {% for produto, message in notifica_prazo %}
               <p>
-                  <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+                  <a href="{% url 'Produto_read' slug=produto.slug %}">{{ message }}</a>
               </p>
             {% endfor %}
             <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>

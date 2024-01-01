@@ -21,9 +21,9 @@
 
 <div class="message_vencido">
   <h4>Produtos fora do Prazo:</h4>
-  {% for produto, produto_id, message in notifica_vencido %}
+  {% for produto, message in notifica_vencido %}
     <p>
-        <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+        <a href="{% url 'Produto_read' slug=produto.slug %}">{{ message }}</a>
     </p>
   {% endfor %}
   <button type="button" onclick="togglePopup('vencido')">Entendi! Pode fechar.</button>
@@ -31,9 +31,9 @@
 
 <div class="message_prazo">
   <h4>Produtos perto do prazo:</h4>
-  {% for produto, produto_id, message in notifica_prazo %}
+  {% for produto, message in notifica_prazo %}
     <p>
-        <a href="{% url 'Produto_read' id=produto_id %}">{{ message }}</a>
+        <a href="{% url 'Produto_read' slug=produto.slug %}">{{ message }}</a>
     </p>
   {% endfor %}
   <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>
@@ -94,12 +94,12 @@
         {% if produtos %}
         {% for p in produtos %}
           <tr class="table-light border-dark custom-links specific-link">
-            <td><a href="{% url 'Categoria_read' id=p.categoria.id %}" class="specific-link">{{ p.categoria }}</a></td>
+            <td><a href="{% url 'Categoria_read' slug=p.categoria.slug %}" class="specific-link">{{ p.categoria }}</a></td>
 
             <!-- Se algum produto tive no dicionario de notificações, vai colorir em vermelho o produto -->
-            <td><a href="{% url 'Produto_read' id=p.id %}" class="specific-link {% if p in notifica %} prazo {% endif %}">{{ p.produto }}</a></td>
+            <td><a href="{% url 'Produto_read' slug=p.slug %}" class="specific-link {% if p in notifica %} prazo {% endif %}">{{ p.produto }}</a></td>
             <td>{{ p.estoque }}</td>
-            <td><a href="{% url 'Contribuidor_read' id=p.contribuidor.id %}" class="specific-link">{{ p.contribuidor }}</a></td>
+            <td><a href="{% url 'Contribuidor_read' slug=p.contribuidor.slug %}" class="specific-link">{{ p.contribuidor }}</a></td>
           </tr>
 
           {% endfor %}

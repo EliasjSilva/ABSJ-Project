@@ -32,51 +32,77 @@
       <p class="card-text"><strong>Validade:</strong> <span class=" {% if readPro in notifica %} prazo {% endif %}">{{ readPro.validade }}</span></p>
       <p class="card-text"><strong>Tempo para o Vencimento:</strong> 
       <span class=" {% if readPro in notifica %} prazo {% endif %}">
-        {% if validade_dias.1 > 0 %}
-          {% if validade_dias.0 %}
-            {{ validade_dias.0 }} {% if validade_dias.0 == 1 %} Mês {% else %} Meses {% endif %}
-          {% endif %}
-        {% endif %}
-        
-        {% if validade_dias.1 > 0 %}
-          {% if validade_dias.0 %}
-            {% if validade_dias.1 == 1 %}
-              e {{ validade_dias.1 }} Dia.
-            {% elif validade_dias.1 > 1  %}
-              e {{ validade_dias.1 }} Dias.
-            {% endif %}
-          {% else %}
-            {% if validade_dias.1 %}
-              {{ validade_dias.1 }} {% if validade_dias.1 == 1 %} Dia{% elif validade_dias.1 > 1 %} Dias{% endif %}.
-            {% endif %}
-        
-          {% endif %}
-        
-        {% elif validade_dias.1 < 0 %}
+
+      <!-- Se tiver Anos, Meses ou Dias Maiores que Zero -->
+      {% if validade_dias.0 or validade_dias.1 or validade_dias.2 > 0 %}
+
+        <!-- Se tiver Ano -->
         {% if validade_dias.0 %}
-          {% if validade_dias.1 == -1 %}
-            e {{ validade_dias.1 }} Dia.
-          {% elif validade_dias.1 < 0  %}
-            e {{ validade_dias.1 }} Dias.
+          {{ validade_dias.0 }} {% if validade_dias.0 == 1 %}Ano{% else %}Anos{% endif %}
+        {% endif %}
+
+        <!-- Se tiver Mês -->
+        {% if validade_dias.1 %}
+          {{ validade_dias.1 }} {% if validade_dias.1 == 1 %}Mês{% else %}Meses{% endif %}
+        {% endif %}
+
+        <!-- Se tiver Ano ou Mês em Dias -->
+        {% if validade_dias.0 or validade_dias.1 %}
+
+          <!-- Se houver -->
+          {% if validade_dias.2 %}
+            e {{ validade_dias.2 }} {% if validade_dias.2 == 1 %}Dia{% else %}Dias{% endif %}.
           {% endif %}
+
         {% else %}
-          {% if validade_dias.1 == -1 %}
-            Venceu a {{ validade_dias.1 }} Dia.
-          {% elif validade_dias.1 < 0 %}
-            Venceu a {{ validade_dias.1 }} Dias.
+
+          <!-- Se não houver -->
+          {% if validade_dias.2 %}
+            {{ validade_dias.2 }} {% if validade_dias.2 == 1 %}Dia{% else %}Dias{% endif %}.
           {% endif %}
+        {% endif %}
+      
+      <!-- Se tiver Anos, Meses ou Dias Menores que Zero -->
+      {% elif validade_dias.0 or validade_dias.1 or validade_dias.2 < 0 %}
+        Venceu há
+        <!-- Se tiver Ano -->
+        {% if validade_dias.0 %}
+          {{ validade_dias.0 }} {% if validade_dias.0 == 1 %}Ano{% else %}Anos{% endif %}
+        {% endif %}
+
+        <!-- Se tiver Mês -->
+        {% if validade_dias.1 %}
+          {{ validade_dias.1 }} {% if validade_dias.1 == 1 %}Mês{% else %}Meses{% endif %}
+        {% endif %}
+
+        <!-- Se tiver Ano ou Mês em Dias -->
+        {% if validade_dias.0 or validade_dias.1 %}
+
+          <!-- Se houver -->
+          {% if validade_dias.2 %}
+            e {{ validade_dias.2 }} {% if validade_dias.2 == -1 %}Dia{% else %}Dias{% endif %}.
+          {% endif %}
+
+        {% else %}
+
+          <!-- Se não houver e dia for maior que Zero -->
+          {% if validade_dias.2 %}
+            {{ validade_dias.2 }} {% if validade_dias.2 == -1 %}Dia{% else %}Dias{% endif %}.
+          {% endif %}
+        {% endif %}
+
+      {% else %}
+        Vence hoje!
+      {% endif %}
         
-        {% endif %}
-        {% else %}
-          Vence hoje!
-        {% endif %}
+
+
       </span>
     </p>
 
-      <a href="{% url 'Produto_update' id=readPro.id %}" class="btn btn-success">Editar Produto</a>
-      <a href="{% url 'Produto_delete' id=readPro.id %}" class="btn btn-danger">Excluir Produto</a>
-      <a href="{% url 'Movimento_produto' id=readPro.id %}" class="btn btn-warning">Movimentar Produto</a>
-      <!-- <a href="{% url 'Movimento_produto' id=readPro.id %}" class="btn btn-warning">Saída Produto</a> -->
+      <a href="{% url 'Produto_update' slug=readPro.slug %}" class="btn btn-success">Editar Produto</a>
+      <a href="{% url 'Produto_delete' slug=readPro.slug %}" class="btn btn-danger">Excluir Produto</a>
+      <a href="{% url 'Movimento_produto' slug=readPro.slug %}" class="btn btn-warning">Movimentar Produto</a>
     </div>
   </div>
 </div>

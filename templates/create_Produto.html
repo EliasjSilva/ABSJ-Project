@@ -31,6 +31,7 @@
         {% csrf_token %}
         {{ formPro.user }}
         
+        
           <div class="col-md-6">
               <label for="" class="form-label required">Novo Produto:</label>
               {{ formPro.produto }}
@@ -78,10 +79,10 @@
         <h3>Produtos Existentes:</h3>
         {% if produtos %}
         {% for p in produtos %}
-          <a class="btn btn-info mb-2 {% if p in venceu %} btn-danger {% elif p in prazo %} btn-warning {% endif %}" title="{{ p.produto }} - {{ p.contribuidor }}" href="{% url 'Produto_read' id=p.id %}">{{ p.produto }}</a>
+          <a class="btn btn-info mb-2 {% if p in venceu %} btn-danger {% elif p in prazo %} btn-warning {% endif %}" title="{{ p.produto }} - {{ p.contribuidor }}" href="{% url 'Produto_read' slug=p.slug %}">{{ p.produto }}</a>
         {% endfor %}
         {% else %}
-          <p>Nenhum produto encontrado.</p>
+          <p>Nenhum Produto encontrado.</p>
         {% endif %}
       </div>
     </div>
