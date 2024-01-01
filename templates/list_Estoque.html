@@ -26,7 +26,7 @@
         <a href="{% url 'Produto_read' slug=produto.slug %}">{{ message }}</a>
     </p>
   {% endfor %}
-  <button type="button" onclick="togglePopup('vencido')">Entendi! Pode fechar.</button>
+  <button type="button" class="close" onclick="togglePopup('vencido')"><i class="fa-regular fa-rectangle-xmark fa-2xl"></i></button>
 </div>
 
 <div class="message_prazo">
@@ -36,7 +36,7 @@
         <a href="{% url 'Produto_read' slug=produto.slug %}">{{ message }}</a>
     </p>
   {% endfor %}
-  <button type="button" onclick="togglePopup('prazo')">Entendi! Pode fechar.</button>
+  <button type="button" class="close" onclick="togglePopup('prazo')"><i class="fa-regular fa-rectangle-xmark fa-2xl"></i></button>
 </div>
 {% endif %}
   

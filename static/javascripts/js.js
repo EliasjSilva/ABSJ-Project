@@ -17,11 +17,9 @@
 function togglePopup(tipo) {
   if (tipo == 'vencido') {
     $('.message_vencido').toggle(50);
-    $('.message_prazo').hide();
   } 
   else if (tipo == 'prazo') {
     $('.message_prazo').toggle(50);
-    $('.message_vencido').hide();
   } 
   else if (tipo == 'categoria') {
     $('.delete').toggle(50);
