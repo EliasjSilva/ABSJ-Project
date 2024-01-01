@@ -44,11 +44,12 @@
               </span>
           </div>
 
-          <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
 
           {% if request.resolver_match.url_name == 'Categoria_update' %}
+            <a href="{% url 'Categoria_read' slug=update_categoria.slug %}" class="btn btn-danger float-end">Cancelar</a>
             <button type="submit" class="btn btn-success float-end">Salvar</button>
           {% else %}
+            <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
             <button type="submit" class="btn btn-success float-end">Cadastrar</button>
           {% endif %}
       </form>

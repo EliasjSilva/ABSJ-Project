@@ -466,7 +466,7 @@ def produto_Update(request, slug):
     else:
         produtoEdit = f.ProdutoForm(instance=update_produto)
 
-    return render(request, 'create_Produto.html', {'formPro': produtoEdit, 'produtos':produtos})
+    return render(request, 'create_Produto.html', {'formPro': produtoEdit, 'produtos':produtos, 'update_produto':update_produto})
     
 @login_required
 def categoria_Update(request, slug):
@@ -484,7 +484,7 @@ def categoria_Update(request, slug):
     else:
         categoriaEdit = f.CategoriaForm(instance=update_categoria)
 
-    return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias})
+    return render(request, 'create_Categoria.html', {'formCat': categoriaEdit, 'categorias':categorias, 'update_categoria':update_categoria})
     
 @login_required
 def contribuidor_Update(request, slug):
@@ -502,7 +502,7 @@ def contribuidor_Update(request, slug):
     else:
         contribuidorEdit = f.ContribuidorForm(instance=update_contribuidor)
 
-    return render(request, 'create_Contribuidor.html', {'formCon': contribuidorEdit, 'contribuidores':contribuidores})
+    return render(request, 'create_Contribuidor.html', {'formCon': contribuidorEdit, 'contribuidores':contribuidores, 'update_contribuidor':update_contribuidor})
 
 
 

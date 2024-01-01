@@ -20,8 +20,28 @@ class Categoria(models.Model):
     class Meta:
         ordering = ['categoria']
 
+    def save(self, *args, **kwargs):
+        # Muda o campo escrito para capitalize na hora de Salvar para não gerar conflitos como 'oi', 'OI' e 'Oi'
+        self.categoria = self.categoria.capitalize()
+
+        # Gera o slug a partir do nome do categoria
+        slug = text.slugify(self.categoria)    
+
+        # Verifica se o slug está vazio e, se estiver, utiliza um valor padrão
+        if not slug:
+            slug = 'Categoria'
+        counter = 1
+        original_slug = slug
+        while Categoria.objects.filter(slug=slug).exclude(id=self.id).exists() or None:
+            slug = f"{original_slug}_{counter}"
+            counter += 1
+
+        self.slug = slug
+
+        super(Categoria, self).save(*args, **kwargs)
+
     def __str__(self):
-        return self.categoria
+        return self.categoria.capitalize()
 
 
 class Contribuidor(models.Model):
@@ -37,12 +57,27 @@ class Contribuidor(models.Model):
         ordering = ['tempo']
 
     def __str__(self):
-        return self.contribuidor
+        return self.contribuidor.capitalize()
 
     def save(self, *args, **kwargs):
-        if not self.slug: # Verifica se o slug está vazio
-            self.slug = text.slugify(self.contribuidor)
-        super().save(*args, **kwargs)
+        # Muda o campo escrito para capitalize na hora de Salvar para não gerar conflitos como 'oi', 'OI' e 'Oi'
+        self.contribuidor = self.contribuidor.capitalize()
+
+        # Gera o slug a partir do nome do contribuidor
+        slug = text.slugify(self.contribuidor)    
+
+        # Verifica se o slug está vazio e, se estiver, utiliza um valor padrão
+        if not slug:
+            slug = 'Contribuidor'
+        counter = 1
+        original_slug = slug
+        while Contribuidor.objects.filter(slug=slug).exclude(id=self.id).exists() or None:
+            slug = f"{original_slug}_{counter}"
+            counter += 1
+
+        self.slug = slug
+
+        super(Contribuidor, self).save(*args, **kwargs)
 
     def contar_produtos(self):
         return Produto.objects.filter(contribuidor=self).count()
@@ -81,7 +116,7 @@ class Produto(models.Model):
         ordering = ['produto']
 
     def __str__(self):
-        return self.produto
+        return self.produto.capitalize()
 
     def save(self, *args, **kwargs):
         # Muda o campo escrito para capitalize na hora de Salvar para não gerar conflitos como 'oi', 'OI' e 'Oi'
@@ -90,12 +125,18 @@ class Produto(models.Model):
         # Gera o slug a partir do nome do produto
         slug = text.slugify(self.produto)
 
-        # Adiciona o contribuidor ao slug para garantir unicidade
+        # Adiciona o contribuidor ao slug para garantir que seja único - não necessário, pois não vai ser ter 2 p para o mesmo c
         # slug = f"{slug}{self.contribuidor.id}"
+
+        # Verifica se o slug está vazio e, se estiver, utiliza um valor padrão
+        if not slug:
+            slug = 'Produto'
 
         # Garante que o slug seja único
         counter = 1
         original_slug = slug
+
+        # Enquanto o slug for identcio a um existente, ele vai ser excluido e pegará o original e adc sempre +1
         while Produto.objects.filter(slug=slug).exclude(id=self.id).exists():
             slug = f"{original_slug}_{counter}"
             counter += 1
@@ -109,7 +150,7 @@ class Produto(models.Model):
         hoje = date.today()
         diferenca = relativedelta(self.validade, hoje)
 
-        # Valor não negativo 'abs'
+        # Valor não negativo 'abs' - removido para fazer os if passar da validade
         anos = diferenca.years
         meses = diferenca.months
         dias = diferenca.days

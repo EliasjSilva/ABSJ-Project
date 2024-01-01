@@ -23,8 +23,16 @@
     
     {% if user.username == 'admin' %}
     <a href="{% url 'Categoria_update' slug=readCat.slug %}" class="btn btn-success mb-4">Editar Nome da Categoria</a>
-    <a href="{% url 'Categoria_delete' slug=readCat.slug %}" class="btn btn-danger mb-4">Excluir Categoria</a>
-    {% else %}
+    <button onclick="togglePopup('categoria')" class="btn btn-danger float-end mb-4">Excluir Categoria</button>
+    
+    <div class="delete">
+        <h4>Tem certeza que Deseja Excluir esta Categoria?</h4>
+          <p>
+              Os <strong>Produtos</strong> relacionados a ela também serão excluídos!
+          </p>
+        <a class="btn btn-success" href="{% url 'Categoria_read' slug=readCat.slug %}">Sim</a>
+        <a class="btn btn-danger float-end" href="{% url 'Categoria_delete' slug=readCat.slug %}">Certamente</a>
+      </div>
     {% endif %}
 
     <div class="table-responsive">

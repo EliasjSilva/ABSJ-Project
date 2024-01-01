@@ -166,7 +166,7 @@ class MovimentoForm(forms.ModelForm):
 
             if tipo == 'Saída':
                 if produto and produto.estoque <= 0:
-                    error_message = html.format_html('O estoque para o produto <span class="error-var">{}</span> está zerado.', produto)
+                    error_message = html.format_html('O estoque para do produto <span class="error-var">{}</span> já está zerado.', produto)
                     self.add_error('tipo', error_message)
 
             return cleaned_data

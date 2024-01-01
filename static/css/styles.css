@@ -1,5 +1,5 @@
 
-/* Mensagem para notificações, !Lembrar de Editar */
+/* Mensagem para notificações (PopUp), !Lembrar de Editar */
 .message_prazo,
 .message_vencido {
     border-radius: 10px;
@@ -51,6 +51,22 @@
 }
 .prazo {
     color: #f00 !important;
+}
+
+/* PopUp do delete */
+.delete {
+    display: none;
+    width: 30%;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    min-width: 300px;
+    background-color: #f0f0f0;
+    box-shadow: 1px 1px 5px #000;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 /* Paginação */

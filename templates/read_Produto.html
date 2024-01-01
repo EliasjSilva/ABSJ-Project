@@ -101,8 +101,14 @@
     </p>
 
       <a href="{% url 'Produto_update' slug=readPro.slug %}" class="btn btn-success">Editar Produto</a>
-      <a href="{% url 'Produto_delete' slug=readPro.slug %}" class="btn btn-danger">Excluir Produto</a>
       <a href="{% url 'Movimento_produto' slug=readPro.slug %}" class="btn btn-warning">Movimentar Produto</a>
+      <button onclick="togglePopup('produto')" class="btn btn-danger float-end">Excluir Produto</button>
+      
+      <div class="delete">
+          <h4>Tem certeza que Deseja Excluir este Produto?</h4>
+          <a class="btn btn-success" href="{% url 'Produto_read' slug=readPro.slug %}">Sim</a>
+          <a class="btn btn-danger float-end" href="{% url 'Produto_delete' slug=readPro.slug %}">Certamente</a>
+        </div>
     </div>
   </div>
 </div>

@@ -62,11 +62,12 @@
               <span class="errors">{{ formPro.validade.errors }}</span>
           </div>
           <div class="col-12">
-            <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
             
             {% if request.resolver_match.url_name == 'Produto_update' %}
+              <a href="{% url 'Produto_read' slug=update_produto.slug %}" class="btn btn-danger float-end">Cancelar</a>
               <input type="submit" class="btn btn-success float-end" value="Salvar">
             {% else %}
+              <a href="{% url 'produtos' %}" class="btn btn-danger float-end">Cancelar</a>
               <input type="submit" class="btn btn-success float-end" value="Cadastrar">
             {% endif %}
           </div>

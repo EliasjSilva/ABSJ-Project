@@ -59,11 +59,12 @@
               <span class="errors">{{ formCon.observacoes }}</span>
             </div>
 
-            <a href="{% url 'estoque' %}" class="btn btn-danger float-end">Cancelar</a>
-
+            
             {% if request.resolver_match.url_name == 'Contribuidor_update' %}
+              <a href="{% url 'Contribuidor_read' slug=update_contribuidor.slug %}" class="btn btn-danger float-end">Cancelar</a>
               <button type="submit" class="btn btn-success float-end">Salvar</button>
             {% else %}
+              <a href="{% url 'contribuidores' %}" class="btn btn-danger float-end">Cancelar</a>
               <button type="submit" class="btn btn-success float-end">Cadastrar</button>
             {% endif %}
           </form>
