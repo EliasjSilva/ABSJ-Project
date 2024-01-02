@@ -57,8 +57,8 @@
 
     {% if not request.resolver_match.url_name == 'Categoria_update' %}
     <div class="col-md-4">
-      <div class="container mt-5">
-        <h3>Categorias Existentes:</h3>
+      <div class="container mt-5 aside">
+        <h3 class="my-3">Categorias Existentes:</h3>
         {% if categorias %}
         {% for cat in categorias %}
           <a class="btn btn-info mb-2" href="{% url 'Categoria_read' slug=cat.slug %}">{{ cat.categoria }}</a>

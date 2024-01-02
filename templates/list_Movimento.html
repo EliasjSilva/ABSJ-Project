@@ -23,19 +23,23 @@
   <h2 class="mb-5">Lista de Movimentações</h2>
 
   <form action="{% url 'Movimento_list' %}" method="GET">
-    <select name="tipo" class="form-select mb-4">
+    <select name="tipo" class="form-select mb-2">
       <option value="">Todos</option>
       <option value="Entrada">Entradas</option>
       <option value="Saída">Saídas</option>
     </select>
 
-    <div class="col-md-12">
-      <legend>Filtrar por Data</legend>
-        <label for="sdate">Data Inicial:</label>
-        <input id="sdate" type="date" name="start_date">
+    <div class="row mb-4">
+      <h4>Filtrar por Data:</h4>
+        <div class="col-md-6">
+          <label for="sdate">Data Inicial:</label>
+          <input class="form-control" id="sdate" type="date" name="start_date">
+        </div>
 
-        <label for="edate">Data Final:</label>
-        <input id="edate" type="date" name="end_date">
+        <div class="col-md-6">
+          <label for="edate">Data Final:</label>
+          <input class="form-control" id="edate" type="date" name="end_date">
+        </div>
     </div>
 
 

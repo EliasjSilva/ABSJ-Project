@@ -63,6 +63,10 @@
     max-height: 600px;
     overflow-y: scroll;
 }
+.message_prazo::-webkit-scrollbar,
+.message_vencido::-webkit-scrollbar {
+    width: 0;
+}
 /* Botão do PopUp */
 .close {
     position: absolute;
@@ -88,6 +92,18 @@
 }
 
 
+/* Barra lateral dos itens existentes create.html - produtos, contribuidores e categoria */
+.aside {
+    max-height: 60vh;
+    background-color: #ffffff80;
+    backdrop-filter: blur(10px);
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px #bbb;
+    overflow-y: scroll;
+}
+.aside::-webkit-scrollbar {
+    width: 0;
+}
 
 
 

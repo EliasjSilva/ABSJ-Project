@@ -72,8 +72,8 @@
 
         {% if not request.resolver_match.url_name == 'Contribuidor_update' %}
         <div class="col-md-4">
-            <div class="container mt-5">
-              <h3>Contribuidores Existentes:</h3>
+            <div class="container mt-5 aside">
+              <h3 class="my-3">Contribuidores Existentes:</h3>
               {% if contribuidores %}
               {% for con in contribuidores %}
                 <a class="btn btn-info mb-2" href="{% url 'Contribuidor_read' slug=con.slug %}">{{ con.contribuidor }}</a>

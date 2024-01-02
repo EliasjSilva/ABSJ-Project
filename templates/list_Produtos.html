@@ -47,15 +47,19 @@
   {% endif %}
 
   <form action="{% url 'produtos' %}" method="GET">
-    <input class="form-control mb-4" type="text" name="busca" placeholder="Digite o nome do Produto ou Código de Barras">
+    <input class="form-control mb-2" type="text" name="busca" placeholder="Digite o nome do Produto ou Código de Barras">
     
-    <div class="col-md-12">
-      <legend>Filtrar por data de validade</legend>
-        <label for="sdate">Data Inicial:</label>
-        <input id="sdate" type="date" name="start_date">
+    <div class="row mb-4">
+      <h4>Filtrar por data de validade:</h4>
+        <div class="col-md-6">
+          <label for="sdate">Data Inicial:</label>
+          <input class="form-control" id="sdate" type="date" name="start_date">
+        </div>
 
-        <label for="edate">Data Final:</label>
-        <input id="edate" type="date" name="end_date">
+        <div class="col-md-6">
+          <label for="edate">Data Final:</label>
+          <input class="form-control" id="edate" type="date" name="end_date">
+        </div>
     </div>
 
 

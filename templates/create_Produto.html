@@ -22,6 +22,7 @@
     {% else %}
     <div class="col-md-8">
     {% endif %}
+    
       {% if request.resolver_match.url_name == 'Produto_update' %}
         <h2 class="mb-5">Editar Produto</h2>
       {% else %}
@@ -76,8 +77,8 @@
 
     {% if not request.resolver_match.url_name == 'Produto_update' %}
     <div class="col-md-4">
-      <div class="container mt-5">
-        <h3>Produtos Existentes:</h3>
+      <div class="container mt-5 aside">
+        <h3 class="my-3">Produtos Existentes:</h3>
         {% if produtos %}
         {% for p in produtos %}
           <a class="btn btn-info mb-2 {% if p in venceu %} btn-danger {% elif p in prazo %} btn-warning {% endif %}" title="{{ p.produto }} - {{ p.contribuidor }}" href="{% url 'Produto_read' slug=p.slug %}">{{ p.produto }}</a>
