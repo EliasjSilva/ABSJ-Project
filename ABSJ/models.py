@@ -32,7 +32,7 @@ class Categoria(models.Model):
             slug = 'Categoria'
         counter = 1
         original_slug = slug
-        while Categoria.objects.filter(slug=slug).exclude(id=self.id).exists() or None:
+        while Categoria.objects.filter(slug=slug).exclude(id=self.id).exists():
             slug = f"{original_slug}_{counter}"
             counter += 1
 
@@ -71,7 +71,7 @@ class Contribuidor(models.Model):
             slug = 'Contribuidor'
         counter = 1
         original_slug = slug
-        while Contribuidor.objects.filter(slug=slug).exclude(id=self.id).exists() or None:
+        while Contribuidor.objects.filter(slug=slug).exclude(id=self.id).exists():
             slug = f"{original_slug}_{counter}"
             counter += 1
 
