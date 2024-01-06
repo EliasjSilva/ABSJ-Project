@@ -1,14 +1,17 @@
-
+body {
+    min-width: 365px;
+}
 /* Mensagem para notificações (PopUp), !Lembrar de Editar */
 .message_prazo h4,
 .message_vencido h4 {
-    padding: 20px 0;
-    text-align: center;
+    padding: 20px;
+    width: 85%;
+    text-align: start;
 }
 .message_prazo p,
 .message_vencido p {
     text-align: start;
-    padding-left: 40px;
+    padding-left: 20px;
 }
 .message_prazo a,
 .message_vencido a {
@@ -22,7 +25,7 @@
 .notificacao {
     text-decoration: none;
     font-weight: bold;
-    color: #f00;
+    color: #C32C1B;
     text-shadow: 1px 1px 1px #000;
     border: 0;
     background-color: inherit;
@@ -31,7 +34,7 @@
     text-decoration: underline;
 }
 .prazo {
-    color: #f00 !important;
+    color: #C32C1B !important;
     font-weight: bold;
 }
 
@@ -41,14 +44,15 @@
 .message_vencido {
     display: none;
     width: 30%;
+    min-width: 300px;
     position: fixed;
     top: 50px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
     min-width: 300px;
-    background-color: #f0f0f080;
-    backdrop-filter: blur(10px);
+    background-color: #f0f0f0;
+    /* backdrop-filter: blur(10px); */
     box-shadow: 1px 1px 5px #000;
     padding: 20px;
     border-radius: 10px;
@@ -58,7 +62,7 @@
     color: #000;
     width: 60%;
     height: auto;
-    min-width: 400px;
+    /* min-width: 400px; */
     padding: 0;
     max-height: 600px;
     overflow-y: scroll;
@@ -173,7 +177,7 @@ display:inline-block;
 vertical-align: middle;
 }
 .inner-header {
-height:15vh; /*Tamanho do header*/
+height:13vh; /*Tamanho do header*/
 width:100%;
 margin: 0;
 padding: 0;
@@ -228,16 +232,16 @@ transform: translate3d(85px,0,0);
 }
 /* Responsividade pra celular */
 @media (max-width: 768px) {
-.waves {
-height:40px;
-min-height:40px;
-}
-.content {
-height:30vh;
-}
-h1 {
-font-size:24px;
-}
+    .waves {
+    height:40px;
+    min-height:40px;
+    }
+    .content {
+    height:15vh;
+    }
+    h1 {
+    font-size:24px;
+    }
 }
 /* Seção dos cards (home) */
 
@@ -267,19 +271,19 @@ font-size:24px;
 
 
 /* Animações dos Cards (home.html) */
-.card-custom {
+.card-home {
 transition: transform 0.2s ease-in-out;
 cursor: pointer;
 }
 
-.card-custom:hover {
+.card-home:hover {
 transform: scale(1.05); /* Aumenta em 5% ao passar o mouse */
 }
 
-.card-custom i {
+.card-home i {
 transition: transform 0.2s ease-in-out;
 }
 
-.card-custom:hover i {
+.card-home:hover i {
 transform: scale(1.2); /* Aumenta em 20% ao passar o mouse */
 }

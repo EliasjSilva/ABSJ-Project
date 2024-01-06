@@ -59,16 +59,16 @@
       <p class="card-text"><strong>Observações:</strong> {{ readCon.observacoes }}</p>
 
       {% if user.username == 'admin' %}
-      <a href="{% url 'Contribuidor_update' slug=readCon.slug %}" class="btn btn-success">Editar Contribuidor</a>
-      <button onclick="togglePopup('contribuidor')" class="btn btn-danger float-end">Excluir Contribuidor</button>
+      <a href="{% url 'Contribuidor_update' slug=readCon.slug %}" class="btn btn-success mb-3">Editar Contribuidor</a>
+      <button onclick="togglePopup('contribuidor')" class="btn btn-danger mb-3">Excluir Contribuidor</button>
       
       <div class="delete">
           <h4>Tem certeza que Deseja Excluir este Contribuidor?</h4>
             <p>
                 Os <strong>Produtos</strong> relacionados a ele também serão excluídos!
             </p>
-          <a class="btn btn-success" href="{% url 'Contribuidor_read' slug=readCon.slug %}">Sim</a>
-          <a class="btn btn-danger float-end" href="{% url 'Contribuidor_delete' slug=readCon.slug %}">Certamente</a>
+          <a class="btn btn-danger" href="{% url 'Contribuidor_delete' slug=readCon.slug %}">Sim</a>
+          <a class="btn btn-success float-end" href="{% url 'Contribuidor_read' slug=readCon.slug %}">Cancelar</a>
         </div>
       {% endif %}
     </div>
