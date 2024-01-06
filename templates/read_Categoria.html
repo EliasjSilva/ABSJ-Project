@@ -30,8 +30,9 @@
           <p>
               Os <strong>Produtos</strong> relacionados a ela também serão excluídos!
           </p>
-        <a class="btn btn-success" href="{% url 'Categoria_read' slug=readCat.slug %}">Sim</a>
-        <a class="btn btn-danger float-end" href="{% url 'Categoria_delete' slug=readCat.slug %}">Certamente</a>
+        <a class="btn btn-danger float-end" href="{% url 'Categoria_delete' slug=readCat.slug %}">Sim</a>
+        <a class="btn btn-success" href="{% url 'Categoria_read' slug=readCat.slug %}">Cancelar</a>
+        
       </div>
     {% endif %}
 

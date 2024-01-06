@@ -67,8 +67,8 @@
             <p>
                 Os <strong>Produtos</strong> relacionados a ele também serão excluídos!
             </p>
-          <a class="btn btn-success" href="{% url 'Contribuidor_read' slug=readCon.slug %}">Sim</a>
-          <a class="btn btn-danger float-end" href="{% url 'Contribuidor_delete' slug=readCon.slug %}">Certamente</a>
+          <a class="btn btn-danger float-end" href="{% url 'Contribuidor_delete' slug=readCon.slug %}">Sim</a>
+          <a class="btn btn-success" href="{% url 'Contribuidor_read' slug=readCon.slug %}">Cancelar</a>
         </div>
       {% endif %}
     </div>
