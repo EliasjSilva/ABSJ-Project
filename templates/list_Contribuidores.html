@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Contribuidores</title>
+Contribuidores
 {% endblock %}
 
 {% block content %}
@@ -22,7 +22,7 @@
 
   
   
-  {% if user.username == 'admin' %}
+  {% if user.is_superuser %}
   <a class="btn btn-success mb-4"  href="{% url 'ContribuidorForm' %}">Adicionar Novo Contribuidor</a>
   {% else %}
   {% endif %}

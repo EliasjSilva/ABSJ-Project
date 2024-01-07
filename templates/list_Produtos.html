@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Estoque</title>
+Estoque
 {% endblock %}
 
 {% block content %}
@@ -64,8 +64,8 @@
 
 
     <div class="d-flex justify-content-end mb-4">
-      <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'produtos' %}">Limpar Busca</a>
-      <input class="btn btn-success" type="submit" value="Buscar">
+      <input class="btn btn-success mx-3" type="submit" value="Buscar">
+      <a class="btn btn-success" href="{% url 'produtos' %}">Limpar Busca</a>
     </div>
 
   </form>

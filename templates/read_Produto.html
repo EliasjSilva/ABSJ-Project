@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Informações do Produto: {{ readPro.produto }}</title>
+Informações do Produto: {{ readPro.produto }}
 {% endblock %}
 
 {% block content %}
@@ -24,7 +24,7 @@
   <div class="card">
     <div class="card-body">
       <h3 class="card-title mb-4 {% if notifica %} prazo {% endif %}">{{ readPro.produto }}</h3>
-      <p class="card-text"><strong>Adicionado por:</strong> {{ readPro.user }}</p>
+      <p class="card-text"><strong>Adicionado por:</strong> {{ readPro.user.first_name }}</p>
       <p class="card-text"><strong>Categoria:</strong> {{ readPro.categoria }}</p>
       <p class="card-text"><strong>Contribuidor:</strong> {{ readPro.contribuidor }}</p>
       <p class="card-text"><strong>Estoque Atual:</strong> {{ readPro.estoque }}</p>
@@ -94,9 +94,6 @@
       {% else %}
         Vence hoje!
       {% endif %}
-        
-
-
       </span>
     </p>
 
@@ -138,7 +135,7 @@
 
             {% for m in movimentos %}
             <tr class="table-light border-dark custom-links">
-                <td>{{ m.user }}</td>
+                <td>{{ m.user.first_name }}</td>
                 <td>
                   {% if m.tipo == 'Entrada' %}
                     {{ m.quantidade }}

@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
-    <title>Home</title>
-    {% endblock %}
+    
+    <title>ABSJ | {% block title %} Página Inicial {% endblock %}</title>
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <!-- favicon -->
@@ -108,7 +107,7 @@
                 <h1>Associação Benefiente São José</h1>
               </div>
               {% if user.is_authenticated %}
-                <h4 class="inner-header ">Olá {{ user }}, Bem vindo</h4>
+                <h4 class="inner-header ">Olá {{ user.first_name }}, Bem vindo</h4>
               {% else %}
                 <h4 class="inner-header flex mb-5">Controle de Estoque da ABSJ</h4>
               {% endif %} 

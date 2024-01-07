@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %} 
-<title>Cadastrar Produto</title> 
+Movimentar Produto
 {% endblock %}
 
 {% block content %}
@@ -38,9 +38,9 @@
             {{ movimento.quantidade }}
             <span class="errors">{{ movimento.quantidade.errors }}</span>
         </div>
-        <div class="col-12">
-          <a href="{% url 'produtos' %}" class="btn btn-danger float-end">Cancelar</a>
-          <input type="submit" class="btn btn-success float-end" value="Salvar">
+        <div class="col-12 d-flex justify-content-end">
+          <input type="submit" class="btn btn-success mx-3" value="Salvar">
+          <a href="{% url 'produtos' %}" class="btn btn-danger">Cancelar</a>
         </div>
     </form>
   </div>

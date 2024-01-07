@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Movimentação dos Produtos</title>
+Movimentação dos Produtos
 {% endblock %}
 
 {% block content %}
@@ -44,8 +44,8 @@
 
 
     <div class="d-flex justify-content-end mb-4">
-      <a class="btn btn-success"style="margin-right: 20px;" href="{% url 'Movimento_list' %}">Limpar Busca</a>
-      <input class="btn btn-success" type="submit" value="Buscar">
+      <input class="btn btn-success mx-3" type="submit" value="Buscar">
+      <a class="btn btn-success" href="{% url 'Movimento_list' %}">Limpar Busca</a>
     </div>
   </form>
 
@@ -54,7 +54,7 @@
       <thead id="customTableHead" class="thead-dark table-custom">
         <tr>
           <th scope="col">Produto</th>
-            <th scope="col" >Tipo</th>
+            <th scope="col">Tipo</th>
             <th scope="col">Quantidade</th>
             <th scope="col">Modificado</th>
         </tr>
@@ -76,7 +76,7 @@
               
               </td>
               <td>{{ movimento.quantidade }}</td>
-              <td>{{ movimento.modificado }}, por: {{ movimento.user }}</td>
+              <td>{{ movimento.modificado }}, por: {{ movimento.user.first_name }}</td>
             </tr>
           {% endfor %}
         {% else %}

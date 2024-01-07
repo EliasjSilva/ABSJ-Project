@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %} 
-<title>Cadastrar Contribuidor</title> 
+Cadastrar Contribuidor
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
       {% endfor %}
     {% endif %}
   
-    {% if user.username == 'admin' %}
+    {% if user.is_superuser %}
       <div class="row">
         {% if request.resolver_match.url_name == 'Contribuidor_update' %}
         <div class="col-md-12">

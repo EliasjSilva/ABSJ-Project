@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Informações do Contribuidor: {{ readCon.contribuidor }}</title>
+Informações do Contribuidor: {{ readCon.contribuidor }}
 {% endblock %}
 
 {% block content %}
@@ -58,7 +58,7 @@
       </p>
       <p class="card-text"><strong>Observações:</strong> {{ readCon.observacoes }}</p>
 
-      {% if user.username == 'admin' %}
+      {% if user.is_superuser %}
       <a href="{% url 'Contribuidor_update' slug=readCon.slug %}" class="btn btn-success mb-3">Editar Contribuidor</a>
       <button onclick="togglePopup('contribuidor')" class="btn btn-danger mb-3">Excluir Contribuidor</button>
       
@@ -93,16 +93,6 @@
                 <th scope="col">Categoria</th>
                 <th scope="col">Produto</th>
                 <th scope="col">Em Estoque</th>
-
-                <!-- Lembrar de fazer a quantidade total doado dos produtos por contribuidor -->
-                <!-- <th scope="col">Quantidade Total
-                    {% if readCon.tipocontribuidor == 'Doador' %}
-                    Doada
-                    {% elif readCon.tipocontribuidor == 'Fornecedor' %}
-                    Fornecida
-                    {% else %}
-                    {% endif %}
-                </th> -->
             </tr>
         </thead>
         <tbody>
