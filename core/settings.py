@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+#configurando o deploy no render
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +24,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b^$i*#x=#gq*tp9x^65(njom+_q+5bzgz9u8fi29)#ar-h9xy_'
+
+#SECRET_KEY = 'django-insecure-b^$i*#x=#gq*tp9x^65(njom+_q+5bzgz9u8fi29)#ar-h9xy_'
+
+# ------------------------------------ RENDER ------------------------------------
+SECRET_KEY = os.environ.get("SECRET_KEY", "chave_de_desenvolvimento")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = False
 
-ALLOWED_HOSTS = []
+# ------------------------------------ RENDER ------------------------------------
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+
+#ALLOWED_HOSTS = [Stoke.renderoner.com]
+
+# ------------------------------------ RENDER ------------------------------------
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
 
 # Application definition
@@ -78,13 +91,17 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
+# ------------------------------------ RENDER ------------------------------------
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3', conn_max_age=600)
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
