@@ -33,6 +33,5 @@ urlpatterns = [
     path('Categoria/Deletar: <slug:slug>/', v.categoria_Delete, name='Categoria_delete'),
     path('Contribuidor/Deletar: <slug:slug>/', v.contribuidor_Delete, name='Contribuidor_delete'),
     
-
     
 ]
