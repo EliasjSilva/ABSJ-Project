@@ -36,10 +36,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "chave_de_desenvolvimento")
 # ------------------------------------ RENDER ------------------------------------
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['stoke-u32f.onrender.com']
 
 # ------------------------------------ RENDER ------------------------------------
-# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 # ALLOWED_HOSTS = ['*']
 
 
